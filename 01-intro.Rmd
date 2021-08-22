@@ -139,3 +139,25 @@ tm_shape(Chi_Zips) + tm_borders(lwd = 2, col = "#0099CC") +
   tm_scale_bar(position = ("left"), lwd = 0.8) +
   tm_layout(frame = F)
 ```
+
+## More Resources {-}
+
+On spatial data basics & sf:
+
+- https://geocompr.robinlovelace.net/intro.html
+
+- https://geodacenter.github.io/opioid-environment-toolkit/spatial-data-introduction.html 
+
+On projections:
+
+- https://desktop.arcgis.com/en/arcmap/10.3/guide-books/map-projections/projection-basics-for-gis-professionals.htm
+
+- https://geocompr.robinlovelace.net/reproj-geo-data.html 
+
+- https://datacarpentry.org/organization-geospatial/03-crs/index.html
+
+On tmap:
+
+- https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html 
+
+- https://geocompr.robinlovelace.net/adv-map.html 
