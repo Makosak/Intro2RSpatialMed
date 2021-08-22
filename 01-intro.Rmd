@@ -1,15 +1,16 @@
 # Introduction {#intro}
 
-In the workshop, we'll review:
+In the workshop, we learned about:
 
 - What is Spatial Data?
 - What is the `sf` framework for R?
 
-```{r load-libraries}
+To delve in further, let's see some spatial data in action.
+
+We'll work with the **sf** library first.
+```{r load-libraries, warning=FALSE}
 library(sf)
 ```
-
-To delve in further, let's see some spatial data in action.
 
 ## Load Spatial Data
 
@@ -111,4 +112,30 @@ tm_shape(Chi_tracts) + tm_fill(col = "gray90", alpha = 0.5) + tm_borders(alpha=0
 
 ```{r }
 tmap_mode("plot")
+```
+
+## Overlay Zip Code Boundaries
+
+First, we read in zip code boundaries. This data was downloaded directly from the *City of Chicago Data Portal* as a shapefile.
+
+```{r }
+Chi_Zips = st_read("data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp")
+
+```
+
+Next, we layer the new shape in -- on top of the tracts. We use a thicker border, and try out a new color. Experiment!
+
+```{r }
+
+## FIRST LAYER: CENSUS TRACT BOUNADRIES
+tm_shape(Chi_tracts.3435) + tm_fill(col = "gray90") +
+  tm_borders(alpha=0.2, col = "gray10") + 
+
+## SECOND LAYER: ZIP CODE BOUNDARIES WITH LABEL
+tm_shape(Chi_Zips) + tm_borders(lwd = 2, col = "#0099CC") +
+  tm_text("zip", size = 0.7) +
+  
+## MORE CARTOGRAPHIC STYLE
+  tm_scale_bar(position = ("left"), lwd = 0.8) +
+  tm_layout(frame = F)
 ```
