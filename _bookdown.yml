@@ -1,0 +1,7 @@
+book_filename: "Spatial-R for Healthy Places"
+output_dir: "docs"
+rmd_files: ["index.Rmd", 
+"01-intro.Rmd", 
+"02-choropleth.Rmd", 
+"03-overlaypoints.Rmd", 
+"04-newsvar.Rmd"]

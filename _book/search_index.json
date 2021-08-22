@@ -1,0 +1,3 @@
+[
+["index.html", "Intro to R-Spatial for Healthy Places Chapter 1 Prerequisites", " Intro to R-Spatial for Healthy Places Marynia Kolak 2021-08-21 Chapter 1 Prerequisites This workshop requires several pacakges, which can be installed from CRAN or Github: install.packages(&quot;sf&quot;, &quot;tmap&quot;) For Mac users, check out https://github.com/r-spatial/sf for additional tips if you run into errors when installing the sf package. Using homebrew to install gdal usually fixes any remaining issues. "]
+]
