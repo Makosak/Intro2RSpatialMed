@@ -1,0 +1,114 @@
+# Introduction {#intro}
+
+In the workshop, we'll review:
+
+- What is Spatial Data?
+- What is the `sf` framework for R?
+
+```{r load-libraries}
+library(sf)
+```
+
+To delve in further, let's see some spatial data in action.
+
+## Load Spatial Data
+
+```{r load-spatial-data}
+Chi_tracts = st_read("data/geo_export_aae47441-adab-4aca-8cb0-2e0c0114096e.shp")
+```
+
+## Non-Spatial & Spatial Views
+```{r non-spatial-view}
+head(Chi_tracts)
+```
+
+```{r spatial-view}
+plot(Chi_tracts)
+```
+
+## Spatial Data Structure
+
+```{r data-structure}
+str(Chi_tracts)
+
+```
+
+```{r }
+st_crs(Chi_tracts)
+```
+
+## Exploring Coordinate Reference Systems
+
+```{r }
+Chi_tracts.moll <- st_transform(Chi_tracts, crs = "+proj=moll")
+plot(st_geometry(Chi_tracts.moll), border = "gray", lwd = 2, main = "Mollweide", sub="preserves areas")
+st_crs(Chi_tracts.moll)
+```
+
+```{r }
+Chi_tracts.54019 = st_transform(Chi_tracts, 54019)
+plot(st_geometry(Chi_tracts.54019), border = "gray", lwd = 2, main = "Winkel", sub="minimal distortion")
+st_crs(Chi_tracts.54019)
+
+```
+
+```{r }
+Chi_tracts.3435 <- st_transform(Chi_tracts, 3435)
+st_crs(Chi_tracts.3435)
+
+plot(st_geometry(Chi_tracts.3435), border = "gray", lwd = 2, main = "NAD83 / Illinois East (ftUS)", sub="topo mapping & survey use")
+```
+
+```{r }
+Chi_tracts.Hawaii = st_transform(Chi_tracts, 102114)
+plot(st_geometry(Chi_tracts.Hawaii), border = "gray", lwd = 2, main = "Old Hawaiian UTM Zone 4N", sub="wrong projection!")
+```
+
+
+## Refine Basic Map
+
+```{r }
+library(tmap)
+
+tm_shape(Chi_tracts) + tm_borders(alpha=0.5) 
+```
+
+```{r }
+tm_shape(Chi_tracts) + tm_fill(col = "gray90") + tm_borders(alpha=0.2, col = "gray10") +
+  tm_scale_bar(position = ("left"), lwd = 0.8) +
+  tm_layout(frame = F)
+```
+
+Check out https://rdrr.io/cran/tmap/man/tm_polygons.html for more ideas.
+
+## Arrange multiple maps
+
+```{r }
+tracts.4326 <- tm_shape(Chi_tracts) + tm_fill(col = "gray90") +
+  tm_layout(frame = F, title = "EPSG 4326")
+
+tracts.54019 <- tm_shape(Chi_tracts.54019) + tm_fill(col = "gray90") +  tm_layout(frame = F, title = "EPSG 54019")
+
+tmap_arrange(tracts.4326, tracts.54019)
+```
+
+## Interactive Mode
+
+```{r }
+tmap_mode("view")
+```
+
+
+```{r }
+tm_shape(Chi_tracts) + tm_fill(col = "gray90") + tm_borders(alpha=0.2, col = "gray10") +
+  tm_scale_bar(position = ("left"), lwd = 0.8) +
+  tm_layout(frame = F)
+```
+
+```{r }
+tm_shape(Chi_tracts) + tm_fill(col = "gray90", alpha = 0.5) + tm_borders(alpha=0.2, col = "gray10") + tm_scale_bar(position = ("left"), lwd = 0.8) +  tm_layout(frame = F)
+```
+
+```{r }
+tmap_mode("plot")
+```

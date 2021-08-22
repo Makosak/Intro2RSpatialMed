@@ -1,0 +1,3 @@
+# Adding Resources
+
+We describe our methods in this chapter.
