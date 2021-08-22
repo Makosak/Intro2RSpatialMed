@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Map Neighborhoods | Intro to R-Spatial for Healthy Places</title>
+  <meta name="description" content="This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions &amp; Policies Lab at the University of Chicago ." />
+  <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Map Neighborhoods | Intro to R-Spatial for Healthy Places" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions &amp; Policies Lab at the University of Chicago ." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Map Neighborhoods | Intro to R-Spatial for Healthy Places" />
+  
+  <meta name="twitter:description" content="This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions &amp; Policies Lab at the University of Chicago ." />
+  
+
+<meta name="author" content="Marynia Kolak" />
+
+
+<meta name="date" content="2021-08-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="01-intro.html"/>
+<link rel="next" href="03-overlaypoints.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
+<li class="chapter" data-level="2" data-path="01-intro.html"><a href="01-intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
+<li class="chapter" data-level="2.1" data-path="01-intro.html"><a href="01-intro.html#load-spatial-data"><i class="fa fa-check"></i><b>2.1</b> Load Spatial Data</a></li>
+<li class="chapter" data-level="2.2" data-path="01-intro.html"><a href="01-intro.html#non-spatial-spatial-views"><i class="fa fa-check"></i><b>2.2</b> Non-Spatial &amp; Spatial Views</a></li>
+<li class="chapter" data-level="2.3" data-path="01-intro.html"><a href="01-intro.html#spatial-data-structure"><i class="fa fa-check"></i><b>2.3</b> Spatial Data Structure</a></li>
+<li class="chapter" data-level="2.4" data-path="01-intro.html"><a href="01-intro.html#exploring-coordinate-reference-systems"><i class="fa fa-check"></i><b>2.4</b> Exploring Coordinate Reference Systems</a></li>
+<li class="chapter" data-level="2.5" data-path="01-intro.html"><a href="01-intro.html#refine-basic-map"><i class="fa fa-check"></i><b>2.5</b> Refine Basic Map</a></li>
+<li class="chapter" data-level="2.6" data-path="01-intro.html"><a href="01-intro.html#arrange-multiple-maps"><i class="fa fa-check"></i><b>2.6</b> Arrange multiple maps</a></li>
+<li class="chapter" data-level="2.7" data-path="01-intro.html"><a href="01-intro.html#interactive-mode"><i class="fa fa-check"></i><b>2.7</b> Interactive Mode</a></li>
+<li class="chapter" data-level="2.8" data-path="01-intro.html"><a href="01-intro.html#overlay-zip-code-boundaries"><i class="fa fa-check"></i><b>2.8</b> Overlay Zip Code Boundaries</a></li>
+<li class="chapter" data-level="" data-path="01-intro.html"><a href="01-intro.html#more-resources"><i class="fa fa-check"></i>More Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="02-choropleth.html"><a href="02-choropleth.html"><i class="fa fa-check"></i><b>3</b> Map Neighborhoods</a><ul>
+<li class="chapter" data-level="3.1" data-path="02-choropleth.html"><a href="02-choropleth.html#clean-attribute-data"><i class="fa fa-check"></i><b>3.1</b> Clean Attribute Data</a></li>
+<li class="chapter" data-level="3.2" data-path="02-choropleth.html"><a href="02-choropleth.html#merge-spatial-data"><i class="fa fa-check"></i><b>3.2</b> Merge Spatial Data</a></li>
+<li class="chapter" data-level="3.3" data-path="02-choropleth.html"><a href="02-choropleth.html#quantile-maps"><i class="fa fa-check"></i><b>3.3</b> Quantile Maps</a></li>
+<li class="chapter" data-level="3.4" data-path="02-choropleth.html"><a href="02-choropleth.html#standard-deviation-maps"><i class="fa fa-check"></i><b>3.4</b> Standard Deviation Maps</a></li>
+<li class="chapter" data-level="3.5" data-path="02-choropleth.html"><a href="02-choropleth.html#jenks-maps"><i class="fa fa-check"></i><b>3.5</b> Jenks Maps</a></li>
+<li class="chapter" data-level="3.6" data-path="02-choropleth.html"><a href="02-choropleth.html#integrate-more-data"><i class="fa fa-check"></i><b>3.6</b> Integrate More Data</a></li>
+<li class="chapter" data-level="3.7" data-path="02-choropleth.html"><a href="02-choropleth.html#thematic-map-panel"><i class="fa fa-check"></i><b>3.7</b> Thematic Map Panel</a></li>
+<li class="chapter" data-level="" data-path="02-choropleth.html"><a href="02-choropleth.html#more-resources-1"><i class="fa fa-check"></i>More Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html"><i class="fa fa-check"></i><b>4</b> Adding Resources</a></li>
+<li class="chapter" data-level="5" data-path="04-newsvar.html"><a href="04-newsvar.html"><i class="fa fa-check"></i><b>5</b> Calculate Spatial Metrics</a><ul>
+<li class="chapter" data-level="5.1" data-path="04-newsvar.html"><a href="04-newsvar.html#example-one"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
+<li class="chapter" data-level="5.2" data-path="04-newsvar.html"><a href="04-newsvar.html#example-two"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Intro to R-Spatial for Healthy Places</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="map-neighborhoods" class="section level1">
+<h1><span class="header-section-number">3</span> Map Neighborhoods</h1>
+<p>When considering the health of persons, we have to also consider the neighborhood environment. Sometimes this is looking at neighborhood level health outcomes, like premature mortality at the census tract scale, or cumulative COVID rates by zip code. Sometimes we’re interested in neighborhood factors like how poverty, access to affordable housing or healthy produce, or distance to nearest health provider, or pollution-emitting facility. These measurements of the “social determinants of health” at the neighborhood scale are increasingly urgent in modern public health thinking.</p>
+<p>In this module, we’ll learn about the basics of thematic mapping – known as <em>choropleth mapping</em> – to visualize neighborhood level health phenomena.</p>
+<div id="clean-attribute-data" class="section level2">
+<h2><span class="header-section-number">3.1</span> Clean Attribute Data</h2>
+<p>Let’s consider COVID-19 cases by zip code in Chicago. We’ll upload and inspect a summary of cases from the <em>Chicago Data Portal</em> first:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">COVID &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/COVID-19_Cases__Tests__and_Deaths_by_ZIP_Code.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">head</span>(COVID)</a></code></pre></div>
+<pre><code>##   ZIP.Code Week.Number Week.Start   Week.End Cases...Weekly Cases...Cumulative
+## 1    60603          39 09/20/2020 09/26/2020              0                 13
+## 2    60604          39 09/20/2020 09/26/2020              0                 31
+## 3    60611          16 04/12/2020 04/18/2020              8                 72
+## 4    60611          15 04/05/2020 04/11/2020              7                 64
+## 5    60615          11 03/08/2020 03/14/2020             NA                 NA
+## 6    60603          10 03/01/2020 03/07/2020             NA                 NA
+##   Case.Rate...Weekly Case.Rate...Cumulative Tests...Weekly Tests...Cumulative
+## 1                  0                 1107.3             25                327
+## 2                  0                 3964.2             12                339
+## 3                 25                  222.0            101                450
+## 4                 22                  197.4             59                349
+## 5                 NA                     NA              6                  9
+## 6                 NA                     NA              0                  0
+##   Test.Rate...Weekly Test.Rate...Cumulative Percent.Tested.Positive...Weekly
+## 1               2130                27853.5                              0.0
+## 2               1534                43350.4                              0.0
+## 3                312                 1387.8                              0.1
+## 4                182                 1076.3                              0.1
+## 5                 14                   21.7                               NA
+## 6                  0                    0.0                               NA
+##   Percent.Tested.Positive...Cumulative Deaths...Weekly Deaths...Cumulative
+## 1                                  0.0               0                   0
+## 2                                  0.1               0                   0
+## 3                                  0.2               0                   0
+## 4                                  0.2               0                   0
+## 5                                   NA               0                   0
+## 6                                   NA               0                   0
+##   Death.Rate...Weekly Death.Rate...Cumulative Population   Row.ID
+## 1                   0                       0       1174 60603-39
+## 2                   0                       0        782 60604-39
+## 3                   0                       0      32426 60611-16
+## 4                   0                       0      32426 60611-15
+## 5                   0                       0      41563 60615-11
+## 6                   0                       0       1174 60603-10
+##              ZIP.Code.Location
+## 1 POINT (-87.625473 41.880112)
+## 2 POINT (-87.629029 41.878153)
+## 3 POINT (-87.620291 41.894734)
+## 4 POINT (-87.620291 41.894734)
+## 5 POINT (-87.602725 41.801993)
+## 6 POINT (-87.625473 41.880112)</code></pre>
+<p>Each row corresponds to a zip code at a differnent week. This data thus exists as a “long” format, which doesn’t work for spatial analysis. We need to convert to “wide” format, or at the very least, ensure that each zip code corresponds to one row.</p>
+<p>To simplify, let’s identify the last week of the dataset, and then subset the data frame to only show that week. We will be interested in the cumulative case rate. Following is one way of doing this – can you think of another way? Try out different approaches to test your R and “tidy” skills.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">## How many weeks are in our dataset?</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">range</span>(<span class="kw">as.numeric</span>(COVID<span class="op">$</span>Week.End))</a></code></pre></div>
+<pre><code>## [1]  1 31</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">## Convert Week.End to numeric</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">COVID<span class="op">$</span>week_end &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(COVID<span class="op">$</span>Week.End)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">## Subset &amp; inspect to week 39.</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">COVID<span class="fl">.39</span> &lt;-<span class="st"> </span><span class="kw">subset</span>(COVID, COVID<span class="op">$</span>Week.Number <span class="op">==</span><span class="st"> &quot;39&quot;</span>)</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="kw">head</span>(COVID<span class="fl">.39</span>)</a></code></pre></div>
+<pre><code>##    ZIP.Code Week.Number Week.Start   Week.End Cases...Weekly Cases...Cumulative
+## 1     60603          39 09/20/2020 09/26/2020              0                 13
+## 2     60604          39 09/20/2020 09/26/2020              0                 31
+## 36    60601          39 09/20/2020 09/26/2020              8                213
+## 37    60602          39 09/20/2020 09/26/2020              0                 21
+## 41    60605          39 09/20/2020 09/26/2020             12                391
+## 66    60610          39 09/20/2020 09/26/2020             35                666
+##    Case.Rate...Weekly Case.Rate...Cumulative Tests...Weekly Tests...Cumulative
+## 1                   0                 1107.3             25                327
+## 2                   0                 3964.2             12                339
+## 36                 54                 1451.4            202               4304
+## 37                  0                 1688.1             27                460
+## 41                 44                 1420.8            291               7160
+## 66                 90                 1706.9            500              10680
+##    Test.Rate...Weekly Test.Rate...Cumulative Percent.Tested.Positive...Weekly
+## 1                2130                27853.5                              0.0
+## 2                1534                43350.4                              0.0
+## 36               1376                29328.8                              0.0
+## 37               2170                36977.5                              0.0
+## 41               1058                26018.4                              0.0
+## 66               1281                27371.3                              0.1
+##    Percent.Tested.Positive...Cumulative Deaths...Weekly Deaths...Cumulative
+## 1                                   0.0               0                   0
+## 2                                   0.1               0                   0
+## 36                                  0.0               1                   6
+## 37                                  0.0               0                   0
+## 41                                  0.1               1                   3
+## 66                                  0.1               0                  10
+##    Death.Rate...Weekly Death.Rate...Cumulative Population   Row.ID
+## 1                  0.0                     0.0       1174 60603-39
+## 2                  0.0                     0.0        782 60604-39
+## 36                 6.8                    40.9      14675 60601-39
+## 37                 0.0                     0.0       1244 60602-39
+## 41                 3.6                    10.9      27519 60605-39
+## 66                 0.0                    25.6      39019 60610-39
+##               ZIP.Code.Location week_end
+## 1  POINT (-87.625473 41.880112)       30
+## 2  POINT (-87.629029 41.878153)       30
+## 36 POINT (-87.622844 41.886262)       30
+## 37 POINT (-87.628309 41.883136)       30
+## 41 POINT (-87.623449 41.867824)       30
+## 66   POINT (-87.63581 41.90455)       30</code></pre>
+<p>To clean our data a bit, we’ll just keep the zip code name, and cumulative case rate for the week of September 20th, 2020.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">COVID<span class="fl">.39</span>f &lt;-<span class="st"> </span>COVID<span class="fl">.39</span>[,<span class="kw">c</span>(<span class="st">&quot;ZIP.Code&quot;</span>, <span class="st">&quot;Case.Rate...Cumulative&quot;</span>)]</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw">head</span>(COVID<span class="fl">.39</span>f)</a></code></pre></div>
+<pre><code>##    ZIP.Code Case.Rate...Cumulative
+## 1     60603                 1107.3
+## 2     60604                 3964.2
+## 36    60601                 1451.4
+## 37    60602                 1688.1
+## 41    60605                 1420.8
+## 66    60610                 1706.9</code></pre>
+</div>
+<div id="merge-spatial-data" class="section level2">
+<h2><span class="header-section-number">3.2</span> Merge Spatial Data</h2>
+<p>Next, let’s merge this data to our zip code master spatial file. Reload if necessary:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">library</span>(sf)</a></code></pre></div>
+<pre><code>## Warning: package &#39;sf&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">Chi_Zips =<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&quot;</span>)</a></code></pre></div>
+<pre><code>## Reading layer `geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5&#39; from data source 
+##   `/Users/maryniakolak/code/Intro2RSpatialMed/data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 61 features and 4 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -87.94011 ymin: 41.64454 xmax: -87.52414 ymax: 42.02304
+## CRS:           4326</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">head</span>(Chi_Zips)</a></code></pre></div>
+<pre><code>## Simple feature collection with 6 features and 4 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -87.80649 ymin: 41.88747 xmax: -87.59852 ymax: 41.93228
+## CRS:           4326
+##   objectid shape_area shape_len   zip                       geometry
+## 1       33  106052287  42720.04 60647 MULTIPOLYGON (((-87.67762 4...
+## 2       34  127476051  48103.78 60639 MULTIPOLYGON (((-87.72683 4...
+## 3       35   45069038  27288.61 60707 MULTIPOLYGON (((-87.785 41....
+## 4       36   70853834  42527.99 60622 MULTIPOLYGON (((-87.66707 4...
+## 5       37   99039621  47970.14 60651 MULTIPOLYGON (((-87.70656 4...
+## 6       38   23506056  34689.35 60611 MULTIPOLYGON (((-87.61401 4...</code></pre>
+<p>Next, merge on zip code ID. The key in the Chi_Zips object is zip, whereas the key for the COVID data is ZIP.code.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">Chi_Zipsf &lt;-<span class="st"> </span><span class="kw">merge</span>(Chi_Zips, COVID<span class="fl">.39</span>f, <span class="dt">by.x =</span> <span class="st">&quot;zip&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;ZIP.Code&quot;</span>)</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="kw">head</span>(Chi_Zipsf)</a></code></pre></div>
+<pre><code>## Simple feature collection with 6 features and 5 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -87.63999 ymin: 41.85317 xmax: -87.60246 ymax: 41.88913
+## CRS:           4326
+##     zip objectid shape_area shape_len Case.Rate...Cumulative
+## 1 60601       27    9166246  19804.58                 1451.4
+## 2 60602       26    4847125  14448.17                 1688.1
+## 3 60603       19    4560229  13672.68                 1107.3
+## 4 60604       48    4294902  12245.81                 3964.2
+## 5 60605       20   36301276  37973.35                 1420.8
+## 6 60606       31    6766411  12040.44                 2289.6
+##                         geometry
+## 1 MULTIPOLYGON (((-87.62271 4...
+## 2 MULTIPOLYGON (((-87.60997 4...
+## 3 MULTIPOLYGON (((-87.61633 4...
+## 4 MULTIPOLYGON (((-87.63376 4...
+## 5 MULTIPOLYGON (((-87.62064 4...
+## 6 MULTIPOLYGON (((-87.63397 4...</code></pre>
+</div>
+<div id="quantile-maps" class="section level2">
+<h2><span class="header-section-number">3.3</span> Quantile Maps</h2>
+<p>Starting with a “classic epi” approach, let’s look at case rates as quantiles. We use the <code>tmap</code> library, and update the choropleth data classification using the “style” parameter. We use the Blue-Purple palette, or <code>BuPu</code>, from Colorbrewer.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">library</span>(tmap)</a></code></pre></div>
+<pre><code>## Warning: replacing previous import &#39;sf::st_make_valid&#39; by
+## &#39;lwgeom::st_make_valid&#39; when loading &#39;tmap&#39;</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Let’s try tertiles:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
+<a class="sourceLine" id="cb22-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">n=</span><span class="dv">3</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
+<a class="sourceLine" id="cb22-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="standard-deviation-maps" class="section level2">
+<h2><span class="header-section-number">3.4</span> Standard Deviation Maps</h2>
+<p>While quantiles are a nice start, let’s classify using a standard deviation map. Standard deviation is a statistical technique type of map based on how much the data differs from the mean.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;sd&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="jenks-maps" class="section level2">
+<h2><span class="header-section-number">3.5</span> Jenks Maps</h2>
+<p>Another approach of data classification is natural breaks, or jenks. This approach looks for “natural breaks” in the data using a univariate clustering algorithm.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
+<a class="sourceLine" id="cb24-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
+<a class="sourceLine" id="cb24-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>The first bin doesn’t seem very intuitive. Let’s try 4 bins instead of 5 by changing the <code>n</code> parameter. In this version, we’ll also had a histogram and scale bar, and move the legend outside the frame to make it easier to view.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
+<a class="sourceLine" id="cb25-4" data-line-number="4">              <span class="dt">legend.hist=</span>T, <span class="dt">n=</span><span class="dv">4</span>,</a>
+<a class="sourceLine" id="cb25-5" data-line-number="5">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>, ) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-6" data-line-number="6"><span class="st">  </span><span class="kw">tm_scale_bar</span>(<span class="dt">position =</span> <span class="st">&quot;left&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-7" data-line-number="7"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.outside =</span> <span class="ot">TRUE</span>, <span class="dt">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="integrate-more-data" class="section level2">
+<h2><span class="header-section-number">3.6</span> Integrate More Data</h2>
+<p>To explore potential disparities in COVID health outcomes, let’s bring in demographic, racial, ethnic data from the OEPS project. This data is orginally sources from the American Community Survey 2018 5-year estimate.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">CensusVar &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/DS01_Z.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="kw">head</span>(CensusVar)</a></code></pre></div>
+<pre><code>##    ZCTA year totPopE whiteP blackP amIndP asianP pacIsP otherP  hispP  noHSP
+## 1 35004 2018   11762  84.39  13.09   0.00   0.94   0.00   1.57   0.94   5.52
+## 2 35005 2018    7528  55.22  42.44   0.64   0.00   0.15   1.55   1.37  17.48
+## 3 35006 2018    2927  96.04   3.21   0.27   0.00   0.00   0.48   0.00  14.44
+## 4 35007 2018   26328  73.83  13.75   0.04   1.33   0.02  11.01  11.11  12.41
+## 5 35010 2018   20625  63.07  32.43   0.39   0.65   0.00   3.45   4.10  22.00
+## 6 35013 2018      40 100.00   0.00   0.00   0.00   0.00   0.00 100.00 100.00
+##   age0_4 age5_14 age15_19 age20_24 age15_44 age45_49 age50_54 age55_59 age60_64
+## 1    787    1950      457      746     4552      662      541      776      832
+## 2    511    1055      455      277     2429      580      469      560      552
+## 3    161     413      141      203      878      129      193      316      278
+## 4   1891    4161     1619     1400     9947     1993     2067     1713     1315
+## 5   1013    2647     1383     1087     7036     1418     1545     1510     1341
+## 6      0       0        0        0       13        8       19        0        0
+##   ageOv65 ageOv18 age18_64 a15_24P und45P ovr65P disbP
+## 1    1662    8820     7158   10.23  61.97  14.13  12.7
+## 2    1372    5691     4319    9.72  53.07  18.23  23.2
+## 3     559    2308     1749   11.75  49.61  19.10  20.9
+## 4    3241   19178    15937   11.47  60.77  12.31  13.5
+## 5    4115   16142    12027   11.98  51.86  19.95  19.6
+## 6       0      40       40    0.00  32.50   0.00   0.0</code></pre>
+<p>Merge to our master Zip Code dataset.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">Chi_Zipsf &lt;-<span class="st"> </span><span class="kw">merge</span>(Chi_Zipsf, CensusVar, <span class="dt">by.x =</span> <span class="st">&quot;zip&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;ZCTA&quot;</span>)</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="kw">head</span>(Chi_Zipsf)</a></code></pre></div>
+<pre><code>## Simple feature collection with 6 features and 31 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -87.63999 ymin: 41.85317 xmax: -87.60246 ymax: 41.88913
+## CRS:           4326
+##     zip objectid shape_area shape_len Case.Rate...Cumulative year totPopE
+## 1 60601       27    9166246  19804.58                 1451.4 2018   14675
+## 2 60602       26    4847125  14448.17                 1688.1 2018    1244
+## 3 60603       19    4560229  13672.68                 1107.3 2018    1174
+## 4 60604       48    4294902  12245.81                 3964.2 2018     782
+## 5 60605       20   36301276  37973.35                 1420.8 2018   27519
+## 6 60606       31    6766411  12040.44                 2289.6 2018    3101
+##   whiteP blackP amIndP asianP pacIsP otherP hispP noHSP age0_4 age5_14 age15_19
+## 1  74.17   5.57   0.45  18.00   0.00   1.81  8.68  0.00    550     156      907
+## 2  68.17   3.78   5.31  19.45   0.00   3.30  6.51  0.00     61      87       18
+## 3  63.46   3.24   0.00  27.60   0.00   5.71  9.80  0.00     13      43      179
+## 4  63.43   5.63   0.00  29.67   0.00   1.28  4.35  0.00     12       7       52
+## 5  61.20  17.18   0.18  16.10   0.03   5.31  5.84  2.39    837    1279     2172
+## 6  72.75   2.35   0.00  18.09   0.00   6.80  6.29  0.73     57      44        0
+##   age20_24 age15_44 age45_49 age50_54 age55_59 age60_64 ageOv65 ageOv18
+## 1      909     8726      976     1009      324      859    2075   13855
+## 2       91      987       46       53        0        5       5    1095
+## 3      172      684       75       47      150       50     112    1118
+## 4      168      450       27       47       54       92      93     744
+## 5     2282    16364     1766     1520     1824     1360    2569   25259
+## 6      139     1863      213      153      168      172     431    3000
+##   age18_64 a15_24P und45P ovr65P disbP                       geometry
+## 1    11780   12.37  64.27  14.14   6.4 MULTIPOLYGON (((-87.62271 4...
+## 2     1090    8.76  91.24   0.40   0.2 MULTIPOLYGON (((-87.60997 4...
+## 3     1006   29.90  63.03   9.54   7.3 MULTIPOLYGON (((-87.61633 4...
+## 4      651   28.13  59.97  11.89   4.1 MULTIPOLYGON (((-87.63376 4...
+## 5    22690   16.19  67.15   9.34   5.3 MULTIPOLYGON (((-87.62064 4...
+## 6     2569    4.48  63.33  13.90   1.9 MULTIPOLYGON (((-87.63397 4...</code></pre>
+</div>
+<div id="thematic-map-panel" class="section level2">
+<h2><span class="header-section-number">3.7</span> Thematic Map Panel</h2>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">COVID &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
+<a class="sourceLine" id="cb30-2" data-line-number="2">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>, <span class="dt">title =</span> <span class="st">&quot;COVID Rt&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
+<a class="sourceLine" id="cb30-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb30-5" data-line-number="5">Senior &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;ovr65P&quot;</span>, </a>
+<a class="sourceLine" id="cb30-6" data-line-number="6">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb30-7" data-line-number="7"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
+<a class="sourceLine" id="cb30-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb30-9" data-line-number="9">NoHS &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;noHSP&quot;</span>, </a>
+<a class="sourceLine" id="cb30-10" data-line-number="10">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb30-11" data-line-number="11"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
+<a class="sourceLine" id="cb30-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb30-13" data-line-number="13">BlkP &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;blackP&quot;</span>, </a>
+<a class="sourceLine" id="cb30-14" data-line-number="14">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb30-15" data-line-number="15"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
+<a class="sourceLine" id="cb30-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb30-17" data-line-number="17">Latnx &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;hispP&quot;</span>, </a>
+<a class="sourceLine" id="cb30-18" data-line-number="18">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb30-19" data-line-number="19"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
+<a class="sourceLine" id="cb30-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb30-21" data-line-number="21">WhiP &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;whiteP&quot;</span>, </a>
+<a class="sourceLine" id="cb30-22" data-line-number="22">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb30-23" data-line-number="23"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
+<a class="sourceLine" id="cb30-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb30-25" data-line-number="25"><span class="kw">tmap_arrange</span>(COVID, Senior, NoHS, BlkP, Latnx, WhiP)</a></code></pre></div>
+<pre><code>## Legend labels were too wide. The labels have been resized to 0.63, 0.55, 0.55, 0.55. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
+<pre><code>## Legend labels were too wide. The labels have been resized to 0.66, 0.60, 0.55, 0.55. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.
+## Legend labels were too wide. The labels have been resized to 0.66, 0.60, 0.55, 0.55. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
+<pre><code>## Legend labels were too wide. The labels have been resized to 0.60, 0.55, 0.55, 0.55. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.
+## Legend labels were too wide. The labels have been resized to 0.60, 0.55, 0.55, 0.55. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.
+## Legend labels were too wide. The labels have been resized to 0.60, 0.55, 0.55, 0.55. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="more-resources-1" class="section level2 unnumbered">
+<h2>More Resources</h2>
+<p>For choropleth mapping in R:</p>
+<ul>
+<li><a href="https://spatialanalysis.github.io/lab_tutorials/4_R_Mapping.html" class="uri">https://spatialanalysis.github.io/lab_tutorials/4_R_Mapping.html</a></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="01-intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="03-overlaypoints.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

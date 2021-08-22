@@ -1,3 +1,169 @@
 # Map Neighborhoods
 
-Here is a review of existing methods.
+When considering the health of persons, we have to also consider the neighborhood environment. Sometimes this is looking at neighborhood level health outcomes, like premature mortality at the census tract scale, or cumulative COVID rates by zip code. Sometimes we're interested in neighborhood factors like how poverty, access to affordable housing or healthy produce, or distance to nearest health provider, or pollution-emitting facility. These measurements of the "social determinants of health" at the neighborhood scale are increasingly urgent in modern public health thinking.
+
+In this module, we'll learn about the basics of thematic mapping -- known as *choropleth mapping* -- to visualize neighborhood level health phenomena.
+
+## Clean Attribute Data
+
+Let's consider COVID-19 cases by zip code in Chicago. We'll upload and inspect a summary of cases from the *Chicago Data Portal* first:
+
+```{r}
+COVID <- read.csv("data/COVID-19_Cases__Tests__and_Deaths_by_ZIP_Code.csv")
+
+head(COVID)
+```
+
+Each row corresponds to a zip code at a differnent week. This data thus exists as a "long" format, which doesn't work for spatial analysis. We need to convert to "wide" format, or at the very least, ensure that each zip code corresponds to one row. 
+
+To simplify, let's identify the last week of the dataset, and then subset the data frame to only show that week. We will be interested in the cumulative case rate. Following is one way of doing this -- can you think of another way? Try out different approaches to test your R and "tidy" skills.
+
+```{r}
+## How many weeks are in our dataset?
+range(as.numeric(COVID$Week.End))
+
+## Convert Week.End to numeric
+COVID$week_end <- as.numeric(COVID$Week.End)
+
+## Subset & inspect to week 39.
+COVID.39 <- subset(COVID, COVID$Week.Number == "39")
+head(COVID.39)
+```
+
+To clean our data a bit, we'll just keep the zip code name, and cumulative case rate for the week of September 20th, 2020.
+
+```{r}
+COVID.39f <- COVID.39[,c("ZIP.Code", "Case.Rate...Cumulative")]
+
+head(COVID.39f)
+```
+
+## Merge Spatial Data
+
+Next, let's merge this data to our zip code master spatial file. Reload if necessary:
+
+```{r}
+library(sf)
+
+Chi_Zips = st_read("data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp")
+
+head(Chi_Zips)
+```
+
+Next, merge on zip code ID. The key in the Chi_Zips object is zip, whereas the key for the COVID data is ZIP.code.
+
+```{r}
+Chi_Zipsf <- merge(Chi_Zips, COVID.39f, by.x = "zip", by.y = "ZIP.Code")
+
+head(Chi_Zipsf)
+```
+
+## Quantile Maps
+
+Starting with a "classic epi" approach, let's look at case rates as quantiles. We use the `tmap` library, and update the choropleth data classification using the "style" parameter. We use the Blue-Purple palette, or `BuPu`, from Colorbrewer. 
+
+```{r}
+library(tmap)
+
+tm_shape(Chi_Zipsf ) +
+  tm_polygons("Case.Rate...Cumulative", 
+              style="quantile", pal="BuPu",
+              title = "COVID Case Rate") 
+```
+
+Let's try tertiles:
+
+```{r}
+tm_shape(Chi_Zipsf ) +
+  tm_polygons("Case.Rate...Cumulative", 
+              style="quantile", n=3, pal="BuPu",
+              title = "COVID Case Rate") 
+```
+
+## Standard Deviation Maps
+
+While quantiles are a nice start, let's classify using a standard deviation map. Standard deviation is a statistical technique type of map based on how much the data differs from the mean. 
+
+```{r}
+tm_shape(Chi_Zipsf ) +
+  tm_polygons("Case.Rate...Cumulative", 
+              style="sd", pal="BuPu",
+              title = "COVID Case Rate") 
+```
+
+## Jenks Maps
+
+Another approach of data classification is natural breaks, or jenks. This approach looks for "natural breaks" in the data using a univariate clustering algorithm.
+
+```{r}
+tm_shape(Chi_Zipsf ) +
+  tm_polygons("Case.Rate...Cumulative", 
+              style="jenks", pal="BuPu",
+              title = "COVID Case Rate") 
+```
+
+The first bin doesn't seem very intuitive. Let's try 4 bins instead of 5 by changing the `n` parameter. In this version, we'll also had a histogram and scale bar, and move the legend outside the frame to make it easier to view.
+
+```{r}
+tm_shape(Chi_Zipsf ) +
+  tm_polygons("Case.Rate...Cumulative", 
+              style="jenks", pal="BuPu",
+              legend.hist=T, n=4,
+              title = "COVID Case Rate", ) + 
+  tm_scale_bar(position = "left") + 
+  tm_layout(legend.outside = TRUE, legend.outside.position = "right")
+
+```
+
+## Integrate More Data
+
+To explore potential disparities in COVID health outcomes, let's bring in demographic, racial, ethnic data from the OEPS project. This data is orginally sources from the American Community Survey 2018 5-year estimate. 
+
+```{r}
+CensusVar <- read.csv("data/DS01_Z.csv")
+head(CensusVar)
+```
+
+Merge to our master Zip Code dataset.
+
+```{r}
+Chi_Zipsf <- merge(Chi_Zipsf, CensusVar, by.x = "zip", by.y = "ZCTA")
+
+head(Chi_Zipsf)
+```
+
+## Thematic Map Panel
+```{r}
+COVID <- tm_shape(Chi_Zipsf) + tm_fill("Case.Rate...Cumulative", 
+              style="jenks", pal="BuPu", n=4, title = "COVID Rt") + 
+  tm_layout(frame = F)
+
+Senior <- tm_shape(Chi_Zipsf) + tm_fill("ovr65P", 
+              style="jenks", pal="BuPu", n=4) +
+  tm_layout(frame = F)
+
+NoHS <- tm_shape(Chi_Zipsf) + tm_fill("noHSP", 
+              style="jenks", pal="BuPu", n=4) +
+  tm_layout(frame = F)
+
+BlkP <- tm_shape(Chi_Zipsf) + tm_fill("blackP", 
+              style="jenks", pal="BuPu", n=4) +
+  tm_layout(frame = F)
+
+Latnx <- tm_shape(Chi_Zipsf) + tm_fill("hispP", 
+              style="jenks", pal="BuPu", n=4) +
+  tm_layout(frame = F)
+
+WhiP <- tm_shape(Chi_Zipsf) + tm_fill("whiteP", 
+              style="jenks", pal="BuPu", n=4) +
+  tm_layout(frame = F)
+
+tmap_arrange(COVID, Senior, NoHS, BlkP, Latnx, WhiP)
+```
+
+
+## More Resources {-}
+
+For choropleth mapping in R:
+
+- https://spatialanalysis.github.io/lab_tutorials/4_R_Mapping.html
