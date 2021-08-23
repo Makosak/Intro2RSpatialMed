@@ -108,6 +108,41 @@ tm_shape(Chi_Zipsf) + tm_fill("Case.Rate...Cumulative",
 ```
 
 ## Integrate More Data
+```{r, warning=FALSE}
+AffHousing <- read.csv("data/Affordable_Rental_Housing_Developments.csv")
+
+head(AffHousing)
+
+
+AffHousing <- na.omit(AffHousing)
+
+str(AffHousing)
+
+AffHousingSf <- st_as_sf(AffHousing, 
+                        coords = c("Longitude", "Latitude"),
+                        crs = 4326)
+
+tm_shape(AffHousingSf) + tm_dots() 
+
+tm_shape(Chi_Zipsf) + tm_polygons(col = "gray80") +
+  tm_shape(AffHousingSf) + tm_bubbles("Units", col = "purple") 
+
+str(AffHousingSf)
+tm_shape(Chi_Zipsf) + tm_polygons(col = "gray80") +
+  tm_shape(AffHousingSf) + tm_bubbles("Units", style = "pretty") 
+
+
+
+tm_shape(Chi_Zipsf) + tm_fill("Case.Rate...Cumulative", 
+              style="jenks", pal="BuPu", n=4, title = "COVID Rt") +
+    tm_text("zip", size = 0.7) +
+
+  tm_shape(AffHousingSf) + tm_bubbles("Units") + 
+  tm_shape(methadoneSf) + tm_dots(size = 0.2, col = "gray20") +
+  
+ tm_add_legend("symbol", col = "gray20", size = .2, labels = "Methadone MOUD") +
+  tm_layout(legend.outside = TRUE, legend.outside.position = "right")
+```
 
 ## Graduated Symbology
 
