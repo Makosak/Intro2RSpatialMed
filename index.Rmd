@@ -12,12 +12,14 @@ github-repo: rstudio/bookdown-demo
 description: "This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions & Policies Lab at the University of Chicago ."
 ---
 
-# Prerequisites
+# Background {-}
 
-This workshop requires several pacakges, which can be installed from CRAN or Github:
+This suite of tutorials was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions & Policies Lab at the University of Chicago. A basic understanding of R is assumed.
+
+This workshop requires several packages, which can be installed from CRAN:
 
 ```{r eval=FALSE}
-install.packages("sf", "tmap")
+install.packages("sf", "tmap", "tidygeocoder")
 ```
 
 For Mac users, check out https://github.com/r-spatial/sf for additional tips if you run into errors when installing the **sf** package. Using homebrew to install **gdal** usually fixes any remaining issues.
