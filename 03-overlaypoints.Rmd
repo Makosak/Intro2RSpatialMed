@@ -1,3 +1,114 @@
 # Adding Resources
 
-We describe our methods in this chapter.
+## Geocode
+First we load the `tidygeocoder` to get our geocoding done. Note, this uses the interent to process, so is not suitable for HIPPA protected data like individual, living person addresses.
+
+```{r}
+library(tidygeocoder)
+```
+
+Let's read in and inspect data for methadone (evidenes based medication for opioid use disorder) providers. These addresses were made available by SAMSHA. 
+
+
+```{r}
+methadoneClinics <- read.csv("data/chicago_methadone_nogeometry.csv")
+head(methadoneClinics)
+```
+
+Let's geocode one address first, just to make sure our system is working. We'll use the "cascade" method which use the US Census and OpenStreetMap geocoders.
+
+```{r}
+sample <- geo("2260 N. Elston Ave. Chicago, IL", lat = latitude, long = longitude, method = 'cascade')
+head(sample)
+```
+
+As we prepare for geocoding, check out the structure of the dataset. Do we need to change anything? The data should be a character to be read properly. 
+
+```{r}
+str(methadoneClinics)
+```
+
+We need to clean the data a bit. We'll add a new column for full address, as required by the geocoding service. When you use a geocoding service, be sure to read the documentation and understand how the data needs to be formatted for input.
+
+```{r}
+methadoneClinics$fullAdd <- paste(as.character(methadoneClinics$Address), 
+                                  as.character(methadoneClinics$City),
+                                  as.character(methadoneClinics$State), 
+                                  as.character(methadoneClinics$Zip))
+```
+
+We're ready to go! Batch geocode with one function:
+
+```{r}
+geoCodedClinics <-  geocode(methadoneClinics,
+address = 'fullAdd', lat = latitude, long = longitude, method = 'cascade')
+
+head(geoCodedClinics)
+```
+
+There were two that didn't geocode correctly. You can either inspect further, change the addresses, searching the address and pulling the lat/long using Google Maps and inputting manually, or omit. For this exercise we'll just omit the two clinics that didn't geocode correctly.
+
+```{r}
+geoCodedClinics2 <- na.omit(geoCodedClinics)
+```
+
+## Convert to Spatial Data
+
+This is not spatial data yet! To convert a static CSV file to spatial data, we use the powerful `st_as-sf` function from `sf`. Indicate the x,y parameters (longitude, latitude) and the coordinate reference system used. Our geocoding service used the standard EPSG:4326, so we input that here.
+
+```{r}
+library(sf)
+
+methadoneSf <- st_as_sf(geoCodedClinics2, 
+                        coords = c("longitude", "latitude"),
+                        crs = 4326)
+```
+
+## Basic Map of Points 
+
+For a really simple basemap of points -- to ensure they were geocoded and converted to spatial data correctly, we use tmap. We'll use the interactive version to view.
+
+```{r}
+library(tmap)
+
+tmap_mode("view")
+
+tm_shape(methadoneSf) + tm_dots() 
+```
+
+If your points didn't plot correctly:
+
+- Did you flip the longitude/latitude values?
+- Did you input the correct CRS?
+
+Those two issues are the most common errors.
+
+## Overlay Points & Style
+Let's add our zip code map from the previous module. First load the data, then overlay.
+
+```{r}
+Chi_Zipsf <- st_read("data/ChiZipMaster1.geojson")
+```
+
+With this overlay, we'll add a "hack" to include the methadone clinic points in a legend.
+
+```{r}
+tmap_mode("plot")
+
+## 1st layer (gets plotted first)
+tm_shape(Chi_Zipsf) + tm_fill("Case.Rate...Cumulative", 
+              style="jenks", pal="BuPu", n=4, title = "COVID Rt") + 
+  
+  ## 2nd layer (overlay)
+  tm_shape(methadoneSf) + tm_dots(size = 0.2, col = "gray20") +
+  
+ tm_add_legend("symbol", col = "gray20", size = .2, labels = "Methadone MOUD") +
+  
+  tm_layout(legend.outside = TRUE, legend.outside.position = "right", title.snap.to.legend = TRUE)
+```
+
+## Integrate More Data
+
+## Graduated Symbology
+
+## Style Final Map

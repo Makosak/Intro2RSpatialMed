@@ -161,6 +161,11 @@ WhiP <- tm_shape(Chi_Zipsf) + tm_fill("whiteP",
 tmap_arrange(COVID, Senior, NoHS, BlkP, Latnx, WhiP)
 ```
 
+## Write Data
+
+```{r}
+st_write(Chi_Zipsf, "data/ChiZipMaster.geojson", driver = "GeoJSON", append= FALSE)
+```
 
 ## More Resources {-}
 
