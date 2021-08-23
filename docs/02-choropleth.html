@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3 Map Neighborhoods | Intro to R-Spatial for Healthy Places</title>
+  <title>2 Map Neighborhoods | Intro to R-Spatial for Healthy Places</title>
   <meta name="description" content="This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions &amp; Policies Lab at the University of Chicago ." />
   <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3 Map Neighborhoods | Intro to R-Spatial for Healthy Places" />
+  <meta property="og:title" content="2 Map Neighborhoods | Intro to R-Spatial for Healthy Places" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3 Map Neighborhoods | Intro to R-Spatial for Healthy Places" />
+  <meta name="twitter:title" content="2 Map Neighborhoods | Intro to R-Spatial for Healthy Places" />
   
   <meta name="twitter:description" content="This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions &amp; Policies Lab at the University of Chicago ." />
   
@@ -127,32 +127,44 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
-<li class="chapter" data-level="2" data-path="01-intro.html"><a href="01-intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
-<li class="chapter" data-level="2.1" data-path="01-intro.html"><a href="01-intro.html#load-spatial-data"><i class="fa fa-check"></i><b>2.1</b> Load Spatial Data</a></li>
-<li class="chapter" data-level="2.2" data-path="01-intro.html"><a href="01-intro.html#non-spatial-spatial-views"><i class="fa fa-check"></i><b>2.2</b> Non-Spatial &amp; Spatial Views</a></li>
-<li class="chapter" data-level="2.3" data-path="01-intro.html"><a href="01-intro.html#spatial-data-structure"><i class="fa fa-check"></i><b>2.3</b> Spatial Data Structure</a></li>
-<li class="chapter" data-level="2.4" data-path="01-intro.html"><a href="01-intro.html#exploring-coordinate-reference-systems"><i class="fa fa-check"></i><b>2.4</b> Exploring Coordinate Reference Systems</a></li>
-<li class="chapter" data-level="2.5" data-path="01-intro.html"><a href="01-intro.html#refine-basic-map"><i class="fa fa-check"></i><b>2.5</b> Refine Basic Map</a></li>
-<li class="chapter" data-level="2.6" data-path="01-intro.html"><a href="01-intro.html#arrange-multiple-maps"><i class="fa fa-check"></i><b>2.6</b> Arrange multiple maps</a></li>
-<li class="chapter" data-level="2.7" data-path="01-intro.html"><a href="01-intro.html#interactive-mode"><i class="fa fa-check"></i><b>2.7</b> Interactive Mode</a></li>
-<li class="chapter" data-level="2.8" data-path="01-intro.html"><a href="01-intro.html#overlay-zip-code-boundaries"><i class="fa fa-check"></i><b>2.8</b> Overlay Zip Code Boundaries</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Background</a></li>
+<li class="chapter" data-level="1" data-path="01-intro.html"><a href="01-intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="01-intro.html"><a href="01-intro.html#load-spatial-data"><i class="fa fa-check"></i><b>1.1</b> Load Spatial Data</a></li>
+<li class="chapter" data-level="1.2" data-path="01-intro.html"><a href="01-intro.html#non-spatial-spatial-views"><i class="fa fa-check"></i><b>1.2</b> Non-Spatial &amp; Spatial Views</a></li>
+<li class="chapter" data-level="1.3" data-path="01-intro.html"><a href="01-intro.html#spatial-data-structure"><i class="fa fa-check"></i><b>1.3</b> Spatial Data Structure</a></li>
+<li class="chapter" data-level="1.4" data-path="01-intro.html"><a href="01-intro.html#exploring-coordinate-reference-systems"><i class="fa fa-check"></i><b>1.4</b> Exploring Coordinate Reference Systems</a></li>
+<li class="chapter" data-level="1.5" data-path="01-intro.html"><a href="01-intro.html#refine-basic-map"><i class="fa fa-check"></i><b>1.5</b> Refine Basic Map</a></li>
+<li class="chapter" data-level="1.6" data-path="01-intro.html"><a href="01-intro.html#arrange-multiple-maps"><i class="fa fa-check"></i><b>1.6</b> Arrange multiple maps</a></li>
+<li class="chapter" data-level="1.7" data-path="01-intro.html"><a href="01-intro.html#interactive-mode"><i class="fa fa-check"></i><b>1.7</b> Interactive Mode</a></li>
+<li class="chapter" data-level="1.8" data-path="01-intro.html"><a href="01-intro.html#overlay-zip-code-boundaries"><i class="fa fa-check"></i><b>1.8</b> Overlay Zip Code Boundaries</a></li>
 <li class="chapter" data-level="" data-path="01-intro.html"><a href="01-intro.html#more-resources"><i class="fa fa-check"></i>More Resources</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="02-choropleth.html"><a href="02-choropleth.html"><i class="fa fa-check"></i><b>3</b> Map Neighborhoods</a><ul>
-<li class="chapter" data-level="3.1" data-path="02-choropleth.html"><a href="02-choropleth.html#clean-attribute-data"><i class="fa fa-check"></i><b>3.1</b> Clean Attribute Data</a></li>
-<li class="chapter" data-level="3.2" data-path="02-choropleth.html"><a href="02-choropleth.html#merge-spatial-data"><i class="fa fa-check"></i><b>3.2</b> Merge Spatial Data</a></li>
-<li class="chapter" data-level="3.3" data-path="02-choropleth.html"><a href="02-choropleth.html#quantile-maps"><i class="fa fa-check"></i><b>3.3</b> Quantile Maps</a></li>
-<li class="chapter" data-level="3.4" data-path="02-choropleth.html"><a href="02-choropleth.html#standard-deviation-maps"><i class="fa fa-check"></i><b>3.4</b> Standard Deviation Maps</a></li>
-<li class="chapter" data-level="3.5" data-path="02-choropleth.html"><a href="02-choropleth.html#jenks-maps"><i class="fa fa-check"></i><b>3.5</b> Jenks Maps</a></li>
-<li class="chapter" data-level="3.6" data-path="02-choropleth.html"><a href="02-choropleth.html#integrate-more-data"><i class="fa fa-check"></i><b>3.6</b> Integrate More Data</a></li>
-<li class="chapter" data-level="3.7" data-path="02-choropleth.html"><a href="02-choropleth.html#thematic-map-panel"><i class="fa fa-check"></i><b>3.7</b> Thematic Map Panel</a></li>
+<li class="chapter" data-level="2" data-path="02-choropleth.html"><a href="02-choropleth.html"><i class="fa fa-check"></i><b>2</b> Map Neighborhoods</a><ul>
+<li class="chapter" data-level="2.1" data-path="02-choropleth.html"><a href="02-choropleth.html#clean-attribute-data"><i class="fa fa-check"></i><b>2.1</b> Clean Attribute Data</a></li>
+<li class="chapter" data-level="2.2" data-path="02-choropleth.html"><a href="02-choropleth.html#merge-spatial-data"><i class="fa fa-check"></i><b>2.2</b> Merge Spatial Data</a></li>
+<li class="chapter" data-level="2.3" data-path="02-choropleth.html"><a href="02-choropleth.html#quantile-maps"><i class="fa fa-check"></i><b>2.3</b> Quantile Maps</a></li>
+<li class="chapter" data-level="2.4" data-path="02-choropleth.html"><a href="02-choropleth.html#standard-deviation-maps"><i class="fa fa-check"></i><b>2.4</b> Standard Deviation Maps</a></li>
+<li class="chapter" data-level="2.5" data-path="02-choropleth.html"><a href="02-choropleth.html#jenks-maps"><i class="fa fa-check"></i><b>2.5</b> Jenks Maps</a></li>
+<li class="chapter" data-level="2.6" data-path="02-choropleth.html"><a href="02-choropleth.html#integrate-more-data"><i class="fa fa-check"></i><b>2.6</b> Integrate More Data</a></li>
+<li class="chapter" data-level="2.7" data-path="02-choropleth.html"><a href="02-choropleth.html#thematic-map-panel"><i class="fa fa-check"></i><b>2.7</b> Thematic Map Panel</a></li>
+<li class="chapter" data-level="2.8" data-path="02-choropleth.html"><a href="02-choropleth.html#write-data"><i class="fa fa-check"></i><b>2.8</b> Write Data</a></li>
 <li class="chapter" data-level="" data-path="02-choropleth.html"><a href="02-choropleth.html#more-resources-1"><i class="fa fa-check"></i>More Resources</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html"><i class="fa fa-check"></i><b>4</b> Adding Resources</a></li>
-<li class="chapter" data-level="5" data-path="04-newsvar.html"><a href="04-newsvar.html"><i class="fa fa-check"></i><b>5</b> Calculate Spatial Metrics</a><ul>
-<li class="chapter" data-level="5.1" data-path="04-newsvar.html"><a href="04-newsvar.html#example-one"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
-<li class="chapter" data-level="5.2" data-path="04-newsvar.html"><a href="04-newsvar.html#example-two"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
+<li class="chapter" data-level="3" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html"><i class="fa fa-check"></i><b>3</b> Adding Resources</a><ul>
+<li class="chapter" data-level="3.1" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#geocode"><i class="fa fa-check"></i><b>3.1</b> Geocode</a></li>
+<li class="chapter" data-level="3.2" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#convert-to-spatial-data"><i class="fa fa-check"></i><b>3.2</b> Convert to Spatial Data</a></li>
+<li class="chapter" data-level="3.3" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#basic-map-of-points"><i class="fa fa-check"></i><b>3.3</b> Basic Map of Points</a></li>
+<li class="chapter" data-level="3.4" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#overlay-points-style"><i class="fa fa-check"></i><b>3.4</b> Overlay Points &amp; Style</a></li>
+<li class="chapter" data-level="3.5" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#integrate-more-data-1"><i class="fa fa-check"></i><b>3.5</b> Integrate More Data</a></li>
+<li class="chapter" data-level="3.6" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#graduated-symbology"><i class="fa fa-check"></i><b>3.6</b> Graduated Symbology</a></li>
+<li class="chapter" data-level="3.7" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#style-final-map"><i class="fa fa-check"></i><b>3.7</b> Style Final Map</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="04-newsvar.html"><a href="04-newsvar.html"><i class="fa fa-check"></i><b>4</b> Calculate Spatial Metrics</a><ul>
+<li class="chapter" data-level="4.1" data-path="04-newsvar.html"><a href="04-newsvar.html#project-data"><i class="fa fa-check"></i><b>4.1</b> Project Data</a></li>
+<li class="chapter" data-level="4.2" data-path="04-newsvar.html"><a href="04-newsvar.html#buffer-data"><i class="fa fa-check"></i><b>4.2</b> Buffer Data</a></li>
+<li class="chapter" data-level="4.3" data-path="04-newsvar.html"><a href="04-newsvar.html#count-resources-by-area"><i class="fa fa-check"></i><b>4.3</b> Count resources by area</a></li>
+<li class="chapter" data-level="4.4" data-path="04-newsvar.html"><a href="04-newsvar.html#count-buffers-by-area"><i class="fa fa-check"></i><b>4.4</b> Count buffers by area</a></li>
+<li class="chapter" data-level="4.5" data-path="04-newsvar.html"><a href="04-newsvar.html#integrate-explore"><i class="fa fa-check"></i><b>4.5</b> Integrate &amp; Explore</a></li>
 </ul></li>
 </ul>
 
@@ -172,11 +184,11 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="map-neighborhoods" class="section level1">
-<h1><span class="header-section-number">3</span> Map Neighborhoods</h1>
+<h1><span class="header-section-number">2</span> Map Neighborhoods</h1>
 <p>When considering the health of persons, we have to also consider the neighborhood environment. Sometimes this is looking at neighborhood level health outcomes, like premature mortality at the census tract scale, or cumulative COVID rates by zip code. Sometimes we’re interested in neighborhood factors like how poverty, access to affordable housing or healthy produce, or distance to nearest health provider, or pollution-emitting facility. These measurements of the “social determinants of health” at the neighborhood scale are increasingly urgent in modern public health thinking.</p>
 <p>In this module, we’ll learn about the basics of thematic mapping – known as <em>choropleth mapping</em> – to visualize neighborhood level health phenomena.</p>
 <div id="clean-attribute-data" class="section level2">
-<h2><span class="header-section-number">3.1</span> Clean Attribute Data</h2>
+<h2><span class="header-section-number">2.1</span> Clean Attribute Data</h2>
 <p>Let’s consider COVID-19 cases by zip code in Chicago. We’ll upload and inspect a summary of cases from the <em>Chicago Data Portal</em> first:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">COVID &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/COVID-19_Cases__Tests__and_Deaths_by_ZIP_Code.csv&quot;</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"></a>
@@ -289,7 +301,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## 66    60610                 1706.9</code></pre>
 </div>
 <div id="merge-spatial-data" class="section level2">
-<h2><span class="header-section-number">3.2</span> Merge Spatial Data</h2>
+<h2><span class="header-section-number">2.2</span> Merge Spatial Data</h2>
 <p>Next, let’s merge this data to our zip code master spatial file. Reload if necessary:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">library</span>(sf)</a></code></pre></div>
 <pre><code>## Warning: package &#39;sf&#39; was built under R version 3.6.2</code></pre>
@@ -341,7 +353,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## 6 MULTIPOLYGON (((-87.63397 4...</code></pre>
 </div>
 <div id="quantile-maps" class="section level2">
-<h2><span class="header-section-number">3.3</span> Quantile Maps</h2>
+<h2><span class="header-section-number">2.3</span> Quantile Maps</h2>
 <p>Starting with a “classic epi” approach, let’s look at case rates as quantiles. We use the <code>tmap</code> library, and update the choropleth data classification using the “style” parameter. We use the Blue-Purple palette, or <code>BuPu</code>, from Colorbrewer.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">library</span>(tmap)</a></code></pre></div>
 <pre><code>## Warning: replacing previous import &#39;sf::st_make_valid&#39; by
@@ -359,7 +371,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 <div id="standard-deviation-maps" class="section level2">
-<h2><span class="header-section-number">3.4</span> Standard Deviation Maps</h2>
+<h2><span class="header-section-number">2.4</span> Standard Deviation Maps</h2>
 <p>While quantiles are a nice start, let’s classify using a standard deviation map. Standard deviation is a statistical technique type of map based on how much the data differs from the mean.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
 <a class="sourceLine" id="cb23-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
@@ -368,7 +380,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 <div id="jenks-maps" class="section level2">
-<h2><span class="header-section-number">3.5</span> Jenks Maps</h2>
+<h2><span class="header-section-number">2.5</span> Jenks Maps</h2>
 <p>Another approach of data classification is natural breaks, or jenks. This approach looks for “natural breaks” in the data using a univariate clustering algorithm.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
 <a class="sourceLine" id="cb24-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
@@ -386,7 +398,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
 <div id="integrate-more-data" class="section level2">
-<h2><span class="header-section-number">3.6</span> Integrate More Data</h2>
+<h2><span class="header-section-number">2.6</span> Integrate More Data</h2>
 <p>To explore potential disparities in COVID health outcomes, let’s bring in demographic, racial, ethnic data from the OEPS project. This data is orginally sources from the American Community Survey 2018 5-year estimate.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">CensusVar &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/DS01_Z.csv&quot;</span>)</a>
 <a class="sourceLine" id="cb26-2" data-line-number="2"><span class="kw">head</span>(CensusVar)</a></code></pre></div>
@@ -450,7 +462,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## 6     2569    4.48  63.33  13.90   1.9 MULTIPOLYGON (((-87.63397 4...</code></pre>
 </div>
 <div id="thematic-map-panel" class="section level2">
-<h2><span class="header-section-number">3.7</span> Thematic Map Panel</h2>
+<h2><span class="header-section-number">2.7</span> Thematic Map Panel</h2>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">COVID &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
 <a class="sourceLine" id="cb30-2" data-line-number="2">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>, <span class="dt">title =</span> <span class="st">&quot;COVID Rt&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb30-3" data-line-number="3"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
@@ -483,6 +495,19 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## Legend labels were too wide. The labels have been resized to 0.60, 0.55, 0.55, 0.55. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.
 ## Legend labels were too wide. The labels have been resized to 0.60, 0.55, 0.55, 0.55. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
 <p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="write-data" class="section level2">
+<h2><span class="header-section-number">2.8</span> Write Data</h2>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">st_write</span>(Chi_Zipsf, <span class="st">&quot;data/ChiZipMaster1.geojson&quot;</span>, <span class="dt">driver =</span> <span class="st">&quot;GeoJSON&quot;</span>, <span class="dt">append=</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre><code>## Warning in CPL_write_ogr(obj, dsn, layer, driver,
+## as.character(dataset_options), : GDAL Error 6: DeleteLayer() not supported by
+## this dataset.</code></pre>
+<pre><code>## Deleting layer not supported by driver `GeoJSON&#39;
+## Deleting layer `ChiZipMaster1&#39; failed
+## Writing layer `ChiZipMaster1&#39; to data source 
+##   `data/ChiZipMaster1.geojson&#39; using driver `GeoJSON&#39;
+## Updating existing layer ChiZipMaster1
+## Writing 60 features with 31 fields and geometry type Multi Polygon.</code></pre>
 </div>
 <div id="more-resources-1" class="section level2 unnumbered">
 <h2>More Resources</h2>

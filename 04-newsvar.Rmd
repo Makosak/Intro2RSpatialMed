@@ -1,7 +1,68 @@
 # Calculate Spatial Metrics
 
-Some _significant_ applications are demonstrated in this chapter.
+While we've generated some nice visualizations, we may need insights quantified as metrics at the neighborhood level. 
 
-## Example one
+## Project Data
+First we need to switch to a projection that uses distance in feet or meters as a metric. Google search with the terms "EPSG", your place of interest, and "feet." For example, I searched "EPSG Illinois feet" and EPSG:3435 came up as a viable candidate. I'll use that for our new, projected CRS.
 
-## Example two
+```{r}
+
+```
+
+## Buffer Data
+Next, lets create a walkable buffer of one mile, or XX feet, for our MOUD provider locations. Individuals residing in places outside of that walkabile area may have difficulty accessing this medication during crises, like a pandemic.
+
+```{r}
+library(sf)
+
+# Load MOUD point data
+
+# Generate a buffer of one mile
+
+```
+Now we can map the buffers:
+
+```{r}
+
+```
+
+## Count resources by area
+
+Another way of understanding resource inequity is by thinking about how many resources exist in a neighborhood. If we didn't have zip code areas in our location dataset, we could add them using a spatial join. 
+
+```{r}
+# Load zip codes
+
+# Spatially join points to areas
+
+# Count how many points are in each area
+
+```
+
+Is there a more "tidy" way to do that last step? Explore...
+
+Furthermore -- you can reuse the coding snippet for different types of areas. For example, how many resources exist in each census tract, or block group? Etc. Another way to use this code is to spatially join individual patient locations to tracts... Once you have coordinates for each location, you'd convert to spatial data, and then use `sf` to spatially join.
+
+## Count buffers by area
+As the first stage already showed us, we know that MOUD locations are accessible up to one mile away. So a total number of resources by area may be too restrictive. Let's calculated how many walkable service areas of MOUD clinics are in each tract. Or, how many buffers are in each tract...
+
+```{r}
+
+
+```
+
+## Integrate & Explore
+
+Let's review: our master area file now has total number resources by zip and total number of walkable service areas by zip. 
+
+```{r}
+
+```
+
+Using your new spatial file, see if you can answer some of these quetions using various queries:
+
+- Which zip codes have high rates of COVID and are not within a walking distance of a methadone MOUD?
+
+- Which zip codes have worse access to affordable rental units, low educational rates, and less walkable access to MOUDs? 
+
+- What is the demographic and racial/ethnic characteristics of areas most vulnerable to high COVID rates in September 2020? 

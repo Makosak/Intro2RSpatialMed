@@ -164,7 +164,7 @@ tmap_arrange(COVID, Senior, NoHS, BlkP, Latnx, WhiP)
 ## Write Data
 
 ```{r}
-st_write(Chi_Zipsf, "data/ChiZipMaster.geojson", driver = "GeoJSON", append= FALSE)
+st_write(Chi_Zipsf, "data/ChiZipMaster1.geojson", driver = "GeoJSON", append= FALSE)
 ```
 
 ## More Resources {-}
