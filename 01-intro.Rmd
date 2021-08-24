@@ -1,4 +1,4 @@
-# Introduction {#intro}
+# Intro to Spatial Data {#intro}
 
 In the workshop, we learned about:
 
@@ -14,14 +14,22 @@ library(sf)
 
 ## Load Spatial Data
 
+First load in the shapefile. Remember, this type of data is actually comprised of multiple files. All need to be present in order to read correctly.
 ```{r load-spatial-data}
 Chi_tracts = st_read("data/geo_export_aae47441-adab-4aca-8cb0-2e0c0114096e.shp")
 ```
 
 ## Non-Spatial & Spatial Views
+
+Always inspect data when loading in. First we look at a non-spatial view.
+
 ```{r non-spatial-view}
 head(Chi_tracts)
 ```
+
+Note the last column -- this is a spatially enabled column. The data is no longer a 'shapefile' but an `sf' object, comprised of polygons.
+
+We can use a baseR function to view the spatial dimension. The `sf` framework enables previews of each attribute in our spatial file. 
 
 ```{r spatial-view}
 plot(Chi_tracts)
@@ -29,10 +37,14 @@ plot(Chi_tracts)
 
 ## Spatial Data Structure
 
+Check out the data structure of this file... What object is it?
+
 ```{r data-structure}
 str(Chi_tracts)
 
 ```
+
+Check out the coordinate reference system. What is it? What are the units?
 
 ```{r }
 st_crs(Chi_tracts)
@@ -40,11 +52,17 @@ st_crs(Chi_tracts)
 
 ## Exploring Coordinate Reference Systems
 
+Lets see how switching CRS changes our object. First we'll try the Mollweide coordinate reference system that does a good job preserving area across the globe. 
+
+To transform our CRS, we use the `st_transform` function. To plot, we use baseR again but with some paremeter updates. Finally, we check out the CRS of our new object. What are the units? Any other details to note? Will this be appropriate for our spatial analysis?
+
 ```{r }
 Chi_tracts.moll <- st_transform(Chi_tracts, crs = "+proj=moll")
 plot(st_geometry(Chi_tracts.moll), border = "gray", lwd = 2, main = "Mollweide", sub="preserves areas")
 st_crs(Chi_tracts.moll)
 ```
+
+Next, we'll try the Winkel CRS, which is a compromise projection that facilitates minimal distortion for area, distance, and angles. We use the same approach, recyling the code with new inputs.
 
 ```{r }
 Chi_tracts.54019 = st_transform(Chi_tracts, 54019)
@@ -53,6 +71,16 @@ st_crs(Chi_tracts.54019)
 
 ```
 
+
+We could also try a totally different projection, to see how that changes our spatial object. Let's use the "Old Hawaiian UTM Zone 4n" projection, with the EPSG identified from an online search. How does this fare?
+
+```{r }
+Chi_tracts.Hawaii = st_transform(Chi_tracts, 102114)
+plot(st_geometry(Chi_tracts.Hawaii), border = "gray", lwd = 2, main = "Old Hawaiian UTM Zone 4N", sub="wrong projection!")
+```
+
+Finally.. let's choose a projection that is focused on Illinois, and uses distance as feet or meters, to make it a bit more accessible for our work. EPSG:3435 is a good fit:
+
 ```{r }
 Chi_tracts.3435 <- st_transform(Chi_tracts, 3435)
 st_crs(Chi_tracts.3435)
@@ -60,19 +88,18 @@ st_crs(Chi_tracts.3435)
 plot(st_geometry(Chi_tracts.3435), border = "gray", lwd = 2, main = "NAD83 / Illinois East (ftUS)", sub="topo mapping & survey use")
 ```
 
-```{r }
-Chi_tracts.Hawaii = st_transform(Chi_tracts, 102114)
-plot(st_geometry(Chi_tracts.Hawaii), border = "gray", lwd = 2, main = "Old Hawaiian UTM Zone 4N", sub="wrong projection!")
-```
-
-
 ## Refine Basic Map
 
+Now we'll switch to a more extensive cartographic mapping package, `tmap`. We approach mapping with one layer at a time. Always start with the object you want to map by calling it with the `tm_shape` function. Then, at least one descriptive/styling function follows. There are hundreds of variations and paramater specifications, so take your time in exploring `tmap` and the options.
+
+Here we style the tracts with some semi-transparent borders.
 ```{r }
 library(tmap)
 
 tm_shape(Chi_tracts) + tm_borders(alpha=0.5) 
 ```
+
+Next we fill the tracts with a light gray, and adjust the color and transparency of borders. We also add a scale bar, positioning it to the left and having a thickness of 0.8 units, and turn off the frame.
 
 ```{r }
 tm_shape(Chi_tracts) + tm_fill(col = "gray90") + tm_borders(alpha=0.2, col = "gray10") +
@@ -80,9 +107,11 @@ tm_shape(Chi_tracts) + tm_fill(col = "gray90") + tm_borders(alpha=0.2, col = "gr
   tm_layout(frame = F)
 ```
 
-Check out https://rdrr.io/cran/tmap/man/tm_polygons.html for more ideas.
+Check out https://rdrr.io/cran/tmap/man/tm_polygons.html for more ideas!
 
 ## Arrange multiple maps
+
+Sometimes we want to look at multiple maps at once. Write your mapping function to a new variable, and then call that variable in order of desire using the `tmap_arrange` function. Hint: this is just one of many! ways to map multiples using `tmap`... see if you can uncover more in the documentation.
 
 ```{r }
 tracts.4326 <- tm_shape(Chi_tracts) + tm_fill(col = "gray90") +
@@ -95,26 +124,36 @@ tmap_arrange(tracts.4326, tracts.54019)
 
 ## Interactive Mode
 
-```{r }
+So far, we've been plotting static maps. We can also switch to an interactive map that uses a Leaflet widget by switching the `tmap_mode()` parameter specification from "plot" to "view." It's on "plot" as default.
+
+```{r warning=FALSE}
 tmap_mode("view")
 ```
 
+Map the same map as before, and check out the interaction! 
 
-```{r }
+```{r warning=FALSE}
 tm_shape(Chi_tracts) + tm_fill(col = "gray90") + tm_borders(alpha=0.2, col = "gray10") +
   tm_scale_bar(position = ("left"), lwd = 0.8) +
   tm_layout(frame = F)
 ```
 
-```{r }
+
+The tracts are not transparent enough, so we update that here. You can also click the box on the left side to try out other basemaps. See if you can find out how to add a basemap to a static/plotted map, using `tmap` documentation...
+
+```{r warning=FALSE}
 tm_shape(Chi_tracts) + tm_fill(col = "gray90", alpha = 0.5) + tm_borders(alpha=0.2, col = "gray10") + tm_scale_bar(position = ("left"), lwd = 0.8) +  tm_layout(frame = F)
 ```
+
+We revert back to `plot` mode for now.
 
 ```{r }
 tmap_mode("plot")
 ```
 
 ## Overlay Zip Code Boundaries
+
+How do census tract areas correspond to zip codes? While tracts better represent neighborhoods, often times we are stuck with zip code level scale in healh research. Here we'll make a reference map to highlight tract distribution across each zip code.
 
 First, we read in zip code boundaries. This data was downloaded directly from the *City of Chicago Data Portal* as a shapefile.
 
