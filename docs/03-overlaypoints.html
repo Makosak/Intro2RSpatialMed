@@ -138,7 +138,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Background</a></li>
-<li class="chapter" data-level="1" data-path="01-intro.html"><a href="01-intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1" data-path="01-intro.html"><a href="01-intro.html"><i class="fa fa-check"></i><b>1</b> Intro to Spatial Data</a><ul>
 <li class="chapter" data-level="1.1" data-path="01-intro.html"><a href="01-intro.html#load-spatial-data"><i class="fa fa-check"></i><b>1.1</b> Load Spatial Data</a></li>
 <li class="chapter" data-level="1.2" data-path="01-intro.html"><a href="01-intro.html#non-spatial-spatial-views"><i class="fa fa-check"></i><b>1.2</b> Non-Spatial &amp; Spatial Views</a></li>
 <li class="chapter" data-level="1.3" data-path="01-intro.html"><a href="01-intro.html#spatial-data-structure"><i class="fa fa-check"></i><b>1.3</b> Spatial Data Structure</a></li>
@@ -198,7 +198,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="geocode" class="section level2">
 <h2><span class="header-section-number">3.1</span> Geocode</h2>
 <p>First we load the <code>tidygeocoder</code> to get our geocoding done. Note, this uses the interent to process, so is not suitable for HIPPA protected data like individual, living person addresses.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">library</span>(tidygeocoder)</a></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw">library</span>(tidygeocoder)</a></code></pre></div>
+<pre><code>## Warning: package &#39;tidygeocoder&#39; was built under R version 3.6.2</code></pre>
 <p>Let’s read in and inspect data for methadone (evidenes based medication for opioid use disorder) providers. These addresses were made available by SAMSHA.</p>
 <div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">methadoneClinics &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/chicago_methadone_nogeometry.csv&quot;</span>)</a>
 <a class="sourceLine" id="cb69-2" data-line-number="2"><span class="kw">head</span>(methadoneClinics)</a></code></pre></div>
@@ -289,7 +290,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## Reading layer `ChiZipMaster1&#39; from data source 
 ##   `/Users/maryniakolak/code/Intro2RSpatialMed/data/ChiZipMaster1.geojson&#39; 
 ##   using driver `GeoJSON&#39;
-## Simple feature collection with 240 features and 31 fields
+## Simple feature collection with 300 features and 31 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -87.87596 ymin: 41.64454 xmax: -87.52414 ymax: 42.02304
@@ -307,7 +308,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb88-8" data-line-number="8"><span class="st"> </span><span class="kw">tm_add_legend</span>(<span class="st">&quot;symbol&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;gray20&quot;</span>, <span class="dt">size =</span> <span class="fl">.2</span>, <span class="dt">labels =</span> <span class="st">&quot;Methadone MOUD&quot;</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb88-9" data-line-number="9"><span class="st">  </span></a>
 <a class="sourceLine" id="cb88-10" data-line-number="10"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.outside =</span> <span class="ot">TRUE</span>, <span class="dt">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>, <span class="dt">title.snap.to.legend =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-180-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 </div>
 <div id="integrate-more-data-1" class="section level2">
 <h2><span class="header-section-number">3.5</span> Integrate More Data</h2>
@@ -367,10 +368,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb93-3" data-line-number="3">                        <span class="dt">crs =</span> <span class="dv">4326</span>)</a>
 <a class="sourceLine" id="cb93-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb93-5" data-line-number="5"><span class="kw">tm_shape</span>(AffHousingSf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>() </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-181-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>(<span class="dt">col =</span> <span class="st">&quot;gray80&quot;</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb94-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_shape</span>(AffHousingSf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_bubbles</span>(<span class="st">&quot;Units&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;purple&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-181-2.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-41-2.png" width="672" /></p>
 <div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1"><span class="kw">str</span>(AffHousingSf)</a></code></pre></div>
 <pre><code>## Classes &#39;sf&#39; and &#39;data.frame&#39;:   487 obs. of  13 variables:
 ##  $ Community.Area.Name  : Factor w/ 65 levels &quot;Albany Park&quot;,..: 49 55 17 50 25 22 65 45 45 37 ...
@@ -391,7 +392,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ##   ..- attr(*, &quot;names&quot;)= chr  &quot;Community.Area.Name&quot; &quot;Community.Area.Number&quot; &quot;Property.Type&quot; &quot;Property.Name&quot; ...</code></pre>
 <div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>(<span class="dt">col =</span> <span class="st">&quot;gray80&quot;</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb97-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_shape</span>(AffHousingSf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_bubbles</span>(<span class="st">&quot;Units&quot;</span>, <span class="dt">style =</span> <span class="st">&quot;pretty&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-181-3.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-41-3.png" width="672" /></p>
 <div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
 <a class="sourceLine" id="cb98-2" data-line-number="2">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>, <span class="dt">title =</span> <span class="st">&quot;COVID Rt&quot;</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb98-3" data-line-number="3"><span class="st">    </span><span class="kw">tm_text</span>(<span class="st">&quot;zip&quot;</span>, <span class="dt">size =</span> <span class="fl">0.7</span>) <span class="op">+</span></a>
@@ -401,7 +402,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb98-7" data-line-number="7"><span class="st">  </span></a>
 <a class="sourceLine" id="cb98-8" data-line-number="8"><span class="st"> </span><span class="kw">tm_add_legend</span>(<span class="st">&quot;symbol&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;gray20&quot;</span>, <span class="dt">size =</span> <span class="fl">.2</span>, <span class="dt">labels =</span> <span class="st">&quot;Methadone MOUD&quot;</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb98-9" data-line-number="9"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.outside =</span> <span class="ot">TRUE</span>, <span class="dt">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-181-4.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-41-4.png" width="672" /></p>
 </div>
 <div id="graduated-symbology" class="section level2">
 <h2><span class="header-section-number">3.6</span> Graduated Symbology</h2>

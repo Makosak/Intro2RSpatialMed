@@ -8,6 +8,7 @@ In the workshop, we learned about:
 To delve in further, let's see some spatial data in action.
 
 We'll work with the **sf** library first.
+
 ```{r load-libraries, warning=FALSE}
 library(sf)
 ```
