@@ -203,21 +203,21 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="buffer-data" class="section level2">
 <h2><span class="header-section-number">4.2</span> Buffer Data</h2>
 <p>Next, lets create a walkable buffer of one mile, or XX feet, for our MOUD provider locations. Individuals residing in places outside of that walkabile area may have difficulty accessing this medication during crises, like a pandemic.</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" data-line-number="1"><span class="kw">library</span>(sf)</a>
-<a class="sourceLine" id="cb99-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb99-3" data-line-number="3"><span class="co"># Load MOUD point data</span></a>
-<a class="sourceLine" id="cb99-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb99-5" data-line-number="5"><span class="co"># Generate a buffer of one mile</span></a></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1"><span class="kw">library</span>(sf)</a>
+<a class="sourceLine" id="cb90-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb90-3" data-line-number="3"><span class="co"># Load MOUD point data</span></a>
+<a class="sourceLine" id="cb90-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb90-5" data-line-number="5"><span class="co"># Generate a buffer of one mile</span></a></code></pre></div>
 <p>Now we can map the buffers:</p>
 </div>
 <div id="count-resources-by-area" class="section level2">
 <h2><span class="header-section-number">4.3</span> Count resources by area</h2>
 <p>Another way of understanding resource inequity is by thinking about how many resources exist in a neighborhood. If we didn’t have zip code areas in our location dataset, we could add them using a spatial join.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1"><span class="co"># Load zip codes</span></a>
-<a class="sourceLine" id="cb100-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb100-3" data-line-number="3"><span class="co"># Spatially join points to areas</span></a>
-<a class="sourceLine" id="cb100-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb100-5" data-line-number="5"><span class="co"># Count how many points are in each area</span></a></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="co"># Load zip codes</span></a>
+<a class="sourceLine" id="cb91-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb91-3" data-line-number="3"><span class="co"># Spatially join points to areas</span></a>
+<a class="sourceLine" id="cb91-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb91-5" data-line-number="5"><span class="co"># Count how many points are in each area</span></a></code></pre></div>
 <p>Is there a more “tidy” way to do that last step? Explore…</p>
 <p>Furthermore – you can reuse the coding snippet for different types of areas. For example, how many resources exist in each census tract, or block group? Etc. Another way to use this code is to spatially join individual patient locations to tracts… Once you have coordinates for each location, you’d convert to spatial data, and then use <code>sf</code> to spatially join.</p>
 </div>

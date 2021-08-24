@@ -195,14 +195,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="map-neighborhoods" class="section level1">
 <h1><span class="header-section-number">2</span> Map Neighborhoods</h1>
-<p>When considering the health of persons, we have to also consider the neighborhood environment. Sometimes this is looking at neighborhood level health outcomes, like premature mortality at the census tract scale, or cumulative COVID rates by zip code. Sometimes we’re interested in neighborhood factors like how poverty, access to affordable housing or healthy produce, or distance to nearest health provider, or pollution-emitting facility. These measurements of the “social determinants of health” at the neighborhood scale are increasingly urgent in modern public health thinking.</p>
-<p>In this module, we’ll learn about the basics of thematic mapping – known as <em>choropleth mapping</em> – to visualize neighborhood level health phenomena.</p>
+<p>When considering the health of persons, we have to also consider the neighborhood environment. Sometimes this is looking at neighborhood level health outcomes, like premature mortality at the census tract scale, or cumulative COVID rates by zip code. Sometimes we’re interested in neighborhood factors like poverty, access to affordable housing, or distance to nearest health provider, or pollution-emitting facility. These measurements of the “social determinants of health” at the neighborhood scale are increasingly urgent in modern public health thinking, and are thought to drive and/or reinforce racial, social, and spatial inequity</p>
+<p>In this module, we’ll learn about the basics of thematic mapping – known as <em>choropleth mapping</em> – to visualize neighborhood level health phenomena. This will allow you to begin the process of exploratory spatial data analysis and hypothesis generation &amp; refinement.</p>
 <div id="clean-attribute-data" class="section level2">
 <h2><span class="header-section-number">2.1</span> Clean Attribute Data</h2>
 <p>Let’s consider COVID-19 cases by zip code in Chicago. We’ll upload and inspect a summary of cases from the <em>Chicago Data Portal</em> first:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">COVID &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/COVID-19_Cases__Tests__and_Deaths_by_ZIP_Code.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb37-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb37-3" data-line-number="3"><span class="kw">head</span>(COVID)</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">COVID &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/COVID-19_Cases__Tests__and_Deaths_by_ZIP_Code.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw">head</span>(COVID)</a></code></pre></div>
 <pre><code>##   ZIP.Code Week.Number Week.Start   Week.End Cases...Weekly Cases...Cumulative
 ## 1    60603          39 09/20/2020 09/26/2020              0                 13
 ## 2    60604          39 09/20/2020 09/26/2020              0                 31
@@ -245,17 +245,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## 4 POINT (-87.620291 41.894734)
 ## 5 POINT (-87.602725 41.801993)
 ## 6 POINT (-87.625473 41.880112)</code></pre>
-<p>Each row corresponds to a zip code at a differnent week. This data thus exists as a “long” format, which doesn’t work for spatial analysis. We need to convert to “wide” format, or at the very least, ensure that each zip code corresponds to one row.</p>
-<p>To simplify, let’s identify the last week of the dataset, and then subset the data frame to only show that week. We will be interested in the cumulative case rate. Following is one way of doing this – can you think of another way? Try out different approaches to test your R and “tidy” skills.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="co">## How many weeks are in our dataset?</span></a>
-<a class="sourceLine" id="cb39-2" data-line-number="2"><span class="kw">range</span>(<span class="kw">as.numeric</span>(COVID<span class="op">$</span>Week.End))</a></code></pre></div>
+<p>Each row corresponds to a zip code at a different week. This data thus exists as a “long” format, which doesn’t work for spatial analysis. We need to convert to “wide” format, or at the very least, ensure that each zip code corresponds to one row.</p>
+<p>To simplify, let’s identify the last week of the dataset, and then subset the data frame to only show that week. We will be interested in the cumulative case rate. Following is one way of doing this – can you think of another way? Try out different approaches of reshaping data to test your R and “tidy” skills.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co">## How many weeks are in our dataset?</span></a>
+<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="kw">range</span>(<span class="kw">as.numeric</span>(COVID<span class="op">$</span>Week.End))</a></code></pre></div>
 <pre><code>## [1]  1 31</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="co">## Convert Week.End to numeric</span></a>
-<a class="sourceLine" id="cb41-2" data-line-number="2">COVID<span class="op">$</span>week_end &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(COVID<span class="op">$</span>Week.End)</a>
-<a class="sourceLine" id="cb41-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb41-4" data-line-number="4"><span class="co">## Subset &amp; inspect to week 39.</span></a>
-<a class="sourceLine" id="cb41-5" data-line-number="5">COVID<span class="fl">.39</span> &lt;-<span class="st"> </span><span class="kw">subset</span>(COVID, COVID<span class="op">$</span>Week.Number <span class="op">==</span><span class="st"> &quot;39&quot;</span>)</a>
-<a class="sourceLine" id="cb41-6" data-line-number="6"><span class="kw">head</span>(COVID<span class="fl">.39</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="co">## Subset &amp; inspect to week 39.</span></a>
+<a class="sourceLine" id="cb38-2" data-line-number="2">COVID<span class="fl">.39</span> &lt;-<span class="st"> </span><span class="kw">subset</span>(COVID, COVID<span class="op">$</span>Week.Number <span class="op">==</span><span class="st"> &quot;39&quot;</span>)</a>
+<a class="sourceLine" id="cb38-3" data-line-number="3"><span class="kw">head</span>(COVID<span class="fl">.39</span>)</a></code></pre></div>
 <pre><code>##    ZIP.Code Week.Number Week.Start   Week.End Cases...Weekly Cases...Cumulative
 ## 1     60603          39 09/20/2020 09/26/2020              0                 13
 ## 2     60604          39 09/20/2020 09/26/2020              0                 31
@@ -291,17 +288,17 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## 37                 0.0                     0.0       1244 60602-39
 ## 41                 3.6                    10.9      27519 60605-39
 ## 66                 0.0                    25.6      39019 60610-39
-##               ZIP.Code.Location week_end
-## 1  POINT (-87.625473 41.880112)       30
-## 2  POINT (-87.629029 41.878153)       30
-## 36 POINT (-87.622844 41.886262)       30
-## 37 POINT (-87.628309 41.883136)       30
-## 41 POINT (-87.623449 41.867824)       30
-## 66   POINT (-87.63581 41.90455)       30</code></pre>
+##               ZIP.Code.Location
+## 1  POINT (-87.625473 41.880112)
+## 2  POINT (-87.629029 41.878153)
+## 36 POINT (-87.622844 41.886262)
+## 37 POINT (-87.628309 41.883136)
+## 41 POINT (-87.623449 41.867824)
+## 66   POINT (-87.63581 41.90455)</code></pre>
 <p>To clean our data a bit, we’ll just keep the zip code name, and cumulative case rate for the week of September 20th, 2020.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">COVID<span class="fl">.39</span>f &lt;-<span class="st"> </span>COVID<span class="fl">.39</span>[,<span class="kw">c</span>(<span class="st">&quot;ZIP.Code&quot;</span>, <span class="st">&quot;Case.Rate...Cumulative&quot;</span>)]</a>
-<a class="sourceLine" id="cb43-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb43-3" data-line-number="3"><span class="kw">head</span>(COVID<span class="fl">.39</span>f)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">COVID<span class="fl">.39</span>f &lt;-<span class="st"> </span>COVID<span class="fl">.39</span>[,<span class="kw">c</span>(<span class="st">&quot;ZIP.Code&quot;</span>, <span class="st">&quot;Case.Rate...Cumulative&quot;</span>)]</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb40-3" data-line-number="3"><span class="kw">head</span>(COVID<span class="fl">.39</span>f)</a></code></pre></div>
 <pre><code>##    ZIP.Code Case.Rate...Cumulative
 ## 1     60603                 1107.3
 ## 2     60604                 3964.2
@@ -313,9 +310,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="merge-spatial-data" class="section level2">
 <h2><span class="header-section-number">2.2</span> Merge Spatial Data</h2>
 <p>Next, let’s merge this data to our zip code master spatial file. Reload if necessary:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">library</span>(sf)</a>
-<a class="sourceLine" id="cb45-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb45-3" data-line-number="3">Chi_Zips =<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">library</span>(sf)</a>
+<a class="sourceLine" id="cb42-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb42-3" data-line-number="3">Chi_Zips =<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&quot;</span>)</a></code></pre></div>
 <pre><code>## Reading layer `geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5&#39; from data source 
 ##   `/Users/maryniakolak/code/Intro2RSpatialMed/data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
@@ -324,7 +321,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## Dimension:     XY
 ## Bounding box:  xmin: -87.94011 ymin: 41.64454 xmax: -87.52414 ymax: 42.02304
 ## CRS:           4326</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw">head</span>(Chi_Zips)</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">head</span>(Chi_Zips)</a></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 4 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -337,10 +334,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## 4       36   70853834  42527.99 60622 MULTIPOLYGON (((-87.66707 4...
 ## 5       37   99039621  47970.14 60651 MULTIPOLYGON (((-87.70656 4...
 ## 6       38   23506056  34689.35 60611 MULTIPOLYGON (((-87.61401 4...</code></pre>
-<p>Next, merge on zip code ID. The key in the Chi_Zips object is zip, whereas the key for the COVID data is ZIP.code.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">Chi_Zipsf &lt;-<span class="st"> </span><span class="kw">merge</span>(Chi_Zips, COVID<span class="fl">.39</span>f, <span class="dt">by.x =</span> <span class="st">&quot;zip&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;ZIP.Code&quot;</span>)</a>
-<a class="sourceLine" id="cb49-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb49-3" data-line-number="3"><span class="kw">head</span>(Chi_Zipsf)</a></code></pre></div>
+<p>Next, merge on zip code ID. The key in the Chi_Zips object is <code>zip</code>, whereas the key for the COVID data is <code>ZIP.code</code>. Always merge non-spatial <em>to</em> spatial data, not the other way around. Think of the spatial file as your master file that you will continue to add on to…</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">Chi_Zipsf &lt;-<span class="st"> </span><span class="kw">merge</span>(Chi_Zips, COVID<span class="fl">.39</span>f, <span class="dt">by.x =</span> <span class="st">&quot;zip&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;ZIP.Code&quot;</span>)</a>
+<a class="sourceLine" id="cb46-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb46-3" data-line-number="3"><span class="kw">head</span>(Chi_Zipsf)</a></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 5 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -363,53 +360,54 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="quantile-maps" class="section level2">
 <h2><span class="header-section-number">2.3</span> Quantile Maps</h2>
-<p>Starting with a “classic epi” approach, let’s look at case rates as quantiles. We use the <code>tmap</code> library, and update the choropleth data classification using the “style” parameter. We use the Blue-Purple palette, or <code>BuPu</code>, from Colorbrewer.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">library</span>(tmap)</a>
-<a class="sourceLine" id="cb51-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb51-3" data-line-number="3"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb51-4" data-line-number="4"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
-<a class="sourceLine" id="cb51-5" data-line-number="5">              <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
-<a class="sourceLine" id="cb51-6" data-line-number="6">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Starting with a “classic epi” approach, let’s look at case rates as quantiles. We use the <code>tmap</code> library, and update the choropleth data classification using the <code>style</code> parameter. We use the Blue-Purple palette, or <code>BuPu</code>, from Colorbrewer.</p>
+<p><strong>Colorbrewer Tip:</strong> To display all Colorbrewer palette options, load the <code>RColorBrewer</code> library and run <code>display.brewer.all()</code> – or just Google “R Colorbrewer palettes.”</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">library</span>(tmap)</a>
+<a class="sourceLine" id="cb48-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb48-3" data-line-number="3"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb48-4" data-line-number="4"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
+<a class="sourceLine" id="cb48-5" data-line-number="5">              <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
+<a class="sourceLine" id="cb48-6" data-line-number="6">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>Let’s try tertiles:</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb52-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
-<a class="sourceLine" id="cb52-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">n=</span><span class="dv">3</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
-<a class="sourceLine" id="cb52-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb49-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
+<a class="sourceLine" id="cb49-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">n=</span><span class="dv">3</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
+<a class="sourceLine" id="cb49-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 </div>
 <div id="standard-deviation-maps" class="section level2">
 <h2><span class="header-section-number">2.4</span> Standard Deviation Maps</h2>
 <p>While quantiles are a nice start, let’s classify using a standard deviation map. Standard deviation is a statistical technique type of map based on how much the data differs from the mean.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb53-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
-<a class="sourceLine" id="cb53-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;sd&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
-<a class="sourceLine" id="cb53-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb50-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
+<a class="sourceLine" id="cb50-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;sd&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
+<a class="sourceLine" id="cb50-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 </div>
 <div id="jenks-maps" class="section level2">
 <h2><span class="header-section-number">2.5</span> Jenks Maps</h2>
 <p>Another approach of data classification is natural breaks, or jenks. This approach looks for “natural breaks” in the data using a univariate clustering algorithm.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb54-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
-<a class="sourceLine" id="cb54-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
-<a class="sourceLine" id="cb54-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb51-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
+<a class="sourceLine" id="cb51-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
+<a class="sourceLine" id="cb51-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <p>The first bin doesn’t seem very intuitive. Let’s try 4 bins instead of 5 by changing the <code>n</code> parameter. In this version, we’ll also had a histogram and scale bar, and move the legend outside the frame to make it easier to view.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb55-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
-<a class="sourceLine" id="cb55-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
-<a class="sourceLine" id="cb55-4" data-line-number="4">              <span class="dt">legend.hist=</span>T, <span class="dt">n=</span><span class="dv">4</span>,</a>
-<a class="sourceLine" id="cb55-5" data-line-number="5">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>, ) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb55-6" data-line-number="6"><span class="st">  </span><span class="kw">tm_scale_bar</span>(<span class="dt">position =</span> <span class="st">&quot;left&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb55-7" data-line-number="7"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.outside =</span> <span class="ot">TRUE</span>, <span class="dt">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb52-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
+<a class="sourceLine" id="cb52-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
+<a class="sourceLine" id="cb52-4" data-line-number="4">              <span class="dt">legend.hist=</span>T, <span class="dt">n=</span><span class="dv">4</span>,</a>
+<a class="sourceLine" id="cb52-5" data-line-number="5">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>, ) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb52-6" data-line-number="6"><span class="st">  </span><span class="kw">tm_scale_bar</span>(<span class="dt">position =</span> <span class="st">&quot;left&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb52-7" data-line-number="7"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.outside =</span> <span class="ot">TRUE</span>, <span class="dt">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 </div>
 <div id="integrate-more-data" class="section level2">
 <h2><span class="header-section-number">2.6</span> Integrate More Data</h2>
-<p>To explore potential disparities in COVID health outcomes, let’s bring in demographic, racial, ethnic data from the OEPS project. This data is orginally sources from the American Community Survey 2018 5-year estimate.</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1">CensusVar &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/DS01_Z.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb56-2" data-line-number="2"><span class="kw">head</span>(CensusVar)</a></code></pre></div>
+<p>To explore potential disparities in COVID health outcomes, let’s bring in pre-cleaned demographic, racial, and ethnic data from the <a href="https://geodacenter.github.io/opioid-policy-scan/">Opioid Environment Policy Scan database</a>. This data is orginally sourced from the American Community Survey 2018 5-year estimate, which you could also pull using the <code>tidycensus</code>.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">CensusVar &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/DS01_Z.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb53-2" data-line-number="2"><span class="kw">head</span>(CensusVar)</a></code></pre></div>
 <pre><code>##    ZCTA year totPopE whiteP blackP amIndP asianP pacIsP otherP  hispP  noHSP
 ## 1 35004 2018   11762  84.39  13.09   0.00   0.94   0.00   1.57   0.94   5.52
 ## 2 35005 2018    7528  55.22  42.44   0.64   0.00   0.15   1.55   1.37  17.48
@@ -432,9 +430,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## 5    4115   16142    12027   11.98  51.86  19.95  19.6
 ## 6       0      40       40    0.00  32.50   0.00   0.0</code></pre>
 <p>Merge to our master Zip Code dataset.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">Chi_Zipsf &lt;-<span class="st"> </span><span class="kw">merge</span>(Chi_Zipsf, CensusVar, <span class="dt">by.x =</span> <span class="st">&quot;zip&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;ZCTA&quot;</span>)</a>
-<a class="sourceLine" id="cb58-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb58-3" data-line-number="3"><span class="kw">head</span>(Chi_Zipsf)</a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">Chi_Zipsf &lt;-<span class="st"> </span><span class="kw">merge</span>(Chi_Zipsf, CensusVar, <span class="dt">by.x =</span> <span class="st">&quot;zip&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;ZCTA&quot;</span>)</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb55-3" data-line-number="3"><span class="kw">head</span>(Chi_Zipsf)</a></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 31 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -471,50 +469,41 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="thematic-map-panel" class="section level2">
 <h2><span class="header-section-number">2.7</span> Thematic Map Panel</h2>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">COVID &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
-<a class="sourceLine" id="cb60-2" data-line-number="2">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>, <span class="dt">title =</span> <span class="st">&quot;COVID Rt&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb60-3" data-line-number="3"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
-<a class="sourceLine" id="cb60-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb60-5" data-line-number="5">Senior &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;ovr65P&quot;</span>, </a>
-<a class="sourceLine" id="cb60-6" data-line-number="6">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb60-7" data-line-number="7"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
-<a class="sourceLine" id="cb60-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb60-9" data-line-number="9">NoHS &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;noHSP&quot;</span>, </a>
-<a class="sourceLine" id="cb60-10" data-line-number="10">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb60-11" data-line-number="11"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
-<a class="sourceLine" id="cb60-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb60-13" data-line-number="13">BlkP &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;blackP&quot;</span>, </a>
-<a class="sourceLine" id="cb60-14" data-line-number="14">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb60-15" data-line-number="15"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
-<a class="sourceLine" id="cb60-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb60-17" data-line-number="17">Latnx &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;hispP&quot;</span>, </a>
-<a class="sourceLine" id="cb60-18" data-line-number="18">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb60-19" data-line-number="19"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
-<a class="sourceLine" id="cb60-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb60-21" data-line-number="21">WhiP &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;whiteP&quot;</span>, </a>
-<a class="sourceLine" id="cb60-22" data-line-number="22">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb60-23" data-line-number="23"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
-<a class="sourceLine" id="cb60-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb60-25" data-line-number="25"><span class="kw">tmap_arrange</span>(COVID, Senior, NoHS, BlkP, Latnx, WhiP)</a></code></pre></div>
-<pre><code>## Legend labels were too wide. The labels have been resized to 0.63, 0.55, 0.55, 0.55. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
-<pre><code>## Legend labels were too wide. The labels have been resized to 0.66, 0.60, 0.55, 0.55. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.
-## Legend labels were too wide. The labels have been resized to 0.66, 0.60, 0.55, 0.55. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
-<pre><code>## Legend labels were too wide. The labels have been resized to 0.60, 0.55, 0.55, 0.55. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.
-## Legend labels were too wide. The labels have been resized to 0.60, 0.55, 0.55, 0.55. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.
-## Legend labels were too wide. The labels have been resized to 0.60, 0.55, 0.55, 0.55. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>To facilitate data discovery, we likely want to explore multiple maps at once. Here we’ll generate maps for multiple variables, and plot them as a map panel.</p>
+<p>Can you think of more efficient ways to run this code? There are also other <code>tmap</code> tricks to optimize this further, so enjoy your journey!</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">COVID &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
+<a class="sourceLine" id="cb57-2" data-line-number="2">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>, <span class="dt">title =</span> <span class="st">&quot;COVID Rt&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb57-3" data-line-number="3"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
+<a class="sourceLine" id="cb57-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb57-5" data-line-number="5">Senior &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;ovr65P&quot;</span>, </a>
+<a class="sourceLine" id="cb57-6" data-line-number="6">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb57-7" data-line-number="7"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
+<a class="sourceLine" id="cb57-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb57-9" data-line-number="9">NoHS &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;noHSP&quot;</span>, </a>
+<a class="sourceLine" id="cb57-10" data-line-number="10">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb57-11" data-line-number="11"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
+<a class="sourceLine" id="cb57-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb57-13" data-line-number="13">BlkP &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;blackP&quot;</span>, </a>
+<a class="sourceLine" id="cb57-14" data-line-number="14">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb57-15" data-line-number="15"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
+<a class="sourceLine" id="cb57-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb57-17" data-line-number="17">Latnx &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;hispP&quot;</span>, </a>
+<a class="sourceLine" id="cb57-18" data-line-number="18">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb57-19" data-line-number="19"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
+<a class="sourceLine" id="cb57-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb57-21" data-line-number="21">WhiP &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;whiteP&quot;</span>, </a>
+<a class="sourceLine" id="cb57-22" data-line-number="22">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb57-23" data-line-number="23"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
+<a class="sourceLine" id="cb57-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb57-25" data-line-number="25"><span class="kw">tmap_arrange</span>(COVID, Senior, NoHS, BlkP, Latnx, WhiP)</a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p>From the results, we see that cumulative COVID outcomes for one week in September 2020 seemed to have some geographic correlation with the Latinx/Hispanic community in Chicago. At the same time, low high school diploma rates are also concentrated in these areas, and there is some intersection with other variables considered. What are additional variables you could bring in to refine your approach? Perhaps percentage of essential workers; a different age group; internet access? What about linking in health outcomes like Asthma, Hypertension, and more at a similar scale?</p>
+<p>In modern spatial epidemiology, associations must never be taken at face value. For example, we know that it is not “race” but “racism” that drives multiple health disparities – simply looking at a specific racial/ethnic group is not enough. Thus exploring multiple variables and nurturing a curiosity to understand these complex intersections will support knowledge discovery.</p>
 </div>
 <div id="write-data" class="section level2">
 <h2><span class="header-section-number">2.8</span> Write Data</h2>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">st_write</span>(Chi_Zipsf, <span class="st">&quot;data/ChiZipMaster1.geojson&quot;</span>, <span class="dt">driver =</span> <span class="st">&quot;GeoJSON&quot;</span>, <span class="dt">append=</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<pre><code>## Warning in CPL_write_ogr(obj, dsn, layer, driver, as.character(dataset_options), :
-## GDAL Error 6: DeleteLayer() not supported by this dataset.</code></pre>
-<pre><code>## Deleting layer not supported by driver `GeoJSON&#39;
-## Deleting layer `ChiZipMaster1&#39; failed
-## Writing layer `ChiZipMaster1&#39; to data source 
-##   `data/ChiZipMaster1.geojson&#39; using driver `GeoJSON&#39;
-## Updating existing layer ChiZipMaster1
-## Writing 60 features with 31 fields and geometry type Multi Polygon.</code></pre>
+<p>We’re done! Well… not so fast. Let’s save the data so we don’t have to run the codebook again to access the data. Here, we’ll save as a <code>geojson</code> file. This spatial format is more forgiving with long column names, which is a long-standing challenge with shapefiles.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">st_write</span>(Chi_Zipsf, <span class="st">&quot;data/ChiZipMaster.geojson&quot;</span>, <span class="dt">driver =</span> <span class="st">&quot;GeoJSON&quot;</span>, <span class="dt">append=</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 </div>
 <div id="more-resources-1" class="section level2 unnumbered">
 <h2>More Resources</h2>
