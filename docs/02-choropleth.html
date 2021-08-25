@@ -170,11 +170,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.7" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#style-final-map"><i class="fa fa-check"></i><b>3.7</b> Style Final Map</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="04-newsvar.html"><a href="04-newsvar.html"><i class="fa fa-check"></i><b>4</b> Calculate Spatial Metrics</a><ul>
-<li class="chapter" data-level="4.1" data-path="04-newsvar.html"><a href="04-newsvar.html#project-data"><i class="fa fa-check"></i><b>4.1</b> Project Data</a></li>
-<li class="chapter" data-level="4.2" data-path="04-newsvar.html"><a href="04-newsvar.html#buffer-data"><i class="fa fa-check"></i><b>4.2</b> Buffer Data</a></li>
-<li class="chapter" data-level="4.3" data-path="04-newsvar.html"><a href="04-newsvar.html#count-resources-by-area"><i class="fa fa-check"></i><b>4.3</b> Count resources by area</a></li>
-<li class="chapter" data-level="4.4" data-path="04-newsvar.html"><a href="04-newsvar.html#count-buffers-by-area"><i class="fa fa-check"></i><b>4.4</b> Count buffers by area</a></li>
-<li class="chapter" data-level="4.5" data-path="04-newsvar.html"><a href="04-newsvar.html#integrate-explore"><i class="fa fa-check"></i><b>4.5</b> Integrate &amp; Explore</a></li>
+<li class="chapter" data-level="4.1" data-path="04-newsvar.html"><a href="04-newsvar.html#load-spatial-data-1"><i class="fa fa-check"></i><b>4.1</b> Load Spatial Data</a></li>
+<li class="chapter" data-level="4.2" data-path="04-newsvar.html"><a href="04-newsvar.html#project-data"><i class="fa fa-check"></i><b>4.2</b> Project Data</a></li>
+<li class="chapter" data-level="4.3" data-path="04-newsvar.html"><a href="04-newsvar.html#count-resources-by-area"><i class="fa fa-check"></i><b>4.3</b> Count resources by area</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="04-newsvar.html"><a href="04-newsvar.html#count-per-area"><i class="fa fa-check"></i><b>4.3.1</b> Count # per Area</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="04-newsvar.html"><a href="04-newsvar.html#buffer-data"><i class="fa fa-check"></i><b>4.4</b> Buffer Data</a></li>
+<li class="chapter" data-level="4.5" data-path="04-newsvar.html"><a href="04-newsvar.html#count-buffers-by-area"><i class="fa fa-check"></i><b>4.5</b> Count buffers by area</a></li>
+<li class="chapter" data-level="4.6" data-path="04-newsvar.html"><a href="04-newsvar.html#integrate-explore"><i class="fa fa-check"></i><b>4.6</b> Integrate &amp; Explore</a></li>
 </ul></li>
 </ul>
 
@@ -203,48 +206,55 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">COVID &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/COVID-19_Cases__Tests__and_Deaths_by_ZIP_Code.csv&quot;</span>)</a>
 <a class="sourceLine" id="cb34-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw">head</span>(COVID)</a></code></pre></div>
-<pre><code>##   ZIP.Code Week.Number Week.Start   Week.End Cases...Weekly Cases...Cumulative
-## 1    60603          39 09/20/2020 09/26/2020              0                 13
-## 2    60604          39 09/20/2020 09/26/2020              0                 31
-## 3    60611          16 04/12/2020 04/18/2020              8                 72
-## 4    60611          15 04/05/2020 04/11/2020              7                 64
-## 5    60615          11 03/08/2020 03/14/2020             NA                 NA
-## 6    60603          10 03/01/2020 03/07/2020             NA                 NA
-##   Case.Rate...Weekly Case.Rate...Cumulative Tests...Weekly Tests...Cumulative
-## 1                  0                 1107.3             25                327
-## 2                  0                 3964.2             12                339
-## 3                 25                  222.0            101                450
-## 4                 22                  197.4             59                349
-## 5                 NA                     NA              6                  9
-## 6                 NA                     NA              0                  0
-##   Test.Rate...Weekly Test.Rate...Cumulative Percent.Tested.Positive...Weekly
-## 1               2130                27853.5                              0.0
-## 2               1534                43350.4                              0.0
-## 3                312                 1387.8                              0.1
-## 4                182                 1076.3                              0.1
-## 5                 14                   21.7                               NA
-## 6                  0                    0.0                               NA
-##   Percent.Tested.Positive...Cumulative Deaths...Weekly Deaths...Cumulative
-## 1                                  0.0               0                   0
-## 2                                  0.1               0                   0
-## 3                                  0.2               0                   0
-## 4                                  0.2               0                   0
-## 5                                   NA               0                   0
-## 6                                   NA               0                   0
-##   Death.Rate...Weekly Death.Rate...Cumulative Population   Row.ID
-## 1                   0                       0       1174 60603-39
-## 2                   0                       0        782 60604-39
-## 3                   0                       0      32426 60611-16
-## 4                   0                       0      32426 60611-15
-## 5                   0                       0      41563 60615-11
-## 6                   0                       0       1174 60603-10
-##              ZIP.Code.Location
-## 1 POINT (-87.625473 41.880112)
-## 2 POINT (-87.629029 41.878153)
-## 3 POINT (-87.620291 41.894734)
-## 4 POINT (-87.620291 41.894734)
-## 5 POINT (-87.602725 41.801993)
-## 6 POINT (-87.625473 41.880112)</code></pre>
+<pre><code>##   ZIP.Code Week.Number Week.Start   Week.End Cases...Weekly
+## 1    60603          39 09/20/2020 09/26/2020              0
+## 2    60604          39 09/20/2020 09/26/2020              0
+## 3    60611          16 04/12/2020 04/18/2020              8
+## 4    60611          15 04/05/2020 04/11/2020              7
+## 5    60615          11 03/08/2020 03/14/2020             NA
+## 6    60603          10 03/01/2020 03/07/2020             NA
+##   Cases...Cumulative Case.Rate...Weekly Case.Rate...Cumulative
+## 1                 13                  0                 1107.3
+## 2                 31                  0                 3964.2
+## 3                 72                 25                  222.0
+## 4                 64                 22                  197.4
+## 5                 NA                 NA                     NA
+## 6                 NA                 NA                     NA
+##   Tests...Weekly Tests...Cumulative Test.Rate...Weekly
+## 1             25                327               2130
+## 2             12                339               1534
+## 3            101                450                312
+## 4             59                349                182
+## 5              6                  9                 14
+## 6              0                  0                  0
+##   Test.Rate...Cumulative Percent.Tested.Positive...Weekly
+## 1                27853.5                              0.0
+## 2                43350.4                              0.0
+## 3                 1387.8                              0.1
+## 4                 1076.3                              0.1
+## 5                   21.7                               NA
+## 6                    0.0                               NA
+##   Percent.Tested.Positive...Cumulative Deaths...Weekly
+## 1                                  0.0               0
+## 2                                  0.1               0
+## 3                                  0.2               0
+## 4                                  0.2               0
+## 5                                   NA               0
+## 6                                   NA               0
+##   Deaths...Cumulative Death.Rate...Weekly Death.Rate...Cumulative
+## 1                   0                   0                       0
+## 2                   0                   0                       0
+## 3                   0                   0                       0
+## 4                   0                   0                       0
+## 5                   0                   0                       0
+## 6                   0                   0                       0
+##   Population   Row.ID            ZIP.Code.Location
+## 1       1174 60603-39 POINT (-87.625473 41.880112)
+## 2        782 60604-39 POINT (-87.629029 41.878153)
+## 3      32426 60611-16 POINT (-87.620291 41.894734)
+## 4      32426 60611-15 POINT (-87.620291 41.894734)
+## 5      41563 60615-11 POINT (-87.602725 41.801993)
+## 6       1174 60603-10 POINT (-87.625473 41.880112)</code></pre>
 <p>Each row corresponds to a zip code at a different week. This data thus exists as a “long” format, which doesn’t work for spatial analysis. We need to convert to “wide” format, or at the very least, ensure that each zip code corresponds to one row.</p>
 <p>To simplify, let’s identify the last week of the dataset, and then subset the data frame to only show that week. We will be interested in the cumulative case rate. Following is one way of doing this – can you think of another way? Try out different approaches of reshaping data to test your R and “tidy” skills.</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co">## How many weeks are in our dataset?</span></a>
@@ -253,48 +263,55 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="co">## Subset &amp; inspect to week 39.</span></a>
 <a class="sourceLine" id="cb38-2" data-line-number="2">COVID<span class="fl">.39</span> &lt;-<span class="st"> </span><span class="kw">subset</span>(COVID, COVID<span class="op">$</span>Week.Number <span class="op">==</span><span class="st"> &quot;39&quot;</span>)</a>
 <a class="sourceLine" id="cb38-3" data-line-number="3"><span class="kw">head</span>(COVID<span class="fl">.39</span>)</a></code></pre></div>
-<pre><code>##    ZIP.Code Week.Number Week.Start   Week.End Cases...Weekly Cases...Cumulative
-## 1     60603          39 09/20/2020 09/26/2020              0                 13
-## 2     60604          39 09/20/2020 09/26/2020              0                 31
-## 36    60601          39 09/20/2020 09/26/2020              8                213
-## 37    60602          39 09/20/2020 09/26/2020              0                 21
-## 41    60605          39 09/20/2020 09/26/2020             12                391
-## 66    60610          39 09/20/2020 09/26/2020             35                666
-##    Case.Rate...Weekly Case.Rate...Cumulative Tests...Weekly Tests...Cumulative
-## 1                   0                 1107.3             25                327
-## 2                   0                 3964.2             12                339
-## 36                 54                 1451.4            202               4304
-## 37                  0                 1688.1             27                460
-## 41                 44                 1420.8            291               7160
-## 66                 90                 1706.9            500              10680
-##    Test.Rate...Weekly Test.Rate...Cumulative Percent.Tested.Positive...Weekly
-## 1                2130                27853.5                              0.0
-## 2                1534                43350.4                              0.0
-## 36               1376                29328.8                              0.0
-## 37               2170                36977.5                              0.0
-## 41               1058                26018.4                              0.0
-## 66               1281                27371.3                              0.1
-##    Percent.Tested.Positive...Cumulative Deaths...Weekly Deaths...Cumulative
-## 1                                   0.0               0                   0
-## 2                                   0.1               0                   0
-## 36                                  0.0               1                   6
-## 37                                  0.0               0                   0
-## 41                                  0.1               1                   3
-## 66                                  0.1               0                  10
-##    Death.Rate...Weekly Death.Rate...Cumulative Population   Row.ID
-## 1                  0.0                     0.0       1174 60603-39
-## 2                  0.0                     0.0        782 60604-39
-## 36                 6.8                    40.9      14675 60601-39
-## 37                 0.0                     0.0       1244 60602-39
-## 41                 3.6                    10.9      27519 60605-39
-## 66                 0.0                    25.6      39019 60610-39
-##               ZIP.Code.Location
-## 1  POINT (-87.625473 41.880112)
-## 2  POINT (-87.629029 41.878153)
-## 36 POINT (-87.622844 41.886262)
-## 37 POINT (-87.628309 41.883136)
-## 41 POINT (-87.623449 41.867824)
-## 66   POINT (-87.63581 41.90455)</code></pre>
+<pre><code>##    ZIP.Code Week.Number Week.Start   Week.End Cases...Weekly
+## 1     60603          39 09/20/2020 09/26/2020              0
+## 2     60604          39 09/20/2020 09/26/2020              0
+## 36    60601          39 09/20/2020 09/26/2020              8
+## 37    60602          39 09/20/2020 09/26/2020              0
+## 41    60605          39 09/20/2020 09/26/2020             12
+## 66    60610          39 09/20/2020 09/26/2020             35
+##    Cases...Cumulative Case.Rate...Weekly Case.Rate...Cumulative
+## 1                  13                  0                 1107.3
+## 2                  31                  0                 3964.2
+## 36                213                 54                 1451.4
+## 37                 21                  0                 1688.1
+## 41                391                 44                 1420.8
+## 66                666                 90                 1706.9
+##    Tests...Weekly Tests...Cumulative Test.Rate...Weekly
+## 1              25                327               2130
+## 2              12                339               1534
+## 36            202               4304               1376
+## 37             27                460               2170
+## 41            291               7160               1058
+## 66            500              10680               1281
+##    Test.Rate...Cumulative Percent.Tested.Positive...Weekly
+## 1                 27853.5                              0.0
+## 2                 43350.4                              0.0
+## 36                29328.8                              0.0
+## 37                36977.5                              0.0
+## 41                26018.4                              0.0
+## 66                27371.3                              0.1
+##    Percent.Tested.Positive...Cumulative Deaths...Weekly
+## 1                                   0.0               0
+## 2                                   0.1               0
+## 36                                  0.0               1
+## 37                                  0.0               0
+## 41                                  0.1               1
+## 66                                  0.1               0
+##    Deaths...Cumulative Death.Rate...Weekly Death.Rate...Cumulative
+## 1                    0                 0.0                     0.0
+## 2                    0                 0.0                     0.0
+## 36                   6                 6.8                    40.9
+## 37                   0                 0.0                     0.0
+## 41                   3                 3.6                    10.9
+## 66                  10                 0.0                    25.6
+##    Population   Row.ID            ZIP.Code.Location
+## 1        1174 60603-39 POINT (-87.625473 41.880112)
+## 2         782 60604-39 POINT (-87.629029 41.878153)
+## 36      14675 60601-39 POINT (-87.622844 41.886262)
+## 37       1244 60602-39 POINT (-87.628309 41.883136)
+## 41      27519 60605-39 POINT (-87.623449 41.867824)
+## 66      39019 60610-39   POINT (-87.63581 41.90455)</code></pre>
 <p>To clean our data a bit, we’ll just keep the zip code name, and cumulative case rate for the week of September 20th, 2020.</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">COVID<span class="fl">.39</span>f &lt;-<span class="st"> </span>COVID<span class="fl">.39</span>[,<span class="kw">c</span>(<span class="st">&quot;ZIP.Code&quot;</span>, <span class="st">&quot;Case.Rate...Cumulative&quot;</span>)]</a>
 <a class="sourceLine" id="cb40-2" data-line-number="2"></a>
@@ -368,13 +385,13 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb48-4" data-line-number="4"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
 <a class="sourceLine" id="cb48-5" data-line-number="5">              <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
 <a class="sourceLine" id="cb48-6" data-line-number="6">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>Let’s try tertiles:</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
 <a class="sourceLine" id="cb49-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
 <a class="sourceLine" id="cb49-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">n=</span><span class="dv">3</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
 <a class="sourceLine" id="cb49-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 <div id="standard-deviation-maps" class="section level2">
 <h2><span class="header-section-number">2.4</span> Standard Deviation Maps</h2>
@@ -383,7 +400,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb50-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
 <a class="sourceLine" id="cb50-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;sd&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
 <a class="sourceLine" id="cb50-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 </div>
 <div id="jenks-maps" class="section level2">
 <h2><span class="header-section-number">2.5</span> Jenks Maps</h2>
@@ -392,7 +409,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb51-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
 <a class="sourceLine" id="cb51-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
 <a class="sourceLine" id="cb51-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p>The first bin doesn’t seem very intuitive. Let’s try 4 bins instead of 5 by changing the <code>n</code> parameter. In this version, we’ll also had a histogram and scale bar, and move the legend outside the frame to make it easier to view.</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
 <a class="sourceLine" id="cb52-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
@@ -401,34 +418,41 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb52-5" data-line-number="5">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>, ) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb52-6" data-line-number="6"><span class="st">  </span><span class="kw">tm_scale_bar</span>(<span class="dt">position =</span> <span class="st">&quot;left&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb52-7" data-line-number="7"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.outside =</span> <span class="ot">TRUE</span>, <span class="dt">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 </div>
 <div id="integrate-more-data" class="section level2">
 <h2><span class="header-section-number">2.6</span> Integrate More Data</h2>
 <p>To explore potential disparities in COVID health outcomes, let’s bring in pre-cleaned demographic, racial, and ethnic data from the <a href="https://geodacenter.github.io/opioid-policy-scan/">Opioid Environment Policy Scan database</a>. This data is orginally sourced from the American Community Survey 2018 5-year estimate, which you could also pull using the <code>tidycensus</code>.</p>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">CensusVar &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/DS01_Z.csv&quot;</span>)</a>
 <a class="sourceLine" id="cb53-2" data-line-number="2"><span class="kw">head</span>(CensusVar)</a></code></pre></div>
-<pre><code>##    ZCTA year totPopE whiteP blackP amIndP asianP pacIsP otherP  hispP  noHSP
-## 1 35004 2018   11762  84.39  13.09   0.00   0.94   0.00   1.57   0.94   5.52
-## 2 35005 2018    7528  55.22  42.44   0.64   0.00   0.15   1.55   1.37  17.48
-## 3 35006 2018    2927  96.04   3.21   0.27   0.00   0.00   0.48   0.00  14.44
-## 4 35007 2018   26328  73.83  13.75   0.04   1.33   0.02  11.01  11.11  12.41
-## 5 35010 2018   20625  63.07  32.43   0.39   0.65   0.00   3.45   4.10  22.00
-## 6 35013 2018      40 100.00   0.00   0.00   0.00   0.00   0.00 100.00 100.00
-##   age0_4 age5_14 age15_19 age20_24 age15_44 age45_49 age50_54 age55_59 age60_64
-## 1    787    1950      457      746     4552      662      541      776      832
-## 2    511    1055      455      277     2429      580      469      560      552
-## 3    161     413      141      203      878      129      193      316      278
-## 4   1891    4161     1619     1400     9947     1993     2067     1713     1315
-## 5   1013    2647     1383     1087     7036     1418     1545     1510     1341
-## 6      0       0        0        0       13        8       19        0        0
-##   ageOv65 ageOv18 age18_64 a15_24P und45P ovr65P disbP
-## 1    1662    8820     7158   10.23  61.97  14.13  12.7
-## 2    1372    5691     4319    9.72  53.07  18.23  23.2
-## 3     559    2308     1749   11.75  49.61  19.10  20.9
-## 4    3241   19178    15937   11.47  60.77  12.31  13.5
-## 5    4115   16142    12027   11.98  51.86  19.95  19.6
-## 6       0      40       40    0.00  32.50   0.00   0.0</code></pre>
+<pre><code>##    ZCTA year totPopE whiteP blackP amIndP asianP pacIsP otherP  hispP
+## 1 35004 2018   11762  84.39  13.09   0.00   0.94   0.00   1.57   0.94
+## 2 35005 2018    7528  55.22  42.44   0.64   0.00   0.15   1.55   1.37
+## 3 35006 2018    2927  96.04   3.21   0.27   0.00   0.00   0.48   0.00
+## 4 35007 2018   26328  73.83  13.75   0.04   1.33   0.02  11.01  11.11
+## 5 35010 2018   20625  63.07  32.43   0.39   0.65   0.00   3.45   4.10
+## 6 35013 2018      40 100.00   0.00   0.00   0.00   0.00   0.00 100.00
+##    noHSP age0_4 age5_14 age15_19 age20_24 age15_44 age45_49 age50_54
+## 1   5.52    787    1950      457      746     4552      662      541
+## 2  17.48    511    1055      455      277     2429      580      469
+## 3  14.44    161     413      141      203      878      129      193
+## 4  12.41   1891    4161     1619     1400     9947     1993     2067
+## 5  22.00   1013    2647     1383     1087     7036     1418     1545
+## 6 100.00      0       0        0        0       13        8       19
+##   age55_59 age60_64 ageOv65 ageOv18 age18_64 a15_24P und45P ovr65P
+## 1      776      832    1662    8820     7158   10.23  61.97  14.13
+## 2      560      552    1372    5691     4319    9.72  53.07  18.23
+## 3      316      278     559    2308     1749   11.75  49.61  19.10
+## 4     1713     1315    3241   19178    15937   11.47  60.77  12.31
+## 5     1510     1341    4115   16142    12027   11.98  51.86  19.95
+## 6        0        0       0      40       40    0.00  32.50   0.00
+##   disbP
+## 1  12.7
+## 2  23.2
+## 3  20.9
+## 4  13.5
+## 5  19.6
+## 6   0.0</code></pre>
 <p>Merge to our master Zip Code dataset.</p>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">Chi_Zipsf &lt;-<span class="st"> </span><span class="kw">merge</span>(Chi_Zipsf, CensusVar, <span class="dt">by.x =</span> <span class="st">&quot;zip&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;ZCTA&quot;</span>)</a>
 <a class="sourceLine" id="cb55-2" data-line-number="2"></a>
@@ -438,34 +462,41 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## Dimension:     XY
 ## Bounding box:  xmin: -87.63999 ymin: 41.85317 xmax: -87.60246 ymax: 41.88913
 ## CRS:           4326
-##     zip objectid shape_area shape_len Case.Rate...Cumulative year totPopE whiteP
-## 1 60601       27    9166246  19804.58                 1451.4 2018   14675  74.17
-## 2 60602       26    4847125  14448.17                 1688.1 2018    1244  68.17
-## 3 60603       19    4560229  13672.68                 1107.3 2018    1174  63.46
-## 4 60604       48    4294902  12245.81                 3964.2 2018     782  63.43
-## 5 60605       20   36301276  37973.35                 1420.8 2018   27519  61.20
-## 6 60606       31    6766411  12040.44                 2289.6 2018    3101  72.75
-##   blackP amIndP asianP pacIsP otherP hispP noHSP age0_4 age5_14 age15_19 age20_24
-## 1   5.57   0.45  18.00   0.00   1.81  8.68  0.00    550     156      907      909
-## 2   3.78   5.31  19.45   0.00   3.30  6.51  0.00     61      87       18       91
-## 3   3.24   0.00  27.60   0.00   5.71  9.80  0.00     13      43      179      172
-## 4   5.63   0.00  29.67   0.00   1.28  4.35  0.00     12       7       52      168
-## 5  17.18   0.18  16.10   0.03   5.31  5.84  2.39    837    1279     2172     2282
-## 6   2.35   0.00  18.09   0.00   6.80  6.29  0.73     57      44        0      139
-##   age15_44 age45_49 age50_54 age55_59 age60_64 ageOv65 ageOv18 age18_64 a15_24P
-## 1     8726      976     1009      324      859    2075   13855    11780   12.37
-## 2      987       46       53        0        5       5    1095     1090    8.76
-## 3      684       75       47      150       50     112    1118     1006   29.90
-## 4      450       27       47       54       92      93     744      651   28.13
-## 5    16364     1766     1520     1824     1360    2569   25259    22690   16.19
-## 6     1863      213      153      168      172     431    3000     2569    4.48
-##   und45P ovr65P disbP                       geometry
-## 1  64.27  14.14   6.4 MULTIPOLYGON (((-87.62271 4...
-## 2  91.24   0.40   0.2 MULTIPOLYGON (((-87.60997 4...
-## 3  63.03   9.54   7.3 MULTIPOLYGON (((-87.61633 4...
-## 4  59.97  11.89   4.1 MULTIPOLYGON (((-87.63376 4...
-## 5  67.15   9.34   5.3 MULTIPOLYGON (((-87.62064 4...
-## 6  63.33  13.90   1.9 MULTIPOLYGON (((-87.63397 4...</code></pre>
+##     zip objectid shape_area shape_len Case.Rate...Cumulative year
+## 1 60601       27    9166246  19804.58                 1451.4 2018
+## 2 60602       26    4847125  14448.17                 1688.1 2018
+## 3 60603       19    4560229  13672.68                 1107.3 2018
+## 4 60604       48    4294902  12245.81                 3964.2 2018
+## 5 60605       20   36301276  37973.35                 1420.8 2018
+## 6 60606       31    6766411  12040.44                 2289.6 2018
+##   totPopE whiteP blackP amIndP asianP pacIsP otherP hispP noHSP age0_4
+## 1   14675  74.17   5.57   0.45  18.00   0.00   1.81  8.68  0.00    550
+## 2    1244  68.17   3.78   5.31  19.45   0.00   3.30  6.51  0.00     61
+## 3    1174  63.46   3.24   0.00  27.60   0.00   5.71  9.80  0.00     13
+## 4     782  63.43   5.63   0.00  29.67   0.00   1.28  4.35  0.00     12
+## 5   27519  61.20  17.18   0.18  16.10   0.03   5.31  5.84  2.39    837
+## 6    3101  72.75   2.35   0.00  18.09   0.00   6.80  6.29  0.73     57
+##   age5_14 age15_19 age20_24 age15_44 age45_49 age50_54 age55_59
+## 1     156      907      909     8726      976     1009      324
+## 2      87       18       91      987       46       53        0
+## 3      43      179      172      684       75       47      150
+## 4       7       52      168      450       27       47       54
+## 5    1279     2172     2282    16364     1766     1520     1824
+## 6      44        0      139     1863      213      153      168
+##   age60_64 ageOv65 ageOv18 age18_64 a15_24P und45P ovr65P disbP
+## 1      859    2075   13855    11780   12.37  64.27  14.14   6.4
+## 2        5       5    1095     1090    8.76  91.24   0.40   0.2
+## 3       50     112    1118     1006   29.90  63.03   9.54   7.3
+## 4       92      93     744      651   28.13  59.97  11.89   4.1
+## 5     1360    2569   25259    22690   16.19  67.15   9.34   5.3
+## 6      172     431    3000     2569    4.48  63.33  13.90   1.9
+##                         geometry
+## 1 MULTIPOLYGON (((-87.62271 4...
+## 2 MULTIPOLYGON (((-87.60997 4...
+## 3 MULTIPOLYGON (((-87.61633 4...
+## 4 MULTIPOLYGON (((-87.63376 4...
+## 5 MULTIPOLYGON (((-87.62064 4...
+## 6 MULTIPOLYGON (((-87.63397 4...</code></pre>
 </div>
 <div id="thematic-map-panel" class="section level2">
 <h2><span class="header-section-number">2.7</span> Thematic Map Panel</h2>
@@ -496,14 +527,14 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb57-23" data-line-number="23"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
 <a class="sourceLine" id="cb57-24" data-line-number="24"></a>
 <a class="sourceLine" id="cb57-25" data-line-number="25"><span class="kw">tmap_arrange</span>(COVID, Senior, NoHS, BlkP, Latnx, WhiP)</a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <p>From the results, we see that cumulative COVID outcomes for one week in September 2020 seemed to have some geographic correlation with the Latinx/Hispanic community in Chicago. At the same time, low high school diploma rates are also concentrated in these areas, and there is some intersection with other variables considered. What are additional variables you could bring in to refine your approach? Perhaps percentage of essential workers; a different age group; internet access? What about linking in health outcomes like Asthma, Hypertension, and more at a similar scale?</p>
 <p>In modern spatial epidemiology, associations must never be taken at face value. For example, we know that it is not “race” but “racism” that drives multiple health disparities – simply looking at a specific racial/ethnic group is not enough. Thus exploring multiple variables and nurturing a curiosity to understand these complex intersections will support knowledge discovery.</p>
 </div>
 <div id="write-data" class="section level2">
 <h2><span class="header-section-number">2.8</span> Write Data</h2>
 <p>We’re done! Well… not so fast. Let’s save the data so we don’t have to run the codebook again to access the data. Here, we’ll save as a <code>geojson</code> file. This spatial format is more forgiving with long column names, which is a long-standing challenge with shapefiles.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">st_write</span>(Chi_Zipsf, <span class="st">&quot;data/ChiZipMaster.geojson&quot;</span>, <span class="dt">driver =</span> <span class="st">&quot;GeoJSON&quot;</span>, <span class="dt">append=</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="co">#st_write(Chi_Zipsf, &quot;data/ChiZipMaster.geojson&quot;, driver = &quot;GeoJSON&quot;, append= FALSE)</span></a></code></pre></div>
 </div>
 <div id="more-resources-1" class="section level2 unnumbered">
 <h2>More Resources</h2>

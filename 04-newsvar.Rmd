@@ -13,11 +13,12 @@ Plus, we will have a new spatial layer, that includes the actual service areas (
 
 Let's first reload our spatial data -- this will be the MOUD points, plus the master zip code spatial file.
 
-```{r}
+```{r warning = FALSE}
 library(sf)
+library(tmap)
 
-points <- st_read("data/methadoneMOUD1.shp")
-areas <- st_read("data/ChiZipMaster1.geojson")
+points <- st_read("data/methadoneMOUD.geojson")
+areas <- st_read("data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp")
 
 head(points)
 head(areas)
@@ -38,8 +39,6 @@ points <- st_transform(points, 3435)
 We may want to once again confirm they are plotting correctly:
 
 ```{r}
-library(tmap)
-
 tm_shape(areas) + tm_polygons() +
   tm_shape(points) + tm_dots(size = 1)
 ```
@@ -51,17 +50,23 @@ One way of understanding resource inequity is by thinking about how many resourc
 First, give the points the attributes of the polygons they are in. Inspect.
 
 ```{r}
-pip <- st_join(points, areas, join = st_within)
-head(pip)
+pipr <- st_join(points, areas)
+head(pipr)
+```
 
-dim(pip)
+You should have the same number of rows in `pipr` as you do in `points`. If not, there is something off. You may need to go back to troubleshoot. In an earlier version of this lab, I used a saved, written `geojson` file of the zip codes, and it would not render properly. Here, we load in the original shapefile at the beginning of the tutorial to avoid that error.
+
+```{r}
+dim(pipr)
+dim(points)
+dim(areas)
 ```
 
 ### Count # per Area
-Next, count the number per area.
+Next, count the number per area. The frequency should be logical according to the map you made earlier. Sometimes, I've found bugs where the numbers are multipled by some factor; this can be checked by looking at dimension disparities, as noted above.
 
 ```{r}
-ptcount <- as.data.frame(table(pip$Zip))
+ptcount <- as.data.frame(table(pipr$Zip))
 head(ptcount)
 ```
 How could improve on this step if you used `dplyr`? 
@@ -79,15 +84,16 @@ head(ptcount)
 And finally, merge back to your master zip file:
 
 ```{r}
-areas<- merge(areas, ptcount, by="zip")
+head(areas)
+areas<- merge(areas, ptcount, by="zip", all = TRUE)
 head(areas)
 ```
 
 Quickly map to inspect:
 ```{r}
-tm_shape(areas) + tm_polygons(col = "gray90") +
-tm_shape(areas) + tm_fill(col = "MetClnc", style = "jenks", alpha = 0.2) +   
-  tm_shape(points) + tm_dots() 
+tm_shape(areas) + tm_polygons(col = "gray80") +
+tm_shape(areas) + tm_polygons(col = "MetClnc", style = "pretty", alpha = 0.8) +   
+  tm_shape(points) + tm_dots(size = 0.5) 
 ```
 
 
@@ -109,10 +115,10 @@ tm_shape(areas) + tm_borders() +
 
 
 ## Count buffers by area
-We know that MOUD locations are accessible up to one mile away. So a total number of resources by area may be too restrictive. Let's calculated how many walkable service areas of MOUD clinics are in each tract. Or, how many buffers are in each tract...
+We know that MOUD locations are accessible up to one mile away. So, a total count of resources by area may be too restrictive. Let's calculate how many *walkable* MOUD clinics are in each zip code. Or, how many buffers are in each area...
 
 ```{r}
-bufferct <- lengths(st_within(areas, ptbuffers))
+bufferct <- lengths(st_intersects(areas, ptbuffers))
 head(bufferct)
 ```
 
@@ -127,7 +133,9 @@ head(areas)
 Map density of buffers per census area:
 
 ```{r}
-tm_shape(areas) + tm_fill(col = "bufferct", palette = "BuGn", style = "quantile",title = "Housing Density")
+tm_shape(areas) + tm_polygons(col = "bufferct", palette = "BuGn", n=5, style = "jenks") + 
+    tm_shape(ptbuffers) + tm_fill(col = "gray90", alpha=0.2) +
+    tm_shape(points) + tm_dots(col = "gray10", alpha = 0.8, size = 0.3) 
 ```
 
 ## Integrate & Explore
