@@ -175,6 +175,13 @@ We're  done! Well... not so fast. Let's save the data so we don't have to run th
 
 ```{r eval=FALSE}
 #st_write(Chi_Zipsf, "data/ChiZipMaster.geojson", driver = "GeoJSON", append= FALSE)
+st_write(obj = Chi_Zipsf, dsn = "data/Chi_Zipsf.gpkg")
+```
+
+We could also just write the data as a `CSV` file which may be easier for future linking. For this, we use the `st_drop_geometry()` function to remove the geometry data, so we're just left with the attributes.
+
+```{r eval=FALSE}
+write.csv(st_drop_geometry(Chi_Zipsf), "data/test.csv")
 ```
 
 ## More Resources {-}

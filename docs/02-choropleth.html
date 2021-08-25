@@ -21,7 +21,6 @@
   <meta name="twitter:description" content="This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions &amp; Policies Lab at the University of Chicago ." />
   
 
-<meta name="author" content="Marynia Kolak" />
 
 
 <meta name="date" content="2021-08-24" />
@@ -137,7 +136,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Background</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Background</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#environment-setup"><i class="fa fa-check"></i>Environment Setup</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="01-intro.html"><a href="01-intro.html"><i class="fa fa-check"></i><b>1</b> Intro to Spatial Data</a><ul>
 <li class="chapter" data-level="1.1" data-path="01-intro.html"><a href="01-intro.html#load-spatial-data"><i class="fa fa-check"></i><b>1.1</b> Load Spatial Data</a></li>
 <li class="chapter" data-level="1.2" data-path="01-intro.html"><a href="01-intro.html#non-spatial-spatial-views"><i class="fa fa-check"></i><b>1.2</b> Non-Spatial &amp; Spatial Views</a></li>
@@ -171,7 +172,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4" data-path="04-newsvar.html"><a href="04-newsvar.html"><i class="fa fa-check"></i><b>4</b> Calculate Spatial Metrics</a><ul>
 <li class="chapter" data-level="4.1" data-path="04-newsvar.html"><a href="04-newsvar.html#load-spatial-data-1"><i class="fa fa-check"></i><b>4.1</b> Load Spatial Data</a></li>
-<li class="chapter" data-level="4.2" data-path="04-newsvar.html"><a href="04-newsvar.html#project-data"><i class="fa fa-check"></i><b>4.2</b> Project Data</a></li>
+<li class="chapter" data-level="4.2" data-path="04-newsvar.html"><a href="04-newsvar.html#transform-projections"><i class="fa fa-check"></i><b>4.2</b> Transform Projections</a></li>
 <li class="chapter" data-level="4.3" data-path="04-newsvar.html"><a href="04-newsvar.html#count-resources-by-area"><i class="fa fa-check"></i><b>4.3</b> Count resources by area</a><ul>
 <li class="chapter" data-level="4.3.1" data-path="04-newsvar.html"><a href="04-newsvar.html#count-per-area"><i class="fa fa-check"></i><b>4.3.1</b> Count # per Area</a></li>
 </ul></li>
@@ -385,13 +386,13 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb48-4" data-line-number="4"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
 <a class="sourceLine" id="cb48-5" data-line-number="5">              <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
 <a class="sourceLine" id="cb48-6" data-line-number="6">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <p>Let’s try tertiles:</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
 <a class="sourceLine" id="cb49-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
 <a class="sourceLine" id="cb49-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">n=</span><span class="dv">3</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
 <a class="sourceLine" id="cb49-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 </div>
 <div id="standard-deviation-maps" class="section level2">
 <h2><span class="header-section-number">2.4</span> Standard Deviation Maps</h2>
@@ -400,7 +401,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb50-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
 <a class="sourceLine" id="cb50-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;sd&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
 <a class="sourceLine" id="cb50-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 </div>
 <div id="jenks-maps" class="section level2">
 <h2><span class="header-section-number">2.5</span> Jenks Maps</h2>
@@ -409,7 +410,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb51-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
 <a class="sourceLine" id="cb51-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
 <a class="sourceLine" id="cb51-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
 <p>The first bin doesn’t seem very intuitive. Let’s try 4 bins instead of 5 by changing the <code>n</code> parameter. In this version, we’ll also had a histogram and scale bar, and move the legend outside the frame to make it easier to view.</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
 <a class="sourceLine" id="cb52-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
@@ -418,7 +419,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb52-5" data-line-number="5">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>, ) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb52-6" data-line-number="6"><span class="st">  </span><span class="kw">tm_scale_bar</span>(<span class="dt">position =</span> <span class="st">&quot;left&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb52-7" data-line-number="7"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.outside =</span> <span class="ot">TRUE</span>, <span class="dt">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 </div>
 <div id="integrate-more-data" class="section level2">
 <h2><span class="header-section-number">2.6</span> Integrate More Data</h2>
@@ -527,14 +528,17 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb57-23" data-line-number="23"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
 <a class="sourceLine" id="cb57-24" data-line-number="24"></a>
 <a class="sourceLine" id="cb57-25" data-line-number="25"><span class="kw">tmap_arrange</span>(COVID, Senior, NoHS, BlkP, Latnx, WhiP)</a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 <p>From the results, we see that cumulative COVID outcomes for one week in September 2020 seemed to have some geographic correlation with the Latinx/Hispanic community in Chicago. At the same time, low high school diploma rates are also concentrated in these areas, and there is some intersection with other variables considered. What are additional variables you could bring in to refine your approach? Perhaps percentage of essential workers; a different age group; internet access? What about linking in health outcomes like Asthma, Hypertension, and more at a similar scale?</p>
 <p>In modern spatial epidemiology, associations must never be taken at face value. For example, we know that it is not “race” but “racism” that drives multiple health disparities – simply looking at a specific racial/ethnic group is not enough. Thus exploring multiple variables and nurturing a curiosity to understand these complex intersections will support knowledge discovery.</p>
 </div>
 <div id="write-data" class="section level2">
 <h2><span class="header-section-number">2.8</span> Write Data</h2>
 <p>We’re done! Well… not so fast. Let’s save the data so we don’t have to run the codebook again to access the data. Here, we’ll save as a <code>geojson</code> file. This spatial format is more forgiving with long column names, which is a long-standing challenge with shapefiles.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="co">#st_write(Chi_Zipsf, &quot;data/ChiZipMaster.geojson&quot;, driver = &quot;GeoJSON&quot;, append= FALSE)</span></a></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="co">#st_write(Chi_Zipsf, &quot;data/ChiZipMaster.geojson&quot;, driver = &quot;GeoJSON&quot;, append= FALSE)</span></a>
+<a class="sourceLine" id="cb58-2" data-line-number="2"><span class="kw">st_write</span>(<span class="dt">obj =</span> Chi_Zipsf, <span class="dt">dsn =</span> <span class="st">&quot;data/Chi_Zipsf.gpkg&quot;</span>)</a></code></pre></div>
+<p>We could also just write the data as a <code>CSV</code> file which may be easier for future linking. For this, we use the <code>st_drop_geometry()</code> function to remove the geometry data, so we’re just left with the attributes.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">write.csv</span>(<span class="kw">st_drop_geometry</span>(Chi_Zipsf), <span class="st">&quot;data/test.csv&quot;</span>)</a></code></pre></div>
 </div>
 <div id="more-resources-1" class="section level2 unnumbered">
 <h2>More Resources</h2>
