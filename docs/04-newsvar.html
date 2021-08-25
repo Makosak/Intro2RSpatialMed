@@ -286,7 +286,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p>We may want to once again confirm they are plotting correctly:</p>
 <div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>() <span class="op">+</span></a>
 <a class="sourceLine" id="cb101-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">size =</span> <span class="dv">1</span>)</a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
 </div>
 <div id="count-resources-by-area" class="section level2">
 <h2><span class="header-section-number">4.3</span> Count resources by area</h2>
@@ -398,7 +398,7 @@ Try <code>aggregate(pip$attribute, by = list(pip$geoid), mean)</code> but build 
 <div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb118-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>(<span class="dt">col =</span> <span class="st">&quot;gray80&quot;</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb118-2" data-line-number="2"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>(<span class="dt">col =</span> <span class="st">&quot;MetClnc&quot;</span>, <span class="dt">style =</span> <span class="st">&quot;pretty&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.8</span>) <span class="op">+</span><span class="st">   </span></a>
 <a class="sourceLine" id="cb118-3" data-line-number="3"><span class="st">  </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">size =</span> <span class="fl">0.5</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
 </div>
 </div>
 <div id="buffer-data" class="section level2">
@@ -410,7 +410,7 @@ Try <code>aggregate(pip$attribute, by = list(pip$geoid), mean)</code> but build 
 <div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_borders</span>() <span class="op">+</span></a>
 <a class="sourceLine" id="cb120-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_shape</span>(ptbuffers) <span class="op">+</span><span class="st"> </span><span class="kw">tm_borders</span>(<span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb120-3" data-line-number="3"><span class="st">  </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">col =</span> <span class="st">&quot;red&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
 </div>
 <div id="count-buffers-by-area" class="section level2">
 <h2><span class="header-section-number">4.5</span> Count buffers by area</h2>
@@ -445,7 +445,7 @@ Try <code>aggregate(pip$attribute, by = list(pip$geoid), mean)</code> but build 
 <div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>(<span class="dt">col =</span> <span class="st">&quot;bufferct&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;BuGn&quot;</span>, <span class="dt">n=</span><span class="dv">5</span>, <span class="dt">style =</span> <span class="st">&quot;jenks&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb125-2" data-line-number="2"><span class="st">    </span><span class="kw">tm_shape</span>(ptbuffers) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="dt">col =</span> <span class="st">&quot;gray90&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb125-3" data-line-number="3"><span class="st">    </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">col =</span> <span class="st">&quot;gray10&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.8</span>, <span class="dt">size =</span> <span class="fl">0.3</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
 </div>
 <div id="integrate-explore" class="section level2">
 <h2><span class="header-section-number">4.6</span> Integrate &amp; Explore</h2>

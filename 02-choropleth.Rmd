@@ -172,16 +172,16 @@ From the results, we see that cumulative COVID outcomes for one week in Septembe
 In modern spatial epidemiology, associations must never be taken at face value. For example, we know that it is not "race" but "racism" that drives multiple health disparities -- simply looking at a specific racial/ethnic group is not enough. Thus exploring multiple variables and nurturing a curiosity to understand these complex intersections will support knowledge discovery.
 
 ## Write Data
-We're  done! Well... not so fast. Let's save the data so we don't have to run the codebook again to access the data. Here, we'll save as a `geojson` file. This spatial format is more forgiving with long column names, which is a long-standing challenge with shapefiles. 
+We're  done! Well... not so fast. Let's save the data so we don't have to run the codebook again to access the data. Here, we'll save as a `geojson` file. This spatial format is more forgiving with long column names, which is a long-standing challenge with shapefiles. But sometimes it can be written oddly, so double-check the dimensions when reading in later.
 
 ```{r eval=FALSE}
-#st_write(Chi_Zipsf, "data/ChiZipMaster.geojson", driver = "GeoJSON", append= FALSE)
+#st_write(Chi_Zipsf, "data/ChiZipMaster.geojson", driver = "GeoJSON")
 ```
 
 We could also just write the data as a `CSV` file which may be easier for future linking. For this, we use the `st_drop_geometry()` function to remove the geometry data, so we're just left with the attributes.
 
 ```{r eval=FALSE}
-write.csv(st_drop_geometry(Chi_Zipsf), "data/test.csv")
+#write.csv(st_drop_geometry(Chi_Zipsf), "data/ChiZipMaster.csv")
 ```
 
 ## More Resources {-}
