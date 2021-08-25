@@ -193,6 +193,6 @@ In RStudio, you could zoom into the plot you created to get a better view. Save 
 
 Save any data you need from this session.
 
-```{r}
-#st_write(methadoneSf, "data/methadoneMOUD1.shp")
+```{r eval=FALSE}
+#st_write(obj = methadoneSf, dsn = "data/methadoneMOUD.geojson")
 ```

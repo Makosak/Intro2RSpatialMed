@@ -209,10 +209,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="load-spatial-data-1" class="section level2">
 <h2><span class="header-section-number">4.1</span> Load Spatial Data</h2>
 <p>Let’s first reload our spatial data – this will be the MOUD points, plus the master zip code spatial file.</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1"><span class="kw">library</span>(sf)</a>
-<a class="sourceLine" id="cb88-2" data-line-number="2"><span class="kw">library</span>(tmap)</a>
-<a class="sourceLine" id="cb88-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb88-4" data-line-number="4">points &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/methadoneMOUD.geojson&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1"><span class="kw">library</span>(sf)</a>
+<a class="sourceLine" id="cb92-2" data-line-number="2"><span class="kw">library</span>(tmap)</a>
+<a class="sourceLine" id="cb92-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb92-4" data-line-number="4">points &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/methadoneMOUD.geojson&quot;</span>)</a></code></pre></div>
 <pre><code>## Reading layer `methadoneMOUD&#39; from data source 
 ##   `/Users/maryniakolak/code/Intro2RSpatialMed/data/methadoneMOUD.geojson&#39; 
 ##   using driver `GeoJSON&#39;
@@ -221,7 +221,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## Dimension:     XY
 ## Bounding box:  xmin: -87.7349 ymin: 41.68698 xmax: -87.57673 ymax: 41.9533
 ## CRS:           4326</code></pre>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1">areas &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1">areas &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&quot;</span>)</a></code></pre></div>
 <pre><code>## Reading layer `geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5&#39; from data source 
 ##   `/Users/maryniakolak/code/Intro2RSpatialMed/data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
@@ -230,7 +230,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## Dimension:     XY
 ## Bounding box:  xmin: -87.94011 ymin: 41.64454 xmax: -87.52414 ymax: 42.02304
 ## CRS:           4326</code></pre>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1"><span class="kw">head</span>(points)</a></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1"><span class="kw">head</span>(points)</a></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 8 fields
 ## Geometry type: POINT
 ## Dimension:     XY
@@ -264,7 +264,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## 4 POINT (-87.63636 41.89657)
 ## 5 POINT (-87.72186 41.90435)
 ## 6 POINT (-87.66725 41.88474)</code></pre>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1"><span class="kw">head</span>(areas)</a></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1"><span class="kw">head</span>(areas)</a></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 4 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -281,19 +281,19 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="transform-projections" class="section level2">
 <h2><span class="header-section-number">4.2</span> Transform Projections</h2>
 <p>First we need to switch to a projection that uses distance in feet or meters as a metric. We’ll use EPSG:3435 from the first tutorial. To find which EPSG was recommended, I searched “EPSG Illinois feet” and EPSG:3435 came up as a viable candidate. So, we use that for our new, projected CRS.</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1">areas &lt;-<span class="st"> </span><span class="kw">st_transform</span>(areas, <span class="dv">3435</span>)</a>
-<a class="sourceLine" id="cb96-2" data-line-number="2">points &lt;-<span class="st"> </span><span class="kw">st_transform</span>(points, <span class="dv">3435</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1">areas &lt;-<span class="st"> </span><span class="kw">st_transform</span>(areas, <span class="dv">3435</span>)</a>
+<a class="sourceLine" id="cb100-2" data-line-number="2">points &lt;-<span class="st"> </span><span class="kw">st_transform</span>(points, <span class="dv">3435</span>)</a></code></pre></div>
 <p>We may want to once again confirm they are plotting correctly:</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb97-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">size =</span> <span class="dv">1</span>)</a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb101-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">size =</span> <span class="dv">1</span>)</a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
 </div>
 <div id="count-resources-by-area" class="section level2">
 <h2><span class="header-section-number">4.3</span> Count resources by area</h2>
 <p>One way of understanding resource inequity is by thinking about how many resources exist in a neighborhood.</p>
 <p>First, give the points the attributes of the polygons they are in. Inspect.</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1">pipr &lt;-<span class="st"> </span><span class="kw">st_join</span>(points, areas)</a>
-<a class="sourceLine" id="cb98-2" data-line-number="2"><span class="kw">head</span>(pipr)</a></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" data-line-number="1">pipr &lt;-<span class="st"> </span><span class="kw">st_join</span>(points, areas)</a>
+<a class="sourceLine" id="cb102-2" data-line-number="2"><span class="kw">head</span>(pipr)</a></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 12 fields
 ## Geometry type: POINT
 ## Dimension:     XY
@@ -328,17 +328,17 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## 5  47970.14 60651 POINT (1150707 1908328)
 ## 6  42663.20 60612 POINT (1165627 1901294)</code></pre>
 <p>You should have the same number of rows in <code>pipr</code> as you do in <code>points</code>. If not, there is something off. You may need to go back to troubleshoot. In an earlier version of this lab, I used a saved, written <code>geojson</code> file of the zip codes, and it would not render properly. Here, we load in the original shapefile at the beginning of the tutorial to avoid that error.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1"><span class="kw">dim</span>(pipr)</a></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1"><span class="kw">dim</span>(pipr)</a></code></pre></div>
 <pre><code>## [1] 25 13</code></pre>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" data-line-number="1"><span class="kw">dim</span>(points)</a></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1"><span class="kw">dim</span>(points)</a></code></pre></div>
 <pre><code>## [1] 25  9</code></pre>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1"><span class="kw">dim</span>(areas)</a></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" data-line-number="1"><span class="kw">dim</span>(areas)</a></code></pre></div>
 <pre><code>## [1] 61  5</code></pre>
 <div id="count-per-area" class="section level3">
 <h3><span class="header-section-number">4.3.1</span> Count # per Area</h3>
 <p>Next, count the number per area. The frequency should be logical according to the map you made earlier. Sometimes, I’ve found bugs where the numbers are multipled by some factor; this can be checked by looking at dimension disparities, as noted above.</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1">ptcount &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">table</span>(pipr<span class="op">$</span>Zip))</a>
-<a class="sourceLine" id="cb106-2" data-line-number="2"><span class="kw">head</span>(ptcount)</a></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" data-line-number="1">ptcount &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">table</span>(pipr<span class="op">$</span>Zip))</a>
+<a class="sourceLine" id="cb110-2" data-line-number="2"><span class="kw">head</span>(ptcount)</a></code></pre></div>
 <pre><code>##    Var1 Freq
 ## 1 60607    2
 ## 2 60608    1
@@ -350,8 +350,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Aggregation Tip:</strong> What if you have an attribute value you’d like to aggregate? For example, average units of affordable housing facility by zip?
 Try <code>aggregate(pip$attribute, by = list(pip$geoid), mean)</code> but build on with a tidy sensibility…</p>
 <p>Now we can rename our attributes:</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" data-line-number="1"><span class="kw">names</span>(ptcount) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;zip&quot;</span>, <span class="st">&quot;MetClnc&quot;</span>)</a>
-<a class="sourceLine" id="cb108-2" data-line-number="2"><span class="kw">head</span>(ptcount)</a></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" data-line-number="1"><span class="kw">names</span>(ptcount) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;zip&quot;</span>, <span class="st">&quot;MetClnc&quot;</span>)</a>
+<a class="sourceLine" id="cb112-2" data-line-number="2"><span class="kw">head</span>(ptcount)</a></code></pre></div>
 <pre><code>##     zip MetClnc
 ## 1 60607       2
 ## 2 60608       1
@@ -360,7 +360,7 @@ Try <code>aggregate(pip$attribute, by = list(pip$geoid), mean)</code> but build 
 ## 5 60614       1
 ## 6 60615       1</code></pre>
 <p>And finally, merge back to your master zip file:</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" data-line-number="1"><span class="kw">head</span>(areas)</a></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1"><span class="kw">head</span>(areas)</a></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 4 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -373,8 +373,8 @@ Try <code>aggregate(pip$attribute, by = list(pip$geoid), mean)</code> but build 
 ## 4       36   70853834  42527.99 60622 MULTIPOLYGON (((1165664 190...
 ## 5       37   99039621  47970.14 60651 MULTIPOLYGON (((1154895 190...
 ## 6       38   23506056  34689.35 60611 MULTIPOLYGON (((1180097 190...</code></pre>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" data-line-number="1">areas&lt;-<span class="st"> </span><span class="kw">merge</span>(areas, ptcount, <span class="dt">by=</span><span class="st">&quot;zip&quot;</span>, <span class="dt">all =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb112-2" data-line-number="2"><span class="kw">head</span>(areas)</a></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" data-line-number="1">areas&lt;-<span class="st"> </span><span class="kw">merge</span>(areas, ptcount, <span class="dt">by=</span><span class="st">&quot;zip&quot;</span>, <span class="dt">all =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb116-2" data-line-number="2"><span class="kw">head</span>(areas)</a></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 5 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -395,33 +395,33 @@ Try <code>aggregate(pip$attribute, by = list(pip$geoid), mean)</code> but build 
 ## 5 MULTIPOLYGON (((1178341 189...
 ## 6 MULTIPOLYGON (((1174681 190...</code></pre>
 <p>Quickly map to inspect:</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>(<span class="dt">col =</span> <span class="st">&quot;gray80&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb114-2" data-line-number="2"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>(<span class="dt">col =</span> <span class="st">&quot;MetClnc&quot;</span>, <span class="dt">style =</span> <span class="st">&quot;pretty&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.8</span>) <span class="op">+</span><span class="st">   </span></a>
-<a class="sourceLine" id="cb114-3" data-line-number="3"><span class="st">  </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">size =</span> <span class="fl">0.5</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb118-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>(<span class="dt">col =</span> <span class="st">&quot;gray80&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb118-2" data-line-number="2"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>(<span class="dt">col =</span> <span class="st">&quot;MetClnc&quot;</span>, <span class="dt">style =</span> <span class="st">&quot;pretty&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.8</span>) <span class="op">+</span><span class="st">   </span></a>
+<a class="sourceLine" id="cb118-3" data-line-number="3"><span class="st">  </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">size =</span> <span class="fl">0.5</span>) </a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
 </div>
 </div>
 <div id="buffer-data" class="section level2">
 <h2><span class="header-section-number">4.4</span> Buffer Data</h2>
 <p>Next, lets create a walkable buffer of one mile, or 5280 feet, for our MOUD provider locations. Individuals residing in places outside of that walkabile area may have difficulty accessing this medication during crises, like a pandemic.</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1"><span class="co"># Create 1mile buffers for each point</span></a>
-<a class="sourceLine" id="cb115-2" data-line-number="2">ptbuffers &lt;-<span class="st"> </span><span class="kw">st_buffer</span>(points, <span class="dv">5280</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" data-line-number="1"><span class="co"># Create 1mile buffers for each point</span></a>
+<a class="sourceLine" id="cb119-2" data-line-number="2">ptbuffers &lt;-<span class="st"> </span><span class="kw">st_buffer</span>(points, <span class="dv">5280</span>)</a></code></pre></div>
 <p>Inspect immediately:</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_borders</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb116-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_shape</span>(ptbuffers) <span class="op">+</span><span class="st"> </span><span class="kw">tm_borders</span>(<span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb116-3" data-line-number="3"><span class="st">  </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">col =</span> <span class="st">&quot;red&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_borders</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb120-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_shape</span>(ptbuffers) <span class="op">+</span><span class="st"> </span><span class="kw">tm_borders</span>(<span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb120-3" data-line-number="3"><span class="st">  </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">col =</span> <span class="st">&quot;red&quot;</span>) </a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
 </div>
 <div id="count-buffers-by-area" class="section level2">
 <h2><span class="header-section-number">4.5</span> Count buffers by area</h2>
 <p>We know that MOUD locations are accessible up to one mile away. So, a total count of resources by area may be too restrictive. Let’s calculate how many <em>walkable</em> MOUD clinics are in each zip code. Or, how many buffers are in each area…</p>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1">bufferct &lt;-<span class="st"> </span><span class="kw">lengths</span>(<span class="kw">st_intersects</span>(areas, ptbuffers))</a>
-<a class="sourceLine" id="cb117-2" data-line-number="2"><span class="kw">head</span>(bufferct)</a></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" data-line-number="1">bufferct &lt;-<span class="st"> </span><span class="kw">lengths</span>(<span class="kw">st_intersects</span>(areas, ptbuffers))</a>
+<a class="sourceLine" id="cb121-2" data-line-number="2"><span class="kw">head</span>(bufferct)</a></code></pre></div>
 <pre><code>## [1] 2 2 1 1 1 2</code></pre>
 <p>Stick buffer totals back to the zip master file:</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" data-line-number="1"><span class="co"># Stick buffer totals back to the census master file</span></a>
-<a class="sourceLine" id="cb119-2" data-line-number="2">areas &lt;-<span class="st"> </span><span class="kw">cbind</span>(areas,bufferct)</a>
-<a class="sourceLine" id="cb119-3" data-line-number="3"><span class="kw">head</span>(areas)</a></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1"><span class="co"># Stick buffer totals back to the census master file</span></a>
+<a class="sourceLine" id="cb123-2" data-line-number="2">areas &lt;-<span class="st"> </span><span class="kw">cbind</span>(areas,bufferct)</a>
+<a class="sourceLine" id="cb123-3" data-line-number="3"><span class="kw">head</span>(areas)</a></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 6 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -442,10 +442,10 @@ Try <code>aggregate(pip$attribute, by = list(pip$geoid), mean)</code> but build 
 ## 5 MULTIPOLYGON (((1178341 189...
 ## 6 MULTIPOLYGON (((1174681 190...</code></pre>
 <p>Map density of buffers per census area:</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>(<span class="dt">col =</span> <span class="st">&quot;bufferct&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;BuGn&quot;</span>, <span class="dt">n=</span><span class="dv">5</span>, <span class="dt">style =</span> <span class="st">&quot;jenks&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb121-2" data-line-number="2"><span class="st">    </span><span class="kw">tm_shape</span>(ptbuffers) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="dt">col =</span> <span class="st">&quot;gray90&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb121-3" data-line-number="3"><span class="st">    </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">col =</span> <span class="st">&quot;gray10&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.8</span>, <span class="dt">size =</span> <span class="fl">0.3</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>(<span class="dt">col =</span> <span class="st">&quot;bufferct&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;BuGn&quot;</span>, <span class="dt">n=</span><span class="dv">5</span>, <span class="dt">style =</span> <span class="st">&quot;jenks&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb125-2" data-line-number="2"><span class="st">    </span><span class="kw">tm_shape</span>(ptbuffers) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="dt">col =</span> <span class="st">&quot;gray90&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb125-3" data-line-number="3"><span class="st">    </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">col =</span> <span class="st">&quot;gray10&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.8</span>, <span class="dt">size =</span> <span class="fl">0.3</span>) </a></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
 </div>
 <div id="integrate-explore" class="section level2">
 <h2><span class="header-section-number">4.6</span> Integrate &amp; Explore</h2>

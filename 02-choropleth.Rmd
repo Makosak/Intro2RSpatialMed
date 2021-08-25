@@ -50,7 +50,7 @@ head(Chi_Zips)
 Next, merge on zip code ID. The key in the Chi_Zips object is `zip`, whereas the key for the COVID data is `ZIP.code`. Always merge non-spatial *to* spatial data, not the other way around. Think of the spatial file as your master file that you will continue to add on to...
 
 ```{r}
-Chi_Zipsf <- merge(Chi_Zips, COVID.39f, by.x = "zip", by.y = "ZIP.Code")
+Chi_Zipsf <- merge(Chi_Zips, COVID.39f, by.x = "zip", by.y = "ZIP.Code", all = TRUE)
 
 head(Chi_Zipsf)
 ```
@@ -106,7 +106,7 @@ tm_shape(Chi_Zipsf ) +
 The first bin doesn't seem very intuitive. Let's try 4 bins instead of 5 by changing the `n` parameter. In this version, we'll also had a histogram and scale bar, and move the legend outside the frame to make it easier to view.
 
 ```{r message=FALSE}
-tm_shape(Chi_Zipsf ) +
+tm_shape(Chi_Zipsf) +
   tm_polygons("Case.Rate...Cumulative", 
               style="jenks", pal="BuPu",
               legend.hist=T, n=4,
@@ -139,6 +139,7 @@ To facilitate data discovery, we likely want to explore multiple maps at once. H
 Can you think of more efficient ways to run this code? There are also other `tmap` tricks to optimize this further, so enjoy your journey!
 
 ```{r message=FALSE, warning=FALSE}
+
 COVID <- tm_shape(Chi_Zipsf) + tm_fill("Case.Rate...Cumulative", 
               style="jenks", pal="BuPu", n=4, title = "COVID Rt") + 
   tm_layout(frame = F)
@@ -175,7 +176,6 @@ We're  done! Well... not so fast. Let's save the data so we don't have to run th
 
 ```{r eval=FALSE}
 #st_write(Chi_Zipsf, "data/ChiZipMaster.geojson", driver = "GeoJSON", append= FALSE)
-st_write(obj = Chi_Zipsf, dsn = "data/Chi_Zipsf.gpkg")
 ```
 
 We could also just write the data as a `CSV` file which may be easier for future linking. For this, we use the `st_drop_geometry()` function to remove the geometry data, so we're just left with the attributes.
