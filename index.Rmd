@@ -1,6 +1,5 @@
 --- 
 title: "Intro to R-Spatial for Healthy Places"
-author: "Marynia Kolak"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -12,14 +11,20 @@ github-repo: rstudio/bookdown-demo
 description: "This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions & Policies Lab at the University of Chicago ."
 ---
 
-# Background {-}
+## Background {-}
 
-This suite of tutorials was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions & Policies Lab at the University of Chicago. A basic understanding of R is assumed.
+This suite of tutorials was developed for a workshop at the 2021 R-Medicine Conference by the [Healthy Regions & Policies Lab](http://voices.uchicago.edu/herop/) at the University of Chicago. This workbook is a quick (3-hour) overview of mapping, GIScience, and spatial analysis basics for health professionals. The workbook was compiled by Marynia Kolak, and the overview for each section is led by Susan Paykin in the live version.  
 
-This workshop requires several packages, which can be installed from CRAN:
+Some coding snippets & data examples are from the phenomenal team of the [Opioid Environment Toolkit](https://geodacenter.github.io/opioid-environment-toolkit) (Moksha Menghaney, Qinyun Lin, Angela Li). The overall approach follows the Center for Spatial Data Science paradigm, led by Luc Anselin & Julia Koschinsky.
+
+### Environment Setup {-}
+
+A basic understanding of R is assumed. This workshop requires several packages, which can be installed from CRAN:
 
 ```{r eval=FALSE}
 install.packages("sf", "tmap", "tidygeocoder")
 ```
 
 For Mac users, check out https://github.com/r-spatial/sf for additional tips if you run into errors when installing the **sf** package. Using homebrew to install **gdal** usually fixes any remaining issues.
+
+

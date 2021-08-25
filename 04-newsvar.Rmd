@@ -25,7 +25,7 @@ head(areas)
 
 ```
 
-## Project Data
+## Transform Projections
 
 First we need to switch to a projection that uses distance in feet or meters as a metric. We'll use EPSG:3435 from the first tutorial. To find which EPSG was recommended, I searched "EPSG Illinois feet" and EPSG:3435 came up as a viable candidate. So, we use that for our new, projected CRS.
 

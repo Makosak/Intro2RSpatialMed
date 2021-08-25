@@ -21,7 +21,6 @@
   <meta name="twitter:description" content="This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions &amp; Policies Lab at the University of Chicago ." />
   
 
-<meta name="author" content="Marynia Kolak" />
 
 
 <meta name="date" content="2021-08-24" />
@@ -50,16 +49,6 @@
 
 
 
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
-<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-1.3.1/leaflet.js"></script>
-<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
-<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
-<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.3/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
@@ -137,7 +126,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Background</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Background</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#environment-setup"><i class="fa fa-check"></i>Environment Setup</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="01-intro.html"><a href="01-intro.html"><i class="fa fa-check"></i><b>1</b> Intro to Spatial Data</a><ul>
 <li class="chapter" data-level="1.1" data-path="01-intro.html"><a href="01-intro.html#load-spatial-data"><i class="fa fa-check"></i><b>1.1</b> Load Spatial Data</a></li>
 <li class="chapter" data-level="1.2" data-path="01-intro.html"><a href="01-intro.html#non-spatial-spatial-views"><i class="fa fa-check"></i><b>1.2</b> Non-Spatial &amp; Spatial Views</a></li>
@@ -198,16 +189,19 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">Intro to R-Spatial for Healthy Places</h1>
-<p class="author"><em>Marynia Kolak</em></p>
 <p class="date"><em>2021-08-24</em></p>
 </div>
-<div id="background" class="section level1 unnumbered">
-<h1>Background</h1>
-<p>This suite of tutorials was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions &amp; Policies Lab at the University of Chicago. A basic understanding of R is assumed.</p>
-<p>This workshop requires several packages, which can be installed from CRAN:</p>
+<div id="background" class="section level2 unnumbered">
+<h2>Background</h2>
+<p>This suite of tutorials was developed for a workshop at the 2021 R-Medicine Conference by the <a href="http://voices.uchicago.edu/herop/">Healthy Regions &amp; Policies Lab</a> at the University of Chicago. This workbook is a quick (3-hour) overview of mapping, GIScience, and spatial analysis basics for health professionals. The workbook was compiled by Marynia Kolak, and the overview for each section is led by Susan Paykin in the live version.</p>
+<p>Some coding snippets &amp; data examples are from the phenomenal team of the <a href="https://geodacenter.github.io/opioid-environment-toolkit">Opioid Environment Toolkit</a> (Moksha Menghaney, Qinyun Lin, Angela Li). The overall approach follows the Center for Spatial Data Science paradigm, led by Luc Anselin &amp; Julia Koschinsky.</p>
+<div id="environment-setup" class="section level3 unnumbered">
+<h3>Environment Setup</h3>
+<p>A basic understanding of R is assumed. This workshop requires several packages, which can be installed from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;sf&quot;</span>, <span class="st">&quot;tmap&quot;</span>, <span class="st">&quot;tidygeocoder&quot;</span>)</a></code></pre></div>
 <p>For Mac users, check out <a href="https://github.com/r-spatial/sf" class="uri">https://github.com/r-spatial/sf</a> for additional tips if you run into errors when installing the <strong>sf</strong> package. Using homebrew to install <strong>gdal</strong> usually fixes any remaining issues.</p>
 
+</div>
 </div>
             </section>
 
