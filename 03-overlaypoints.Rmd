@@ -1,21 +1,32 @@
 # Adding Resources
 
-## Geocode
-First we load the `tidygeocoder` to get our geocoding done. Note, this uses the interent to process, so is not suitable for HIPPA protected data like individual, living person addresses.
+In addition to areal data, we can also extract information from individual locations. Locations, when measured as points, can include things like:
 
-```{r}
+- **Health providers:** Hospitals, Clinics, Pharmacies, Mental health providers, Medication for opioid use disorder providers
+- **Area resources:** Grocery stores & Supermarkets, Playgrounds, Daycare centers, Schools, Community centers
+- **Area challenges:** Crime, Superfund sites, Pollution-emitting facilities
+
+Points can also represent *people*, like individual patients residing in an area. Because individual locations for persons is protected health information, we'll focus on point data as resources in the chapter. However, you can reuse the code snippets in this workshop to wrangle patient-level data the same way in a secure environment, under the guidance of your friendly IRB ethics board. 
+
+In this example, we'll extend our Chicago example. We'll identify areas with high COVID rates, low geographic access to methadone maintenance therapy, and less access to affordable rental housing units managed by the city. We are interested in locating zip codes that may be especially vulnerable to persons with opioid use disorder who use MOUDs. (This is oversimplified, but our example to work with.)
+
+## Geocode
+If you start with only addresses, you'll need to geocode. Our methadone maintenance provider dataset is only available as such. Addresses are comprised of characeters that reference a specific place. We will use the network topology service of a *Geocoder* to translate that address to a coordinate in some CRS. 
+
+First we load the `tidygeocoder` to get our geocoding done. Note, this uses the interent to process, so is not suitable for HIPPA protected data like individual, living person addresses. For offline geocoders, check out `Pelias` or `ESRI`.
+
+```{r warning=FALSE}
 library(tidygeocoder)
 ```
 
-Let's read in and inspect data for methadone (evidenes based medication for opioid use disorder) providers. These addresses were made available by SAMSHA. 
-
+Let's read in and inspect data for methadone maintenance providers. Note, these addresses were made available by SAMSHA, and are known as publicly available information. An additional analysis could call each service to check on access to medication during COVID in Septmber 2020, and the list would be updated further.
 
 ```{r}
 methadoneClinics <- read.csv("data/chicago_methadone_nogeometry.csv")
 head(methadoneClinics)
 ```
 
-Let's geocode one address first, just to make sure our system is working. We'll use the "cascade" method which use the US Census and OpenStreetMap geocoders.
+Let's geocode one address first, just to make sure our system is working. We'll use the "cascade" method which use the US Census and OpenStreetMap geocoders. These two services are the main options with `tidygeocoder`.
 
 ```{r}
 sample <- geo("2260 N. Elston Ave. Chicago, IL", lat = latitude, long = longitude, method = 'cascade')
@@ -28,7 +39,7 @@ As we prepare for geocoding, check out the structure of the dataset. Do we need 
 str(methadoneClinics)
 ```
 
-We need to clean the data a bit. We'll add a new column for full address, as required by the geocoding service. When you use a geocoding service, be sure to read the documentation and understand how the data needs to be formatted for input.
+We need to clean the data a bit. We'll add a new column for a full address, as required by the geocoding service. When you use a geocoding service, be sure to read the documentation and understand how the data needs to be formatted for input.
 
 ```{r}
 methadoneClinics$fullAdd <- paste(as.character(methadoneClinics$Address), 
@@ -37,7 +48,8 @@ methadoneClinics$fullAdd <- paste(as.character(methadoneClinics$Address),
                                   as.character(methadoneClinics$Zip))
 ```
 
-We're ready to go! Batch geocode with one function:
+
+We're ready to go! Batch geocode with one function, and inspect:
 
 ```{r}
 geoCodedClinics <-  geocode(methadoneClinics,
@@ -46,7 +58,7 @@ address = 'fullAdd', lat = latitude, long = longitude, method = 'cascade')
 head(geoCodedClinics)
 ```
 
-There were two that didn't geocode correctly. You can either inspect further, change the addresses, searching the address and pulling the lat/long using Google Maps and inputting manually, or omit. For this exercise we'll just omit the two clinics that didn't geocode correctly.
+There were two that didn't geocode correctly. You can inspect further. This could involve a quick check for spelling issues; or, searching the address and pulling the lat/long using Google Maps and inputting manually. Or, if we are concerned it's a human or unknown error, we could omit. For this exercise we'll just omit the two clinics that didn't geocode correctly.
 
 ```{r}
 geoCodedClinics2 <- na.omit(geoCodedClinics)
@@ -54,9 +66,9 @@ geoCodedClinics2 <- na.omit(geoCodedClinics)
 
 ## Convert to Spatial Data
 
-This is not spatial data yet! To convert a static CSV file to spatial data, we use the powerful `st_as-sf` function from `sf`. Indicate the x,y parameters (longitude, latitude) and the coordinate reference system used. Our geocoding service used the standard EPSG:4326, so we input that here.
+This is not spatial data yet! To convert a static file to spatial data, we use the powerful `st_as_sf` function from `sf`. Indicate the x,y parameters (=longitude, latitude) and the coordinate reference system used. Our geocoding service used the standard **EPSG:4326**, so we input that here.
 
-```{r}
+```{r warning = FALSE}
 library(sf)
 
 methadoneSf <- st_as_sf(geoCodedClinics2, 
@@ -66,9 +78,9 @@ methadoneSf <- st_as_sf(geoCodedClinics2,
 
 ## Basic Map of Points 
 
-For a really simple basemap of points -- to ensure they were geocoded and converted to spatial data correctly, we use tmap. We'll use the interactive version to view.
+For a really simple map of points -- to ensure they were geocoded and converted to spatial data correctly, we use `tmap`. We'll use the interactive version to view.
 
-```{r}
+```{r warning = FALSE, message=FALSE}
 library(tmap)
 
 tmap_mode("view")
@@ -84,6 +96,7 @@ If your points didn't plot correctly:
 Those two issues are the most common errors.
 
 ## Overlay Points & Style
+
 Let's add our zip code map from the previous module. First load the data, then overlay.
 
 ```{r}
@@ -102,48 +115,84 @@ tm_shape(Chi_Zipsf) + tm_fill("Case.Rate...Cumulative",
   ## 2nd layer (overlay)
   tm_shape(methadoneSf) + tm_dots(size = 0.2, col = "gray20") +
   
- tm_add_legend("symbol", col = "gray20", size = .2, labels = "Methadone MOUD") +
+  ## "Hack" a manual symbology for dots in the legend
+  tm_add_legend("symbol", col = "gray20", size = .2, labels = "Methadone MOUD") +
   
-  tm_layout(legend.outside = TRUE, legend.outside.position = "right", title.snap.to.legend = TRUE)
+  ## Cartographic Styling
+  tm_layout(legend.outside = TRUE, legend.outside.position = "right")
 ```
 
 ## Integrate More Data
+
+From here, we can integrate more data. Let's try a different point dataset -- Affordable Rental Housing Developments, as made available by the *City of Chicago Data Portal*. This could be interesting for a number of different reasons -- maybe we hypothesize better outcomes are associated with better access to affordable housing options? Or, we hypothesize the opposite, that mean distance to more population dense housing locations is vulnerable to airborne disease? 
+
+For this example, we'll think about this dataset as access to secure and affordable housing. Persons with lower incomes residing in places with fewer developments may be more vulnerable to housing insecurity -> impacts health.
+
 ```{r, warning=FALSE}
 AffHousing <- read.csv("data/Affordable_Rental_Housing_Developments.csv")
 
 head(AffHousing)
+```
 
+There were a few data points with odd inputs and null values. Remember, we can't convert any null values to spatial coordinates. Again, in an ideal context, you would explore and understand what is happening, systematically. In our experiment, we'll omit nulls.
 
+```{r, warning=FALSE}
 AffHousing <- na.omit(AffHousing)
+```
 
+Look at the structure of the object. 
+
+```{r, warning=FALSE}
 str(AffHousing)
+```
 
+In this dataset, we can see coordinate information is already included -- twice! You're looking at 2 different types of coordinate systems. We'll use "Longitude" and "Latitude" to represent X,Y and an ESPG of 4326. We're guessing, and hopeful.
+
+```{r, warning=FALSE}
 AffHousingSf <- st_as_sf(AffHousing, 
                         coords = c("Longitude", "Latitude"),
                         crs = 4326)
+```
 
+We can now map the data for a quick view -- does this look like Chicago, hopefully?
+
+```{r, warning=FALSE}
 tm_shape(AffHousingSf) + tm_dots() 
-
-tm_shape(Chi_Zipsf) + tm_polygons(col = "gray80") +
-  tm_shape(AffHousingSf) + tm_bubbles("Units", col = "purple") 
-
-str(AffHousingSf)
-tm_shape(Chi_Zipsf) + tm_polygons(col = "gray80") +
-  tm_shape(AffHousingSf) + tm_bubbles("Units", style = "pretty") 
-
-
-
-tm_shape(Chi_Zipsf) + tm_fill("Case.Rate...Cumulative", 
-              style="jenks", pal="BuPu", n=4, title = "COVID Rt") +
-    tm_text("zip", size = 0.7) +
-
-  tm_shape(AffHousingSf) + tm_bubbles("Units") + 
-  tm_shape(methadoneSf) + tm_dots(size = 0.2, col = "gray20") +
-  
- tm_add_legend("symbol", col = "gray20", size = .2, labels = "Methadone MOUD") +
-  tm_layout(legend.outside = TRUE, legend.outside.position = "right")
 ```
 
 ## Graduated Symbology
 
+Previously we mapped points as dots. We literally used the `tm_dots()` function to do so. Another option is changing the size of the point, according to some attribute of the data. In this dataset, we see an attribute field that gives us the total number of units per housing site. Let's use a graduated symbology, with the `tm_bubbles()` function, to map these points. That way points with more units will be bigger, and not all places are weighted the same visually.
+
+```{r}
+tm_shape(Chi_Zipsf) + tm_polygons(col = "gray80") +
+  tm_shape(AffHousingSf) + tm_bubbles("Units", col = "purple") 
+```
+
 ## Style Final Map
+
+Let's pull what we learned in the last tutorial, and map everything at once. Which zip codes are the most vulnerable to persons with OUD during the pandemic in September 2020, based on the information we have here?
+
+```{r}
+## Zip Codes with Labels
+tm_shape(Chi_Zipsf) + tm_fill("Case.Rate...Cumulative", 
+      style="jenks", pal="BuPu", n=4, title = "COVID Rt") +
+      tm_text("zip", size = 0.7) +
+
+  ## Affordable Housing Units
+  tm_shape(AffHousingSf) + tm_bubbles("Units") + 
+  
+  ## Methadone MOUD
+  tm_shape(methadoneSf) + tm_dots(size = 0.2, col = "gray20") +
+  
+  ## Cartographic Styling
+  tm_add_legend("symbol", col = "gray20", size = .2, labels = "Methadone MOUD") + tm_layout(legend.outside = TRUE, legend.outside.position = "right")
+```
+
+In RStudio, you could zoom into the plot you created to get a better view. Save as an image, or save as a webpage!
+
+Save any data you need from this session.
+
+```{r}
+st_write(methadoneSf, "data/methadoneMOUD1.geojson")
+```

@@ -1,63 +1,138 @@
 # Calculate Spatial Metrics
 
-While we've generated some nice visualizations, we may need insights quantified as metrics at the neighborhood level. 
+While we've generated some nice visualizations, we need insights quantified as metrics at the neighborhood level. Don't start this step until you have a good idea of what you need. Visualizing and exploring the data in depth is best practice.
 
-## Project Data
-First we need to switch to a projection that uses distance in feet or meters as a metric. Google search with the terms "EPSG", your place of interest, and "feet." For example, I searched "EPSG Illinois feet" and EPSG:3435 came up as a viable candidate. I'll use that for our new, projected CRS.
+For our purposes, we're interested in developing spatial access metrics with a container method approach. At the end of this tutorial, we'll generate the following new variables:
 
-```{r}
+- Total number of Methadone Maintenance MOUD by zip code
+- Total number of Walkble MOUD Service Areas by zip code
 
-```
+Plus, we will have a new spatial layer, that includes the actual service areas (ie. 1-mile buffers of MOUDs). We assume that access to MOUDs is critical and requires high regularity, and that walking is the most likely option during COVID. This guides the parameter specification of MOUD Service Areas (and is also backed up by some literature in this space, though much more is needed.)
 
-## Buffer Data
-Next, lets create a walkable buffer of one mile, or XX feet, for our MOUD provider locations. Individuals residing in places outside of that walkabile area may have difficulty accessing this medication during crises, like a pandemic.
+## Load Spatial Data
+
+Let's first reload our spatial data -- this will be the MOUD points, plus the master zip code spatial file.
 
 ```{r}
 library(sf)
 
-# Load MOUD point data
+points <- st_read("data/methadoneMOUD1.shp")
+areas <- st_read("data/ChiZipMaster1.geojson")
 
-# Generate a buffer of one mile
+head(points)
+head(areas)
 
 ```
-Now we can map the buffers:
+
+## Project Data
+
+First we need to switch to a projection that uses distance in feet or meters as a metric. We'll use EPSG:3435 from the first tutorial. To find which EPSG was recommended, I searched "EPSG Illinois feet" and EPSG:3435 came up as a viable candidate. So, we use that for our new, projected CRS.
 
 ```{r}
 
+areas <- st_transform(areas, 3435)
+points <- st_transform(points, 3435)
+
+```
+
+We may want to once again confirm they are plotting correctly:
+
+```{r}
+library(tmap)
+
+tm_shape(areas) + tm_polygons() +
+  tm_shape(points) + tm_dots(size = 1)
 ```
 
 ## Count resources by area
 
-Another way of understanding resource inequity is by thinking about how many resources exist in a neighborhood. If we didn't have zip code areas in our location dataset, we could add them using a spatial join. 
+One way of understanding resource inequity is by thinking about how many resources exist in a neighborhood.
+
+First, give the points the attributes of the polygons they are in. Inspect.
 
 ```{r}
-# Load zip codes
+pip <- st_join(points, areas, join = st_within)
+head(pip)
 
-# Spatially join points to areas
-
-# Count how many points are in each area
-
+dim(pip)
 ```
 
-Is there a more "tidy" way to do that last step? Explore...
-
-Furthermore -- you can reuse the coding snippet for different types of areas. For example, how many resources exist in each census tract, or block group? Etc. Another way to use this code is to spatially join individual patient locations to tracts... Once you have coordinates for each location, you'd convert to spatial data, and then use `sf` to spatially join.
-
-## Count buffers by area
-As the first stage already showed us, we know that MOUD locations are accessible up to one mile away. So a total number of resources by area may be too restrictive. Let's calculated how many walkable service areas of MOUD clinics are in each tract. Or, how many buffers are in each tract...
+### Count # per Area
+Next, count the number per area.
 
 ```{r}
+ptcount <- as.data.frame(table(pip$Zip))
+head(ptcount)
+```
+How could improve on this step if you used `dplyr`? 
+
+**Aggregation Tip:** What if you have an attribute value you'd like to aggregate? For example, average units of affordable housing facility by zip? 
+Try `aggregate(pip$attribute, by = list(pip$geoid), mean)` but build on with a tidy sensibility...
+
+Now we can rename our attributes:
+
+```{r}
+names(ptcount) <- c("zip", "MetClnc")
+head(ptcount)
+```
+
+And finally, merge back to your master zip file:
+
+```{r}
+areas<- merge(areas, ptcount, by="zip")
+head(areas)
+```
+
+Quickly map to inspect:
+```{r}
+tm_shape(areas) + tm_polygons(col = "gray90") +
+tm_shape(areas) + tm_fill(col = "MetClnc", style = "jenks", alpha = 0.2) +   
+  tm_shape(points) + tm_dots() 
+```
 
 
+## Buffer Data
+Next, lets create a walkable buffer of one mile, or 5280 feet, for our MOUD provider locations. Individuals residing in places outside of that walkabile area may have difficulty accessing this medication during crises, like a pandemic.
+
+```{r}
+# Create 1mile buffers for each point
+ptbuffers <- st_buffer(points, 5280)
+```
+
+Inspect immediately:
+
+```{r}
+tm_shape(areas) + tm_borders() +
+  tm_shape(ptbuffers) + tm_borders(col = "blue") +
+  tm_shape(points) + tm_dots(col = "red") 
+```
+
+
+## Count buffers by area
+We know that MOUD locations are accessible up to one mile away. So a total number of resources by area may be too restrictive. Let's calculated how many walkable service areas of MOUD clinics are in each tract. Or, how many buffers are in each tract...
+
+```{r}
+bufferct <- lengths(st_within(areas, ptbuffers))
+head(bufferct)
+```
+
+Stick buffer totals back to the zip master file:
+
+```{r}
+# Stick buffer totals back to the census master file
+areas <- cbind(areas,bufferct)
+head(areas)
+```
+
+Map density of buffers per census area:
+
+```{r}
+tm_shape(areas) + tm_fill(col = "bufferct", palette = "BuGn", style = "quantile",title = "Housing Density")
 ```
 
 ## Integrate & Explore
 
 Let's review: our master area file now has total number resources by zip and total number of walkable service areas by zip. 
-
-```{r}
-
-```
 
 Using your new spatial file, see if you can answer some of these quetions using various queries:
 
@@ -66,3 +141,7 @@ Using your new spatial file, see if you can answer some of these quetions using 
 - Which zip codes have worse access to affordable rental units, low educational rates, and less walkable access to MOUDs? 
 
 - What is the demographic and racial/ethnic characteristics of areas most vulnerable to high COVID rates in September 2020? 
+
+Generate different maps and outputs to drive your thinking and defend your hypothesis formation.
+
+
