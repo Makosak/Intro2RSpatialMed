@@ -20,11 +20,12 @@ To simplify, let's identify the last week of the dataset, and then subset the da
 
 ```{r}
 ## How many weeks are in our dataset?
-range(as.numeric(COVID$Week.End))
+range(as.numeric(COVID$Week.Number))
 
 ## Subset & inspect to week 39.
 COVID.39 <- subset(COVID, COVID$Week.Number == "39")
 head(COVID.39)
+
 ```
 
 To clean our data a bit, we'll just keep the zip code name, and cumulative case rate for the week of September 20th, 2020.
@@ -147,23 +148,23 @@ COVID <- tm_shape(Chi_Zipsf) + tm_fill("Case.Rate...Cumulative",
               style="jenks", pal="BuPu", n=4, title = "COVID Rt") + 
   tm_layout(frame = F)
 
-Senior <- tm_shape(Chi_Zipsf) + tm_fill("ovr65P", 
+Senior <- tm_shape(Chi_Zipsf) + tm_fill("ovr65P.x", 
               style="jenks", pal="BuPu", n=4) +
   tm_layout(frame = F)
 
-NoHS <- tm_shape(Chi_Zipsf) + tm_fill("noHSP", 
+NoHS <- tm_shape(Chi_Zipsf) + tm_fill("noHSP.x", 
               style="jenks", pal="BuPu", n=4) +
   tm_layout(frame = F)
 
-BlkP <- tm_shape(Chi_Zipsf) + tm_fill("blackP", 
+BlkP <- tm_shape(Chi_Zipsf) + tm_fill("blackP.x", 
               style="jenks", pal="BuPu", n=4) +
   tm_layout(frame = F)
 
-Latnx <- tm_shape(Chi_Zipsf) + tm_fill("hispP", 
+Latnx <- tm_shape(Chi_Zipsf) + tm_fill("hispP.x", 
               style="jenks", pal="BuPu", n=4) +
   tm_layout(frame = F)
 
-WhiP <- tm_shape(Chi_Zipsf) + tm_fill("whiteP", 
+WhiP <- tm_shape(Chi_Zipsf) + tm_fill("whiteP.x", 
               style="jenks", pal="BuPu", n=4) +
   tm_layout(frame = F)
 

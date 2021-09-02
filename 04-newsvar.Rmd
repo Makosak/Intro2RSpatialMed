@@ -20,6 +20,9 @@ library(tmap)
 points <- st_read("data/methadoneMOUD.geojson")
 areas <- st_read("data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp")
 
+dim(points)
+dim(areas)
+
 head(points)
 head(areas)
 
