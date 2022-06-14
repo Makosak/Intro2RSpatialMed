@@ -4,9 +4,7 @@ A workshop to learn an introduction to GIS & Spatial Analysis for health.
 
 - [Live Workbook](https://makosak.github.io/Intro2RSpatialMed)
 
-This workshop is linked with the following informational slide decks:
-
-- [Slides for R/Medicine 2021 workshop](https://docs.google.com/presentation/d/1c1RirI9Jk_Pk99n2nuCIFZYoeBRzfHat6nR6-ZQGhrI/edit?usp=sharing)
-- [Slides for SER 2022 workshop](https://docs.google.com/presentation/d/1c1RirI9Jk_Pk99n2nuCIFZYoeBRzfHat6nR6-ZQGhrI/edit?usp=sharing)
-
-This workshop is CME accredited. To claim credit, go to [https://cme.uchicago.edu/SpatialAnalysis22](https://cme.uchicago.edu/SpatialAnalysis22).
+SER 2022 Workshop Details
+- [Slide Deck](https://docs.google.com/presentation/d/1c1RirI9Jk_Pk99n2nuCIFZYoeBRzfHat6nR6-ZQGhrI/edit?usp=sharing)
+- [Sign In](https://docs.google.com/forms/d/e/1FAIpQLSf_TC0sxXDriCbnRtol6exTMzRZTugSMoctoz1uu0cijnktAQ/viewform)
+- Claim CME credits: [https://cme.uchicago.edu/SpatialAnalysis22](https://cme.uchicago.edu/SpatialAnalysis22).
