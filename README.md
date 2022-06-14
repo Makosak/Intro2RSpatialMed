@@ -3,6 +3,7 @@
 A workshop to learn an introduction to GIS & Spatial Analysis for health. 
 
 - [Live Workbook](https://makosak.github.io/Intro2RSpatialMed)
+- [Data for Workshop](https://github.com/Makosak/Intro2RSpatialMed/tree/main/data)
 
 SER 2022 Workshop Details
 
