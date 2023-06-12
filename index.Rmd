@@ -13,9 +13,9 @@ description: "This was developed for a workshop at the 2021 R-Medicine Conferenc
 
 ## Background {-}
 
-This suite of tutorials was developed for a workshop at the 2021 R-Medicine Conference by the [Healthy Regions & Policies Lab](http://voices.uchicago.edu/herop/) at the University of Chicago. This workbook is a quick (3-hour) overview of mapping, GIScience, and spatial analysis basics for health professionals. The workbook was compiled by Marynia Kolak, and the overview for each section is led by Susan Paykin in the live version.  
+This suite of tutorials was developed for a workshop at the 2021 R-Medicine Conference by the [Healthy Regions & Policies Lab](http://www.healthyregions.org) at the University of Illinois. It has sinced been updated for multiple workshops at the Society for Epidemiology Research Annual Meeting. This workbook is a quick (3-hour) overview of mapping, GIScience, and spatial analysis basics for health professionals. 
 
-Some coding snippets & data examples are from the phenomenal team of the [Opioid Environment Toolkit](https://geodacenter.github.io/opioid-environment-toolkit) (Moksha Menghaney, Qinyun Lin, Angela Li). The overall approach follows the Center for Spatial Data Science paradigm, led by Luc Anselin & Julia Koschinsky.
+The workbook was compiled by Marynia Kolak, co-facilitated with Qinyun Lin, with past support from Susan Paykin when HEROP was at the University of Chicago. Some coding snippets & data examples are from the phenomenal team of the [Opioid Environment Toolkit](https://geodacenter.github.io/opioid-environment-toolkit) (Moksha Menghaney, Qinyun Lin, Angela Li). The overall approach follows the Center for Spatial Data Science UChicago paradigm, led by Luc Anselin & Julia Koschinsky.
 
 ### Environment Setup {-}
 
