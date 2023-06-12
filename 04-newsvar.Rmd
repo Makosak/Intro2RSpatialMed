@@ -14,8 +14,8 @@ Plus, we will have a new spatial layer, that includes the actual service areas (
 Let's first reload our spatial data -- this will be the MOUD points, plus the master zip code spatial file.
 
 ```{r warning = FALSE}
-library(sf)
-library(tmap)
+#library(sf)
+#library(tmap)
 
 points <- st_read("data/methadoneMOUD.geojson")
 areas <- st_read("data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp")
@@ -101,19 +101,19 @@ tm_shape(areas) + tm_polygons(col = "MetClnc", style = "pretty", alpha = 0.8) +
 
 
 ## Buffer Data
-Next, lets create a walkable buffer of one mile, or 5280 feet, for our MOUD provider locations. Individuals residing in places outside of that walkabile area may have difficulty accessing this medication during crises, like a pandemic.
+Next, lets create a walkable buffer of one mile, or 5280 feet, for our MOUD provider locations. Individuals residing in places outside of that walkable area may have difficulty accessing this medication during crises, like a pandemic.
 
 ```{r}
 # Create 1mile buffers for each point
 ptbuffers <- st_buffer(points, 5280)
+head(ptbuffers)
 ```
 
 Inspect immediately:
 
 ```{r}
 tm_shape(areas) + tm_borders() +
-  tm_shape(ptbuffers) + tm_borders(col = "blue") +
-  tm_shape(points) + tm_dots(col = "red") 
+  tm_shape(ptbuffers) + tm_borders(col = "blue") 
 ```
 
 
@@ -137,8 +137,8 @@ Map density of buffers per census area:
 
 ```{r}
 tm_shape(areas) + tm_polygons(col = "bufferct", palette = "BuGn", n=5, style = "jenks") + 
-    tm_shape(ptbuffers) + tm_fill(col = "gray90", alpha=0.2) +
-    tm_shape(points) + tm_dots(col = "gray10", alpha = 0.8, size = 0.3) 
+    tm_shape(ptbuffers) + tm_fill(col = "gray90", alpha=0.6) +
+    tm_shape(points) + tm_dots(col = "gray10", size = 0.3) 
 ```
 
 ## Integrate & Explore

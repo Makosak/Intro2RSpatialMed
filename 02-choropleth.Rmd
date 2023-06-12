@@ -144,29 +144,29 @@ Can you think of more efficient ways to run this code? There are also other `tma
 
 ```{r message=FALSE, warning=FALSE}
 
+ tm_shape(Chi_Zipsf) + tm_fill("ovr65P", 
+              style="jenks", pal="BuPu", n=4)
+```
+
+```{r message=FALSE, warning=FALSE}
+
 COVID <- tm_shape(Chi_Zipsf) + tm_fill("Case.Rate...Cumulative", 
-              style="jenks", pal="BuPu", n=4, title = "COVID Rt") + 
-  tm_layout(frame = F)
+              style="jenks", pal="Reds", n=4, title = "COVID Rt") 
 
-Senior <- tm_shape(Chi_Zipsf) + tm_fill("ovr65P.x", 
-              style="jenks", pal="BuPu", n=4) +
-  tm_layout(frame = F)
+Senior <- tm_shape(Chi_Zipsf) + tm_fill("ovr65P", 
+              style="jenks", pal="BuPu", n=4) 
 
-NoHS <- tm_shape(Chi_Zipsf) + tm_fill("noHSP.x", 
-              style="jenks", pal="BuPu", n=4) +
-  tm_layout(frame = F)
+NoHS <- tm_shape(Chi_Zipsf) + tm_fill("noHSP", 
+              style="jenks", pal="BuPu", n=4)
 
-BlkP <- tm_shape(Chi_Zipsf) + tm_fill("blackP.x", 
-              style="jenks", pal="BuPu", n=4) +
-  tm_layout(frame = F)
+BlkP <- tm_shape(Chi_Zipsf) + tm_fill("blackP", 
+              style="jenks", pal="BuPu", n=4) 
 
-Latnx <- tm_shape(Chi_Zipsf) + tm_fill("hispP.x", 
-              style="jenks", pal="BuPu", n=4) +
-  tm_layout(frame = F)
+Latnx <- tm_shape(Chi_Zipsf) + tm_fill("hispP", 
+              style="jenks", pal="BuPu", n=4, title="Test") 
 
-WhiP <- tm_shape(Chi_Zipsf) + tm_fill("whiteP.x", 
-              style="jenks", pal="BuPu", n=4) +
-  tm_layout(frame = F)
+WhiP <- tm_shape(Chi_Zipsf) + tm_fill("whiteP", 
+              style="jenks", pal="BuPu", n=4) 
 
 tmap_arrange(COVID, Senior, NoHS, BlkP, Latnx, WhiP)
 ```

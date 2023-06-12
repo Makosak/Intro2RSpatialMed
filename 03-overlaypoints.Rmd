@@ -72,7 +72,7 @@ This is not spatial data yet! To convert a static file to spatial data, we use t
 library(sf)
 
 methadoneSf <- st_as_sf(geoCodedClinics2, 
-                        coords = c("longitude", "latitude"),
+                        coords = c( "longitude", "latitude"),
                         crs = 4326)
 ```
 
@@ -157,7 +157,7 @@ AffHousingSf <- st_as_sf(AffHousing,
 We can now map the data for a quick view -- does this look like Chicago, hopefully?
 
 ```{r, warning=FALSE}
-tm_shape(AffHousingSf) + tm_dots() 
+tm_shape(AffHousingSf) + tm_bubbles("Units", col = "purple", style = "sd")  
 ```
 
 ## Graduated Symbology
@@ -176,8 +176,7 @@ Let's pull what we learned in the last tutorial, and map everything at once. Whi
 ```{r}
 ## Zip Codes with Labels
 tm_shape(Chi_Zipsf) + tm_fill("Case.Rate...Cumulative", 
-      style="jenks", pal="BuPu", n=4, title = "COVID Rt") +
-      tm_text("zip", size = 0.7) +
+      style="jenks", pal="BuPu", n=4, title = "COVID Rt")  +
 
   ## Affordable Housing Units
   tm_shape(AffHousingSf) + tm_bubbles("Units") + 
@@ -194,5 +193,5 @@ In RStudio, you could zoom into the plot you created to get a better view. Save 
 Save any data you need from this session.
 
 ```{r eval=FALSE}
-#st_write(obj = methadoneSf, dsn = "data/methadoneMOUD.geojson")
+st_write(methadoneSf, dsn = "data/methadoneMOUD.geojson")
 ```
