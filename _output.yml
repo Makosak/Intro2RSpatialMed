@@ -1,6 +1,6 @@
 bookdown::gitbook:
   css: style.css
-  highlight : tango
+  highlight : 
   split_by: rmd
   config :
       toc:

@@ -3,6 +3,8 @@ output_dir: "docs"
 rmd_files: ["index.Rmd", 
 "01-intro.Rmd", 
 "02-choropleth.Rmd", 
+"05-LISA.Rmd",
 "03-overlaypoints.Rmd", 
-"04-newsvar.Rmd"]
+"04-newsvar.Rmd"
+]
 delete_merged_file: TRUE

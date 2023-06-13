@@ -58,7 +58,8 @@ Lets see how switching CRS changes our object. First we'll try the Mollweide coo
 To transform our CRS, we use the `st_transform` function. To plot, we use baseR again but with some paremeter updates. Finally, we check out the CRS of our new object. What are the units? Any other details to note? Will this be appropriate for our spatial analysis?
 
 ```{r }
-Chi_tracts.moll <- st_transform(Chi_tracts, crs = "+proj=moll")
+Chi_tracts.moll <- st_transform(Chi_tracts, crs="ESRI:54009")
+
 plot(st_geometry(Chi_tracts.moll), border = "gray", lwd = 2, main = "Mollweide", sub="preserves areas")
 st_crs(Chi_tracts.moll)
 ```
@@ -66,7 +67,7 @@ st_crs(Chi_tracts.moll)
 Next, we'll try the Winkel CRS, which is a compromise projection that facilitates minimal distortion for area, distance, and angles. We use the same approach, recyling the code with new inputs.
 
 ```{r }
-Chi_tracts.54019 = st_transform(Chi_tracts, 54019)
+Chi_tracts.54019 = st_transform(Chi_tracts, crs="ESRI:54019")
 plot(st_geometry(Chi_tracts.54019), border = "gray", lwd = 2, main = "Winkel", sub="minimal distortion")
 st_crs(Chi_tracts.54019)
 
@@ -76,14 +77,15 @@ st_crs(Chi_tracts.54019)
 We could also try a totally different projection, to see how that changes our spatial object. Let's use the "Old Hawaiian UTM Zone 4n" projection, with the EPSG identified from an online search. How does this fare?
 
 ```{r }
-Chi_tracts.Hawaii = st_transform(Chi_tracts, 102114)
+Chi_tracts.Hawaii = st_transform(Chi_tracts, crs="ESRI:102114")
 plot(st_geometry(Chi_tracts.Hawaii), border = "gray", lwd = 2, main = "Old Hawaiian UTM Zone 4N", sub="wrong projection!")
 ```
 
 Finally.. let's choose a projection that is focused on Illinois, and uses distance as feet or meters, to make it a bit more accessible for our work. EPSG:3435 is a good fit:
 
 ```{r }
-Chi_tracts.3435 <- st_transform(Chi_tracts, 3435)
+Chi_tracts.3435 <- st_transform(Chi_tracts, "EPSG:3435")
+# Chi_tracts.3435 <- st_transform(Chi_tracts, 3435)
 st_crs(Chi_tracts.3435)
 
 plot(st_geometry(Chi_tracts.3435), border = "gray", lwd = 2, main = "NAD83 / Illinois East (ftUS)", sub="topo mapping & survey use")

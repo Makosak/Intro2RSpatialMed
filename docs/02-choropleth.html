@@ -1,29 +1,28 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Map Neighborhoods | Intro to R-Spatial for Healthy Places</title>
-  <meta name="description" content="This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions &amp; Policies Lab at the University of Chicago ." />
-  <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
+  <meta name="description" content="This was developed by the Healthy Regions - Policies Lab." />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Map Neighborhoods | Intro to R-Spatial for Healthy Places" />
   <meta property="og:type" content="book" />
   
-  
-  <meta property="og:description" content="This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions &amp; Policies Lab at the University of Chicago ." />
+  <meta property="og:description" content="This was developed by the Healthy Regions - Policies Lab." />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="2 Map Neighborhoods | Intro to R-Spatial for Healthy Places" />
   
-  <meta name="twitter:description" content="This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions &amp; Policies Lab at the University of Chicago ." />
+  <meta name="twitter:description" content="This was developed by the Healthy Regions - Policies Lab." />
   
 
 
 
-<meta name="date" content="2021-08-25" />
+<meta name="date" content="2023-06-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,8 +30,9 @@
   
   
 <link rel="prev" href="01-intro.html"/>
-<link rel="next" href="03-overlaypoints.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link rel="next" href="05-LISA.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -48,79 +48,25 @@
 
 
 
-
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
 <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.3/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.2/leaflet-providers-plugin.js"></script>
+
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  { background-color: #f8f8f8; }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ef2929; } /* Alert */
-code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #c4a000; } /* Attribute */
-code span.bn { color: #0000cf; } /* BaseN */
-code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #000000; } /* Constant */
-code span.co { color: #8f5902; font-style: italic; } /* Comment */
-code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code span.dt { color: #204a87; } /* DataType */
-code span.dv { color: #0000cf; } /* DecVal */
-code span.er { color: #a40000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #000000; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code span.ot { color: #8f5902; } /* Other */
-code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #000000; } /* SpecialChar */
-code span.ss { color: #4e9a06; } /* SpecialString */
-code span.st { color: #4e9a06; } /* String */
-code span.va { color: #000000; } /* Variable */
-code span.vs { color: #4e9a06; } /* VerbatimString */
-code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -136,10 +82,12 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Background</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Background</a>
+<ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#environment-setup"><i class="fa fa-check"></i>Environment Setup</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="01-intro.html"><a href="01-intro.html"><i class="fa fa-check"></i><b>1</b> Intro to Spatial Data</a><ul>
+<li class="chapter" data-level="1" data-path="01-intro.html"><a href="01-intro.html"><i class="fa fa-check"></i><b>1</b> Intro to Spatial Data</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="01-intro.html"><a href="01-intro.html#load-spatial-data"><i class="fa fa-check"></i><b>1.1</b> Load Spatial Data</a></li>
 <li class="chapter" data-level="1.2" data-path="01-intro.html"><a href="01-intro.html#non-spatial-spatial-views"><i class="fa fa-check"></i><b>1.2</b> Non-Spatial &amp; Spatial Views</a></li>
 <li class="chapter" data-level="1.3" data-path="01-intro.html"><a href="01-intro.html#spatial-data-structure"><i class="fa fa-check"></i><b>1.3</b> Spatial Data Structure</a></li>
@@ -150,7 +98,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.8" data-path="01-intro.html"><a href="01-intro.html#overlay-zip-code-boundaries"><i class="fa fa-check"></i><b>1.8</b> Overlay Zip Code Boundaries</a></li>
 <li class="chapter" data-level="" data-path="01-intro.html"><a href="01-intro.html#more-resources"><i class="fa fa-check"></i>More Resources</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="02-choropleth.html"><a href="02-choropleth.html"><i class="fa fa-check"></i><b>2</b> Map Neighborhoods</a><ul>
+<li class="chapter" data-level="2" data-path="02-choropleth.html"><a href="02-choropleth.html"><i class="fa fa-check"></i><b>2</b> Map Neighborhoods</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="02-choropleth.html"><a href="02-choropleth.html#clean-attribute-data"><i class="fa fa-check"></i><b>2.1</b> Clean Attribute Data</a></li>
 <li class="chapter" data-level="2.2" data-path="02-choropleth.html"><a href="02-choropleth.html#merge-spatial-data"><i class="fa fa-check"></i><b>2.2</b> Merge Spatial Data</a></li>
 <li class="chapter" data-level="2.3" data-path="02-choropleth.html"><a href="02-choropleth.html#quantile-maps"><i class="fa fa-check"></i><b>2.3</b> Quantile Maps</a></li>
@@ -158,27 +107,39 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.5" data-path="02-choropleth.html"><a href="02-choropleth.html#jenks-maps"><i class="fa fa-check"></i><b>2.5</b> Jenks Maps</a></li>
 <li class="chapter" data-level="2.6" data-path="02-choropleth.html"><a href="02-choropleth.html#integrate-more-data"><i class="fa fa-check"></i><b>2.6</b> Integrate More Data</a></li>
 <li class="chapter" data-level="2.7" data-path="02-choropleth.html"><a href="02-choropleth.html#thematic-map-panel"><i class="fa fa-check"></i><b>2.7</b> Thematic Map Panel</a></li>
-<li class="chapter" data-level="2.8" data-path="02-choropleth.html"><a href="02-choropleth.html#write-data"><i class="fa fa-check"></i><b>2.8</b> Write Data</a></li>
+<li class="chapter" data-level="2.8" data-path="02-choropleth.html"><a href="02-choropleth.html#data"><i class="fa fa-check"></i><b>2.8</b> Data</a></li>
 <li class="chapter" data-level="" data-path="02-choropleth.html"><a href="02-choropleth.html#more-resources-1"><i class="fa fa-check"></i>More Resources</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html"><i class="fa fa-check"></i><b>3</b> Adding Resources</a><ul>
-<li class="chapter" data-level="3.1" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#geocode"><i class="fa fa-check"></i><b>3.1</b> Geocode</a></li>
-<li class="chapter" data-level="3.2" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#convert-to-spatial-data"><i class="fa fa-check"></i><b>3.2</b> Convert to Spatial Data</a></li>
-<li class="chapter" data-level="3.3" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#basic-map-of-points"><i class="fa fa-check"></i><b>3.3</b> Basic Map of Points</a></li>
-<li class="chapter" data-level="3.4" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#overlay-points-style"><i class="fa fa-check"></i><b>3.4</b> Overlay Points &amp; Style</a></li>
-<li class="chapter" data-level="3.5" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#integrate-more-data-1"><i class="fa fa-check"></i><b>3.5</b> Integrate More Data</a></li>
-<li class="chapter" data-level="3.6" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#graduated-symbology"><i class="fa fa-check"></i><b>3.6</b> Graduated Symbology</a></li>
-<li class="chapter" data-level="3.7" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#style-final-map"><i class="fa fa-check"></i><b>3.7</b> Style Final Map</a></li>
+<li class="chapter" data-level="3" data-path="05-LISA.html"><a href="05-LISA.html"><i class="fa fa-check"></i><b>3</b> Spatial Cluster Detection</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="05-LISA.html"><a href="05-LISA.html#identify-pattern"><i class="fa fa-check"></i><b>3.1</b> Identify Pattern</a></li>
+<li class="chapter" data-level="3.2" data-path="05-LISA.html"><a href="05-LISA.html#load-rgeoda"><i class="fa fa-check"></i><b>3.2</b> Load rGeoda</a></li>
+<li class="chapter" data-level="3.3" data-path="05-LISA.html"><a href="05-LISA.html#define-w"><i class="fa fa-check"></i><b>3.3</b> Define W</a></li>
+<li class="chapter" data-level="3.4" data-path="05-LISA.html"><a href="05-LISA.html#calculate-lisa"><i class="fa fa-check"></i><b>3.4</b> Calculate LISA</a></li>
+<li class="chapter" data-level="3.5" data-path="05-LISA.html"><a href="05-LISA.html#map-the-lisa"><i class="fa fa-check"></i><b>3.5</b> Map the LISA</a></li>
+<li class="chapter" data-level="" data-path="05-LISA.html"><a href="05-LISA.html#more-resources-2"><i class="fa fa-check"></i>More Resources</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="04-newsvar.html"><a href="04-newsvar.html"><i class="fa fa-check"></i><b>4</b> Calculate Spatial Metrics</a><ul>
-<li class="chapter" data-level="4.1" data-path="04-newsvar.html"><a href="04-newsvar.html#load-spatial-data-1"><i class="fa fa-check"></i><b>4.1</b> Load Spatial Data</a></li>
-<li class="chapter" data-level="4.2" data-path="04-newsvar.html"><a href="04-newsvar.html#transform-projections"><i class="fa fa-check"></i><b>4.2</b> Transform Projections</a></li>
-<li class="chapter" data-level="4.3" data-path="04-newsvar.html"><a href="04-newsvar.html#count-resources-by-area"><i class="fa fa-check"></i><b>4.3</b> Count resources by area</a><ul>
-<li class="chapter" data-level="4.3.1" data-path="04-newsvar.html"><a href="04-newsvar.html#count-per-area"><i class="fa fa-check"></i><b>4.3.1</b> Count # per Area</a></li>
+<li class="chapter" data-level="4" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html"><i class="fa fa-check"></i><b>4</b> Adding Resources</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#geocode"><i class="fa fa-check"></i><b>4.1</b> Geocode</a></li>
+<li class="chapter" data-level="4.2" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#convert-to-spatial-data"><i class="fa fa-check"></i><b>4.2</b> Convert to Spatial Data</a></li>
+<li class="chapter" data-level="4.3" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#basic-map-of-points"><i class="fa fa-check"></i><b>4.3</b> Basic Map of Points</a></li>
+<li class="chapter" data-level="4.4" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#overlay-points-style"><i class="fa fa-check"></i><b>4.4</b> Overlay Points &amp; Style</a></li>
+<li class="chapter" data-level="4.5" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#integrate-more-data-1"><i class="fa fa-check"></i><b>4.5</b> Integrate More Data</a></li>
+<li class="chapter" data-level="4.6" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#graduated-symbology"><i class="fa fa-check"></i><b>4.6</b> Graduated Symbology</a></li>
+<li class="chapter" data-level="4.7" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#style-final-map"><i class="fa fa-check"></i><b>4.7</b> Style Final Map</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="04-newsvar.html"><a href="04-newsvar.html#buffer-data"><i class="fa fa-check"></i><b>4.4</b> Buffer Data</a></li>
-<li class="chapter" data-level="4.5" data-path="04-newsvar.html"><a href="04-newsvar.html#count-buffers-by-area"><i class="fa fa-check"></i><b>4.5</b> Count buffers by area</a></li>
-<li class="chapter" data-level="4.6" data-path="04-newsvar.html"><a href="04-newsvar.html#integrate-explore"><i class="fa fa-check"></i><b>4.6</b> Integrate &amp; Explore</a></li>
+<li class="chapter" data-level="5" data-path="04-newsvar.html"><a href="04-newsvar.html"><i class="fa fa-check"></i><b>5</b> Calculate Spatial Metrics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="04-newsvar.html"><a href="04-newsvar.html#load-spatial-data-1"><i class="fa fa-check"></i><b>5.1</b> Load Spatial Data</a></li>
+<li class="chapter" data-level="5.2" data-path="04-newsvar.html"><a href="04-newsvar.html#transform-projections"><i class="fa fa-check"></i><b>5.2</b> Transform Projections</a></li>
+<li class="chapter" data-level="5.3" data-path="04-newsvar.html"><a href="04-newsvar.html#count-resources-by-area"><i class="fa fa-check"></i><b>5.3</b> Count resources by area</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="04-newsvar.html"><a href="04-newsvar.html#count-per-area"><i class="fa fa-check"></i><b>5.3.1</b> Count # per Area</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="04-newsvar.html"><a href="04-newsvar.html#buffer-data"><i class="fa fa-check"></i><b>5.4</b> Buffer Data</a></li>
+<li class="chapter" data-level="5.5" data-path="04-newsvar.html"><a href="04-newsvar.html#count-buffers-by-area"><i class="fa fa-check"></i><b>5.5</b> Count buffers by area</a></li>
+<li class="chapter" data-level="5.6" data-path="04-newsvar.html"><a href="04-newsvar.html#integrate-explore"><i class="fa fa-check"></i><b>5.6</b> Integrate &amp; Explore</a></li>
 </ul></li>
 </ul>
 
@@ -197,126 +158,98 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="map-neighborhoods" class="section level1">
-<h1><span class="header-section-number">2</span> Map Neighborhoods</h1>
+<div id="map-neighborhoods" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">2</span> Map Neighborhoods<a href="02-choropleth.html#map-neighborhoods" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>When considering the health of persons, we have to also consider the neighborhood environment. Sometimes this is looking at neighborhood level health outcomes, like premature mortality at the census tract scale, or cumulative COVID rates by zip code. Sometimes we’re interested in neighborhood factors like poverty, access to affordable housing, or distance to nearest health provider, or pollution-emitting facility. These measurements of the “social determinants of health” at the neighborhood scale are increasingly urgent in modern public health thinking, and are thought to drive and/or reinforce racial, social, and spatial inequity</p>
 <p>In this module, we’ll learn about the basics of thematic mapping – known as <em>choropleth mapping</em> – to visualize neighborhood level health phenomena. This will allow you to begin the process of exploratory spatial data analysis and hypothesis generation &amp; refinement.</p>
-<div id="clean-attribute-data" class="section level2">
-<h2><span class="header-section-number">2.1</span> Clean Attribute Data</h2>
+<div id="clean-attribute-data" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Clean Attribute Data<a href="02-choropleth.html#clean-attribute-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Let’s consider COVID-19 cases by zip code in Chicago. We’ll upload and inspect a summary of cases from the <em>Chicago Data Portal</em> first:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">COVID &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/COVID-19_Cases__Tests__and_Deaths_by_ZIP_Code.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw">head</span>(COVID)</a></code></pre></div>
-<pre><code>##   ZIP.Code Week.Number Week.Start   Week.End Cases...Weekly
-## 1    60603          39 09/20/2020 09/26/2020              0
-## 2    60604          39 09/20/2020 09/26/2020              0
-## 3    60611          16 04/12/2020 04/18/2020              8
-## 4    60611          15 04/05/2020 04/11/2020              7
-## 5    60615          11 03/08/2020 03/14/2020             NA
-## 6    60603          10 03/01/2020 03/07/2020             NA
-##   Cases...Cumulative Case.Rate...Weekly Case.Rate...Cumulative
-## 1                 13                  0                 1107.3
-## 2                 31                  0                 3964.2
-## 3                 72                 25                  222.0
-## 4                 64                 22                  197.4
-## 5                 NA                 NA                     NA
-## 6                 NA                 NA                     NA
-##   Tests...Weekly Tests...Cumulative Test.Rate...Weekly
-## 1             25                327               2130
-## 2             12                339               1534
-## 3            101                450                312
-## 4             59                349                182
-## 5              6                  9                 14
-## 6              0                  0                  0
-##   Test.Rate...Cumulative Percent.Tested.Positive...Weekly
-## 1                27853.5                              0.0
-## 2                43350.4                              0.0
-## 3                 1387.8                              0.1
-## 4                 1076.3                              0.1
-## 5                   21.7                               NA
-## 6                    0.0                               NA
-##   Percent.Tested.Positive...Cumulative Deaths...Weekly
-## 1                                  0.0               0
-## 2                                  0.1               0
-## 3                                  0.2               0
-## 4                                  0.2               0
-## 5                                   NA               0
-## 6                                   NA               0
-##   Deaths...Cumulative Death.Rate...Weekly Death.Rate...Cumulative
-## 1                   0                   0                       0
-## 2                   0                   0                       0
-## 3                   0                   0                       0
-## 4                   0                   0                       0
-## 5                   0                   0                       0
-## 6                   0                   0                       0
-##   Population   Row.ID            ZIP.Code.Location
-## 1       1174 60603-39 POINT (-87.625473 41.880112)
-## 2        782 60604-39 POINT (-87.629029 41.878153)
-## 3      32426 60611-16 POINT (-87.620291 41.894734)
-## 4      32426 60611-15 POINT (-87.620291 41.894734)
-## 5      41563 60615-11 POINT (-87.602725 41.801993)
-## 6       1174 60603-10 POINT (-87.625473 41.880112)</code></pre>
+<pre class="r"><code>COVID &lt;- read.csv(&quot;data/COVID-19_Cases__Tests__and_Deaths_by_ZIP_Code.csv&quot;)
+
+head(COVID)</code></pre>
+<pre><code>##   ZIP.Code Week.Number Week.Start   Week.End Cases...Weekly Cases...Cumulative Case.Rate...Weekly
+## 1    60603          39 09/20/2020 09/26/2020              0                 13                  0
+## 2    60604          39 09/20/2020 09/26/2020              0                 31                  0
+## 3    60611          16 04/12/2020 04/18/2020              8                 72                 25
+## 4    60611          15 04/05/2020 04/11/2020              7                 64                 22
+## 5    60615          11 03/08/2020 03/14/2020             NA                 NA                 NA
+## 6    60603          10 03/01/2020 03/07/2020             NA                 NA                 NA
+##   Case.Rate...Cumulative Tests...Weekly Tests...Cumulative Test.Rate...Weekly
+## 1                 1107.3             25                327               2130
+## 2                 3964.2             12                339               1534
+## 3                  222.0            101                450                312
+## 4                  197.4             59                349                182
+## 5                     NA              6                  9                 14
+## 6                     NA              0                  0                  0
+##   Test.Rate...Cumulative Percent.Tested.Positive...Weekly Percent.Tested.Positive...Cumulative
+## 1                27853.5                              0.0                                  0.0
+## 2                43350.4                              0.0                                  0.1
+## 3                 1387.8                              0.1                                  0.2
+## 4                 1076.3                              0.1                                  0.2
+## 5                   21.7                               NA                                   NA
+## 6                    0.0                               NA                                   NA
+##   Deaths...Weekly Deaths...Cumulative Death.Rate...Weekly Death.Rate...Cumulative Population
+## 1               0                   0                   0                       0       1174
+## 2               0                   0                   0                       0        782
+## 3               0                   0                   0                       0      32426
+## 4               0                   0                   0                       0      32426
+## 5               0                   0                   0                       0      41563
+## 6               0                   0                   0                       0       1174
+##     Row.ID            ZIP.Code.Location
+## 1 60603-39 POINT (-87.625473 41.880112)
+## 2 60604-39 POINT (-87.629029 41.878153)
+## 3 60611-16 POINT (-87.620291 41.894734)
+## 4 60611-15 POINT (-87.620291 41.894734)
+## 5 60615-11 POINT (-87.602725 41.801993)
+## 6 60603-10 POINT (-87.625473 41.880112)</code></pre>
 <p>Each row corresponds to a zip code at a different week. This data thus exists as a “long” format, which doesn’t work for spatial analysis. We need to convert to “wide” format, or at the very least, ensure that each zip code corresponds to one row.</p>
 <p>To simplify, let’s identify the last week of the dataset, and then subset the data frame to only show that week. We will be interested in the cumulative case rate. Following is one way of doing this – can you think of another way? Try out different approaches of reshaping data to test your R and “tidy” skills.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co">## How many weeks are in our dataset?</span></a>
-<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="kw">range</span>(<span class="kw">as.numeric</span>(COVID<span class="op">$</span>Week.End))</a></code></pre></div>
-<pre><code>## [1]  1 31</code></pre>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="co">## Subset &amp; inspect to week 39.</span></a>
-<a class="sourceLine" id="cb38-2" data-line-number="2">COVID<span class="fl">.39</span> &lt;-<span class="st"> </span><span class="kw">subset</span>(COVID, COVID<span class="op">$</span>Week.Number <span class="op">==</span><span class="st"> &quot;39&quot;</span>)</a>
-<a class="sourceLine" id="cb38-3" data-line-number="3"><span class="kw">head</span>(COVID<span class="fl">.39</span>)</a></code></pre></div>
-<pre><code>##    ZIP.Code Week.Number Week.Start   Week.End Cases...Weekly
-## 1     60603          39 09/20/2020 09/26/2020              0
-## 2     60604          39 09/20/2020 09/26/2020              0
-## 36    60601          39 09/20/2020 09/26/2020              8
-## 37    60602          39 09/20/2020 09/26/2020              0
-## 41    60605          39 09/20/2020 09/26/2020             12
-## 66    60610          39 09/20/2020 09/26/2020             35
-##    Cases...Cumulative Case.Rate...Weekly Case.Rate...Cumulative
-## 1                  13                  0                 1107.3
-## 2                  31                  0                 3964.2
-## 36                213                 54                 1451.4
-## 37                 21                  0                 1688.1
-## 41                391                 44                 1420.8
-## 66                666                 90                 1706.9
-##    Tests...Weekly Tests...Cumulative Test.Rate...Weekly
-## 1              25                327               2130
-## 2              12                339               1534
-## 36            202               4304               1376
-## 37             27                460               2170
-## 41            291               7160               1058
-## 66            500              10680               1281
-##    Test.Rate...Cumulative Percent.Tested.Positive...Weekly
-## 1                 27853.5                              0.0
-## 2                 43350.4                              0.0
-## 36                29328.8                              0.0
-## 37                36977.5                              0.0
-## 41                26018.4                              0.0
-## 66                27371.3                              0.1
-##    Percent.Tested.Positive...Cumulative Deaths...Weekly
-## 1                                   0.0               0
-## 2                                   0.1               0
-## 36                                  0.0               1
-## 37                                  0.0               0
-## 41                                  0.1               1
-## 66                                  0.1               0
-##    Deaths...Cumulative Death.Rate...Weekly Death.Rate...Cumulative
-## 1                    0                 0.0                     0.0
-## 2                    0                 0.0                     0.0
-## 36                   6                 6.8                    40.9
-## 37                   0                 0.0                     0.0
-## 41                   3                 3.6                    10.9
-## 66                  10                 0.0                    25.6
-##    Population   Row.ID            ZIP.Code.Location
-## 1        1174 60603-39 POINT (-87.625473 41.880112)
-## 2         782 60604-39 POINT (-87.629029 41.878153)
-## 36      14675 60601-39 POINT (-87.622844 41.886262)
-## 37       1244 60602-39 POINT (-87.628309 41.883136)
-## 41      27519 60605-39 POINT (-87.623449 41.867824)
-## 66      39019 60610-39   POINT (-87.63581 41.90455)</code></pre>
+<pre class="r"><code>## How many weeks are in our dataset?
+range(as.numeric(COVID$Week.Number))</code></pre>
+<pre><code>## [1] 10 40</code></pre>
+<pre class="r"><code>## Subset &amp; inspect to week 39.
+COVID.39 &lt;- subset(COVID, COVID$Week.Number == &quot;39&quot;)
+head(COVID.39)</code></pre>
+<pre><code>##    ZIP.Code Week.Number Week.Start   Week.End Cases...Weekly Cases...Cumulative Case.Rate...Weekly
+## 1     60603          39 09/20/2020 09/26/2020              0                 13                  0
+## 2     60604          39 09/20/2020 09/26/2020              0                 31                  0
+## 36    60601          39 09/20/2020 09/26/2020              8                213                 54
+## 37    60602          39 09/20/2020 09/26/2020              0                 21                  0
+## 41    60605          39 09/20/2020 09/26/2020             12                391                 44
+## 66    60610          39 09/20/2020 09/26/2020             35                666                 90
+##    Case.Rate...Cumulative Tests...Weekly Tests...Cumulative Test.Rate...Weekly
+## 1                  1107.3             25                327               2130
+## 2                  3964.2             12                339               1534
+## 36                 1451.4            202               4304               1376
+## 37                 1688.1             27                460               2170
+## 41                 1420.8            291               7160               1058
+## 66                 1706.9            500              10680               1281
+##    Test.Rate...Cumulative Percent.Tested.Positive...Weekly Percent.Tested.Positive...Cumulative
+## 1                 27853.5                              0.0                                  0.0
+## 2                 43350.4                              0.0                                  0.1
+## 36                29328.8                              0.0                                  0.0
+## 37                36977.5                              0.0                                  0.0
+## 41                26018.4                              0.0                                  0.1
+## 66                27371.3                              0.1                                  0.1
+##    Deaths...Weekly Deaths...Cumulative Death.Rate...Weekly Death.Rate...Cumulative Population
+## 1                0                   0                 0.0                     0.0       1174
+## 2                0                   0                 0.0                     0.0        782
+## 36               1                   6                 6.8                    40.9      14675
+## 37               0                   0                 0.0                     0.0       1244
+## 41               1                   3                 3.6                    10.9      27519
+## 66               0                  10                 0.0                    25.6      39019
+##      Row.ID            ZIP.Code.Location
+## 1  60603-39 POINT (-87.625473 41.880112)
+## 2  60604-39 POINT (-87.629029 41.878153)
+## 36 60601-39 POINT (-87.622844 41.886262)
+## 37 60602-39 POINT (-87.628309 41.883136)
+## 41 60605-39 POINT (-87.623449 41.867824)
+## 66 60610-39   POINT (-87.63581 41.90455)</code></pre>
 <p>To clean our data a bit, we’ll just keep the zip code name, and cumulative case rate for the week of September 20th, 2020.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">COVID<span class="fl">.39</span>f &lt;-<span class="st"> </span>COVID<span class="fl">.39</span>[,<span class="kw">c</span>(<span class="st">&quot;ZIP.Code&quot;</span>, <span class="st">&quot;Case.Rate...Cumulative&quot;</span>)]</a>
-<a class="sourceLine" id="cb40-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb40-3" data-line-number="3"><span class="kw">head</span>(COVID<span class="fl">.39</span>f)</a></code></pre></div>
+<pre class="r"><code>COVID.39f &lt;- COVID.39[,c(&quot;ZIP.Code&quot;, &quot;Case.Rate...Cumulative&quot;)]
+
+head(COVID.39f)</code></pre>
 <pre><code>##    ZIP.Code Case.Rate...Cumulative
 ## 1     60603                 1107.3
 ## 2     60604                 3964.2
@@ -325,26 +258,26 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## 41    60605                 1420.8
 ## 66    60610                 1706.9</code></pre>
 </div>
-<div id="merge-spatial-data" class="section level2">
-<h2><span class="header-section-number">2.2</span> Merge Spatial Data</h2>
+<div id="merge-spatial-data" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Merge Spatial Data<a href="02-choropleth.html#merge-spatial-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Next, let’s merge this data to our zip code master spatial file. Reload if necessary:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">library</span>(sf)</a>
-<a class="sourceLine" id="cb42-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb42-3" data-line-number="3">Chi_Zips =<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&quot;</span>)</a></code></pre></div>
+<pre class="r"><code>library(sf)
+
+Chi_Zips = st_read(&quot;data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&quot;)</code></pre>
 <pre><code>## Reading layer `geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5&#39; from data source 
-##   `/Users/maryniakolak/code/Intro2RSpatialMed/data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&#39; 
+##   `/Users/maryniakolak/Code/Intro2RSpatialMed/data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 61 features and 4 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -87.94011 ymin: 41.64454 xmax: -87.52414 ymax: 42.02304
-## CRS:           4326</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">head</span>(Chi_Zips)</a></code></pre></div>
+## Geodetic CRS:  WGS84(DD)</code></pre>
+<pre class="r"><code>head(Chi_Zips)</code></pre>
 <pre><code>## Simple feature collection with 6 features and 4 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -87.80649 ymin: 41.88747 xmax: -87.59852 ymax: 41.93228
-## CRS:           4326
+## Geodetic CRS:  WGS84(DD)
 ##   objectid shape_area shape_len   zip                       geometry
 ## 1       33  106052287  42720.04 60647 MULTIPOLYGON (((-87.67762 4...
 ## 2       34  127476051  48103.78 60639 MULTIPOLYGON (((-87.72683 4...
@@ -353,147 +286,126 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## 5       37   99039621  47970.14 60651 MULTIPOLYGON (((-87.70656 4...
 ## 6       38   23506056  34689.35 60611 MULTIPOLYGON (((-87.61401 4...</code></pre>
 <p>Next, merge on zip code ID. The key in the Chi_Zips object is <code>zip</code>, whereas the key for the COVID data is <code>ZIP.code</code>. Always merge non-spatial <em>to</em> spatial data, not the other way around. Think of the spatial file as your master file that you will continue to add on to…</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="co">#Chi_Zipsf &lt;- merge(Chi_Zips, COVID.39f, by.x = &quot;zip&quot;, by.y = &quot;ZIP.Code&quot;, all = TRUE)</span></a>
-<a class="sourceLine" id="cb46-2" data-line-number="2">Chi_Zipsf &lt;-<span class="st"> </span><span class="kw">merge</span>(Chi_Zips, COVID<span class="fl">.39</span>f, <span class="dt">by.x =</span> <span class="st">&quot;zip&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;ZIP.Code&quot;</span>)</a>
-<a class="sourceLine" id="cb46-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb46-4" data-line-number="4"><span class="kw">head</span>(Chi_Zipsf)</a></code></pre></div>
+<pre class="r"><code>#Chi_Zipsf &lt;- merge(Chi_Zips, COVID.39f, by.x = &quot;zip&quot;, by.y = &quot;ZIP.Code&quot;, all = TRUE)
+Chi_Zipsf &lt;- merge(Chi_Zips, COVID.39f, by.x = &quot;zip&quot;, by.y = &quot;ZIP.Code&quot;)
+
+head(Chi_Zipsf)</code></pre>
 <pre><code>## Simple feature collection with 6 features and 5 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -87.63999 ymin: 41.85317 xmax: -87.60246 ymax: 41.88913
-## CRS:           4326
-##     zip objectid shape_area shape_len Case.Rate...Cumulative
-## 1 60601       27    9166246  19804.58                 1451.4
-## 2 60602       26    4847125  14448.17                 1688.1
-## 3 60603       19    4560229  13672.68                 1107.3
-## 4 60604       48    4294902  12245.81                 3964.2
-## 5 60605       20   36301276  37973.35                 1420.8
-## 6 60606       31    6766411  12040.44                 2289.6
-##                         geometry
-## 1 MULTIPOLYGON (((-87.62271 4...
-## 2 MULTIPOLYGON (((-87.60997 4...
-## 3 MULTIPOLYGON (((-87.61633 4...
-## 4 MULTIPOLYGON (((-87.63376 4...
-## 5 MULTIPOLYGON (((-87.62064 4...
-## 6 MULTIPOLYGON (((-87.63397 4...</code></pre>
+## Geodetic CRS:  WGS84(DD)
+##     zip objectid shape_area shape_len Case.Rate...Cumulative                       geometry
+## 1 60601       27    9166246  19804.58                 1451.4 MULTIPOLYGON (((-87.62271 4...
+## 2 60602       26    4847125  14448.17                 1688.1 MULTIPOLYGON (((-87.60997 4...
+## 3 60603       19    4560229  13672.68                 1107.3 MULTIPOLYGON (((-87.61633 4...
+## 4 60604       48    4294902  12245.81                 3964.2 MULTIPOLYGON (((-87.63376 4...
+## 5 60605       20   36301276  37973.35                 1420.8 MULTIPOLYGON (((-87.62064 4...
+## 6 60606       31    6766411  12040.44                 2289.6 MULTIPOLYGON (((-87.63397 4...</code></pre>
 </div>
-<div id="quantile-maps" class="section level2">
-<h2><span class="header-section-number">2.3</span> Quantile Maps</h2>
+<div id="quantile-maps" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Quantile Maps<a href="02-choropleth.html#quantile-maps" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Starting with a “classic epi” approach, let’s look at case rates as quantiles. We use the <code>tmap</code> library, and update the choropleth data classification using the <code>style</code> parameter. We use the Blue-Purple palette, or <code>BuPu</code>, from Colorbrewer.</p>
 <p><strong>Colorbrewer Tip:</strong> To display all Colorbrewer palette options, load the <code>RColorBrewer</code> library and run <code>display.brewer.all()</code> – or just Google “R Colorbrewer palettes.”</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">library</span>(tmap)</a>
-<a class="sourceLine" id="cb48-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb48-3" data-line-number="3"><span class="kw">tmap_mode</span>(<span class="st">&quot;plot&quot;</span>)</a>
-<a class="sourceLine" id="cb48-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb48-5" data-line-number="5"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb48-6" data-line-number="6"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
-<a class="sourceLine" id="cb48-7" data-line-number="7">              <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
-<a class="sourceLine" id="cb48-8" data-line-number="8">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<pre class="r"><code>library(tmap)
+
+tmap_mode(&quot;plot&quot;)
+
+tm_shape(Chi_Zipsf ) +
+  tm_polygons(&quot;Case.Rate...Cumulative&quot;, 
+              style=&quot;quantile&quot;, pal=&quot;BuPu&quot;,
+              title = &quot;COVID Case Rate&quot;) </code></pre>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>Let’s try tertiles:</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb49-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
-<a class="sourceLine" id="cb49-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">n=</span><span class="dv">3</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
-<a class="sourceLine" id="cb49-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
+<pre class="r"><code>tm_shape(Chi_Zipsf ) +
+  tm_polygons(&quot;Case.Rate...Cumulative&quot;, 
+              style=&quot;quantile&quot;, n=3, pal=&quot;BuPu&quot;,
+              title = &quot;COVID Case Rate&quot;) </code></pre>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+<div id="standard-deviation-maps" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Standard Deviation Maps<a href="02-choropleth.html#standard-deviation-maps" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>While quantiles are a nice start, let’s classify using a standard deviation map. Standard deviation is a statistical technique type of map based on how much the data differs from the mean.</p>
+<pre class="r"><code>tm_shape(Chi_Zipsf ) +
+  tm_polygons(&quot;Case.Rate...Cumulative&quot;, 
+              style=&quot;sd&quot;, pal=&quot;BuPu&quot;,
+              title = &quot;COVID Case Rate&quot;) </code></pre>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+</div>
+<div id="jenks-maps" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Jenks Maps<a href="02-choropleth.html#jenks-maps" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Another approach of data classification is natural breaks, or jenks. This approach looks for “natural breaks” in the data using a univariate clustering algorithm.</p>
+<pre class="r"><code>tm_shape(Chi_Zipsf ) +
+  tm_polygons(&quot;Case.Rate...Cumulative&quot;, 
+              style=&quot;jenks&quot;, pal=&quot;BuPu&quot;,
+              title = &quot;COVID Case Rate&quot;) </code></pre>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>The first bin doesn’t seem very intuitive. Let’s try 4 bins instead of 5 by changing the <code>n</code> parameter. In this version, we’ll also had a histogram and scale bar, and move the legend outside the frame to make it easier to view.</p>
+<pre class="r"><code>tm_shape(Chi_Zipsf) +
+  tm_polygons(&quot;Case.Rate...Cumulative&quot;, 
+              style=&quot;jenks&quot;, pal=&quot;BuPu&quot;,
+              legend.hist=T, n=4,
+              title = &quot;COVID Case Rate&quot;, ) + 
+  tm_scale_bar(position = &quot;left&quot;) + 
+  tm_layout(legend.outside = TRUE, legend.outside.position = &quot;right&quot;)</code></pre>
 <p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 </div>
-<div id="standard-deviation-maps" class="section level2">
-<h2><span class="header-section-number">2.4</span> Standard Deviation Maps</h2>
-<p>While quantiles are a nice start, let’s classify using a standard deviation map. Standard deviation is a statistical technique type of map based on how much the data differs from the mean.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb50-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
-<a class="sourceLine" id="cb50-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;sd&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
-<a class="sourceLine" id="cb50-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
-</div>
-<div id="jenks-maps" class="section level2">
-<h2><span class="header-section-number">2.5</span> Jenks Maps</h2>
-<p>Another approach of data classification is natural breaks, or jenks. This approach looks for “natural breaks” in the data using a univariate clustering algorithm.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb51-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
-<a class="sourceLine" id="cb51-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
-<a class="sourceLine" id="cb51-4" data-line-number="4">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
-<p>The first bin doesn’t seem very intuitive. Let’s try 4 bins instead of 5 by changing the <code>n</code> parameter. In this version, we’ll also had a histogram and scale bar, and move the legend outside the frame to make it easier to view.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span></a>
-<a class="sourceLine" id="cb52-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
-<a class="sourceLine" id="cb52-3" data-line-number="3">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>,</a>
-<a class="sourceLine" id="cb52-4" data-line-number="4">              <span class="dt">legend.hist=</span>T, <span class="dt">n=</span><span class="dv">4</span>,</a>
-<a class="sourceLine" id="cb52-5" data-line-number="5">              <span class="dt">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>, ) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb52-6" data-line-number="6"><span class="st">  </span><span class="kw">tm_scale_bar</span>(<span class="dt">position =</span> <span class="st">&quot;left&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb52-7" data-line-number="7"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.outside =</span> <span class="ot">TRUE</span>, <span class="dt">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
-</div>
-<div id="integrate-more-data" class="section level2">
-<h2><span class="header-section-number">2.6</span> Integrate More Data</h2>
+<div id="integrate-more-data" class="section level2 hasAnchor" number="2.6">
+<h2><span class="header-section-number">2.6</span> Integrate More Data<a href="02-choropleth.html#integrate-more-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To explore potential disparities in COVID health outcomes, let’s bring in pre-cleaned demographic, racial, and ethnic data from the <a href="https://geodacenter.github.io/opioid-policy-scan/">Opioid Environment Policy Scan database</a>. This data is orginally sourced from the American Community Survey 2018 5-year estimate, which you could also pull using the <code>tidycensus</code>.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">CensusVar &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/DS01_Z.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb53-2" data-line-number="2"><span class="kw">head</span>(CensusVar)</a></code></pre></div>
-<pre><code>##    ZCTA year totPopE whiteP blackP amIndP asianP pacIsP otherP  hispP
-## 1 35004 2018   11762  84.39  13.09   0.00   0.94   0.00   1.57   0.94
-## 2 35005 2018    7528  55.22  42.44   0.64   0.00   0.15   1.55   1.37
-## 3 35006 2018    2927  96.04   3.21   0.27   0.00   0.00   0.48   0.00
-## 4 35007 2018   26328  73.83  13.75   0.04   1.33   0.02  11.01  11.11
-## 5 35010 2018   20625  63.07  32.43   0.39   0.65   0.00   3.45   4.10
-## 6 35013 2018      40 100.00   0.00   0.00   0.00   0.00   0.00 100.00
-##    noHSP age0_4 age5_14 age15_19 age20_24 age15_44 age45_49 age50_54
-## 1   5.52    787    1950      457      746     4552      662      541
-## 2  17.48    511    1055      455      277     2429      580      469
-## 3  14.44    161     413      141      203      878      129      193
-## 4  12.41   1891    4161     1619     1400     9947     1993     2067
-## 5  22.00   1013    2647     1383     1087     7036     1418     1545
-## 6 100.00      0       0        0        0       13        8       19
-##   age55_59 age60_64 ageOv65 ageOv18 age18_64 a15_24P und45P ovr65P
-## 1      776      832    1662    8820     7158   10.23  61.97  14.13
-## 2      560      552    1372    5691     4319    9.72  53.07  18.23
-## 3      316      278     559    2308     1749   11.75  49.61  19.10
-## 4     1713     1315    3241   19178    15937   11.47  60.77  12.31
-## 5     1510     1341    4115   16142    12027   11.98  51.86  19.95
-## 6        0        0       0      40       40    0.00  32.50   0.00
-##   disbP
-## 1  12.7
-## 2  23.2
-## 3  20.9
-## 4  13.5
-## 5  19.6
-## 6   0.0</code></pre>
+<pre class="r"><code>CensusVar &lt;- read.csv(&quot;data/DS01_Z.csv&quot;)
+head(CensusVar)</code></pre>
+<pre><code>##    ZCTA year totPopE whiteP blackP amIndP asianP pacIsP otherP  hispP  noHSP age0_4 age5_14
+## 1 35004 2018   11762  84.39  13.09   0.00   0.94   0.00   1.57   0.94   5.52    787    1950
+## 2 35005 2018    7528  55.22  42.44   0.64   0.00   0.15   1.55   1.37  17.48    511    1055
+## 3 35006 2018    2927  96.04   3.21   0.27   0.00   0.00   0.48   0.00  14.44    161     413
+## 4 35007 2018   26328  73.83  13.75   0.04   1.33   0.02  11.01  11.11  12.41   1891    4161
+## 5 35010 2018   20625  63.07  32.43   0.39   0.65   0.00   3.45   4.10  22.00   1013    2647
+## 6 35013 2018      40 100.00   0.00   0.00   0.00   0.00   0.00 100.00 100.00      0       0
+##   age15_19 age20_24 age15_44 age45_49 age50_54 age55_59 age60_64 ageOv65 ageOv18 age18_64 a15_24P
+## 1      457      746     4552      662      541      776      832    1662    8820     7158   10.23
+## 2      455      277     2429      580      469      560      552    1372    5691     4319    9.72
+## 3      141      203      878      129      193      316      278     559    2308     1749   11.75
+## 4     1619     1400     9947     1993     2067     1713     1315    3241   19178    15937   11.47
+## 5     1383     1087     7036     1418     1545     1510     1341    4115   16142    12027   11.98
+## 6        0        0       13        8       19        0        0       0      40       40    0.00
+##   und45P ovr65P disbP
+## 1  61.97  14.13  12.7
+## 2  53.07  18.23  23.2
+## 3  49.61  19.10  20.9
+## 4  60.77  12.31  13.5
+## 5  51.86  19.95  19.6
+## 6  32.50   0.00   0.0</code></pre>
 <p>Merge to our master Zip Code dataset.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">Chi_Zipsf &lt;-<span class="st"> </span><span class="kw">merge</span>(Chi_Zipsf, CensusVar, <span class="dt">by.x =</span> <span class="st">&quot;zip&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;ZCTA&quot;</span>)</a>
-<a class="sourceLine" id="cb55-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb55-3" data-line-number="3"><span class="kw">head</span>(Chi_Zipsf)</a></code></pre></div>
+<pre class="r"><code>Chi_Zipsf &lt;- merge(Chi_Zipsf, CensusVar, by.x = &quot;zip&quot;, by.y = &quot;ZCTA&quot;)
+
+head(Chi_Zipsf)</code></pre>
 <pre><code>## Simple feature collection with 6 features and 31 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -87.63999 ymin: 41.85317 xmax: -87.60246 ymax: 41.88913
-## CRS:           4326
-##     zip objectid shape_area shape_len Case.Rate...Cumulative year
-## 1 60601       27    9166246  19804.58                 1451.4 2018
-## 2 60602       26    4847125  14448.17                 1688.1 2018
-## 3 60603       19    4560229  13672.68                 1107.3 2018
-## 4 60604       48    4294902  12245.81                 3964.2 2018
-## 5 60605       20   36301276  37973.35                 1420.8 2018
-## 6 60606       31    6766411  12040.44                 2289.6 2018
-##   totPopE whiteP blackP amIndP asianP pacIsP otherP hispP noHSP age0_4
-## 1   14675  74.17   5.57   0.45  18.00   0.00   1.81  8.68  0.00    550
-## 2    1244  68.17   3.78   5.31  19.45   0.00   3.30  6.51  0.00     61
-## 3    1174  63.46   3.24   0.00  27.60   0.00   5.71  9.80  0.00     13
-## 4     782  63.43   5.63   0.00  29.67   0.00   1.28  4.35  0.00     12
-## 5   27519  61.20  17.18   0.18  16.10   0.03   5.31  5.84  2.39    837
-## 6    3101  72.75   2.35   0.00  18.09   0.00   6.80  6.29  0.73     57
-##   age5_14 age15_19 age20_24 age15_44 age45_49 age50_54 age55_59
-## 1     156      907      909     8726      976     1009      324
-## 2      87       18       91      987       46       53        0
-## 3      43      179      172      684       75       47      150
-## 4       7       52      168      450       27       47       54
-## 5    1279     2172     2282    16364     1766     1520     1824
-## 6      44        0      139     1863      213      153      168
-##   age60_64 ageOv65 ageOv18 age18_64 a15_24P und45P ovr65P disbP
-## 1      859    2075   13855    11780   12.37  64.27  14.14   6.4
-## 2        5       5    1095     1090    8.76  91.24   0.40   0.2
-## 3       50     112    1118     1006   29.90  63.03   9.54   7.3
-## 4       92      93     744      651   28.13  59.97  11.89   4.1
-## 5     1360    2569   25259    22690   16.19  67.15   9.34   5.3
-## 6      172     431    3000     2569    4.48  63.33  13.90   1.9
+## Geodetic CRS:  WGS84(DD)
+##     zip objectid shape_area shape_len Case.Rate...Cumulative year totPopE whiteP blackP amIndP
+## 1 60601       27    9166246  19804.58                 1451.4 2018   14675  74.17   5.57   0.45
+## 2 60602       26    4847125  14448.17                 1688.1 2018    1244  68.17   3.78   5.31
+## 3 60603       19    4560229  13672.68                 1107.3 2018    1174  63.46   3.24   0.00
+## 4 60604       48    4294902  12245.81                 3964.2 2018     782  63.43   5.63   0.00
+## 5 60605       20   36301276  37973.35                 1420.8 2018   27519  61.20  17.18   0.18
+## 6 60606       31    6766411  12040.44                 2289.6 2018    3101  72.75   2.35   0.00
+##   asianP pacIsP otherP hispP noHSP age0_4 age5_14 age15_19 age20_24 age15_44 age45_49 age50_54
+## 1  18.00   0.00   1.81  8.68  0.00    550     156      907      909     8726      976     1009
+## 2  19.45   0.00   3.30  6.51  0.00     61      87       18       91      987       46       53
+## 3  27.60   0.00   5.71  9.80  0.00     13      43      179      172      684       75       47
+## 4  29.67   0.00   1.28  4.35  0.00     12       7       52      168      450       27       47
+## 5  16.10   0.03   5.31  5.84  2.39    837    1279     2172     2282    16364     1766     1520
+## 6  18.09   0.00   6.80  6.29  0.73     57      44        0      139     1863      213      153
+##   age55_59 age60_64 ageOv65 ageOv18 age18_64 a15_24P und45P ovr65P disbP
+## 1      324      859    2075   13855    11780   12.37  64.27  14.14   6.4
+## 2        0        5       5    1095     1090    8.76  91.24   0.40   0.2
+## 3      150       50     112    1118     1006   29.90  63.03   9.54   7.3
+## 4       54       92      93     744      651   28.13  59.97  11.89   4.1
+## 5     1824     1360    2569   25259    22690   16.19  67.15   9.34   5.3
+## 6      168      172     431    3000     2569    4.48  63.33  13.90   1.9
 ##                         geometry
 ## 1 MULTIPOLYGON (((-87.62271 4...
 ## 2 MULTIPOLYGON (((-87.60997 4...
@@ -502,48 +414,45 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## 5 MULTIPOLYGON (((-87.62064 4...
 ## 6 MULTIPOLYGON (((-87.63397 4...</code></pre>
 </div>
-<div id="thematic-map-panel" class="section level2">
-<h2><span class="header-section-number">2.7</span> Thematic Map Panel</h2>
+<div id="thematic-map-panel" class="section level2 hasAnchor" number="2.7">
+<h2><span class="header-section-number">2.7</span> Thematic Map Panel<a href="02-choropleth.html#thematic-map-panel" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To facilitate data discovery, we likely want to explore multiple maps at once. Here we’ll generate maps for multiple variables, and plot them as a map panel.</p>
 <p>Can you think of more efficient ways to run this code? There are also other <code>tmap</code> tricks to optimize this further, so enjoy your journey!</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">COVID &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </a>
-<a class="sourceLine" id="cb57-2" data-line-number="2">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>, <span class="dt">title =</span> <span class="st">&quot;COVID Rt&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb57-3" data-line-number="3"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
-<a class="sourceLine" id="cb57-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb57-5" data-line-number="5">Senior &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;ovr65P&quot;</span>, </a>
-<a class="sourceLine" id="cb57-6" data-line-number="6">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb57-7" data-line-number="7"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
-<a class="sourceLine" id="cb57-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb57-9" data-line-number="9">NoHS &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;noHSP&quot;</span>, </a>
-<a class="sourceLine" id="cb57-10" data-line-number="10">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb57-11" data-line-number="11"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
-<a class="sourceLine" id="cb57-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb57-13" data-line-number="13">BlkP &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;blackP&quot;</span>, </a>
-<a class="sourceLine" id="cb57-14" data-line-number="14">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb57-15" data-line-number="15"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
-<a class="sourceLine" id="cb57-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb57-17" data-line-number="17">Latnx &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;hispP&quot;</span>, </a>
-<a class="sourceLine" id="cb57-18" data-line-number="18">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb57-19" data-line-number="19"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
-<a class="sourceLine" id="cb57-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb57-21" data-line-number="21">WhiP &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(Chi_Zipsf) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="st">&quot;whiteP&quot;</span>, </a>
-<a class="sourceLine" id="cb57-22" data-line-number="22">              <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">pal=</span><span class="st">&quot;BuPu&quot;</span>, <span class="dt">n=</span><span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb57-23" data-line-number="23"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">frame =</span> F)</a>
-<a class="sourceLine" id="cb57-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb57-25" data-line-number="25"><span class="kw">tmap_arrange</span>(COVID, Senior, NoHS, BlkP, Latnx, WhiP)</a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<pre class="r"><code> tm_shape(Chi_Zipsf) + tm_fill(&quot;ovr65P&quot;, 
+              style=&quot;jenks&quot;, pal=&quot;BuPu&quot;, n=4)</code></pre>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<pre class="r"><code>COVID &lt;- tm_shape(Chi_Zipsf) + tm_fill(&quot;Case.Rate...Cumulative&quot;, 
+              style=&quot;jenks&quot;, pal=&quot;Reds&quot;, n=4, title = &quot;COVID Rt&quot;) 
+
+Senior &lt;- tm_shape(Chi_Zipsf) + tm_fill(&quot;ovr65P&quot;, 
+              style=&quot;jenks&quot;, pal=&quot;BuPu&quot;, n=4) 
+
+NoHS &lt;- tm_shape(Chi_Zipsf) + tm_fill(&quot;noHSP&quot;, 
+              style=&quot;jenks&quot;, pal=&quot;BuPu&quot;, n=4)
+
+BlkP &lt;- tm_shape(Chi_Zipsf) + tm_fill(&quot;blackP&quot;, 
+              style=&quot;jenks&quot;, pal=&quot;BuPu&quot;, n=4) 
+
+Latnx &lt;- tm_shape(Chi_Zipsf) + tm_fill(&quot;hispP&quot;, 
+              style=&quot;jenks&quot;, pal=&quot;BuPu&quot;, n=4, title=&quot;Test&quot;) 
+
+WhiP &lt;- tm_shape(Chi_Zipsf) + tm_fill(&quot;whiteP&quot;, 
+              style=&quot;jenks&quot;, pal=&quot;BuPu&quot;, n=4) 
+
+tmap_arrange(COVID, Senior, NoHS, BlkP, Latnx, WhiP)</code></pre>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>From the results, we see that cumulative COVID outcomes for one week in September 2020 seemed to have some geographic correlation with the Latinx/Hispanic community in Chicago. At the same time, low high school diploma rates are also concentrated in these areas, and there is some intersection with other variables considered. What are additional variables you could bring in to refine your approach? Perhaps percentage of essential workers; a different age group; internet access? What about linking in health outcomes like Asthma, Hypertension, and more at a similar scale?</p>
 <p>In modern spatial epidemiology, associations must never be taken at face value. For example, we know that it is not “race” but “racism” that drives multiple health disparities – simply looking at a specific racial/ethnic group is not enough. Thus exploring multiple variables and nurturing a curiosity to understand these complex intersections will support knowledge discovery.</p>
 </div>
-<div id="write-data" class="section level2">
-<h2><span class="header-section-number">2.8</span> Write Data</h2>
+<div id="data" class="section level2 hasAnchor" number="2.8">
+<h2><span class="header-section-number">2.8</span> Data<a href="02-choropleth.html#data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We’re done! Well… not so fast. Let’s save the data so we don’t have to run the codebook again to access the data. Here, we’ll save as a <code>geojson</code> file. This spatial format is more forgiving with long column names, which is a long-standing challenge with shapefiles. But sometimes it can be written oddly, so double-check the dimensions when reading in later.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="co">#st_write(Chi_Zipsf, &quot;data/ChiZipMaster.geojson&quot;, driver = &quot;GeoJSON&quot;)</span></a></code></pre></div>
-<p>We could also just write the data as a <code>CSV</code> file which may be easier for future linking. For this, we use the <code>st_drop_geometry()</code> function to remove the geometry data, so we’re just left with the attributes.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="co">#write.csv(st_drop_geometry(Chi_Zipsf), &quot;data/ChiZipMaster.csv&quot;)</span></a></code></pre></div>
+<pre class="r"><code>#st_(Chi_Zipsf, &quot;data/ChiZipMaster.geojson&quot;, driver = &quot;GeoJSON&quot;)</code></pre>
+<p>We could also just the data as a <code>CSV</code> file which may be easier for future linking. For this, we use the <code>st_drop_geometry()</code> function to remove the geometry data, so we’re just left with the attributes.</p>
+<pre class="r"><code>#.csv(st_drop_geometry(Chi_Zipsf), &quot;data/ChiZipMaster.csv&quot;)</code></pre>
 </div>
-<div id="more-resources-1" class="section level2 unnumbered">
-<h2>More Resources</h2>
+<div id="more-resources-1" class="section level2 unnumbered hasAnchor">
+<h2>More Resources<a href="02-choropleth.html#more-resources-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>For choropleth mapping in R:</p>
 <ul>
 <li><a href="https://spatialanalysis.github.io/lab_tutorials/4_R_Mapping.html" class="uri">https://spatialanalysis.github.io/lab_tutorials/4_R_Mapping.html</a></li>
@@ -557,11 +466,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 <a href="01-intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="03-overlaypoints.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="05-LISA.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -580,6 +488,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -600,6 +509,10 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "section"
 }

@@ -1,29 +1,28 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4 Calculate Spatial Metrics | Intro to R-Spatial for Healthy Places</title>
-  <meta name="description" content="This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions &amp; Policies Lab at the University of Chicago ." />
-  <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
+  <title>5 Calculate Spatial Metrics | Intro to R-Spatial for Healthy Places</title>
+  <meta name="description" content="This was developed by the Healthy Regions - Policies Lab." />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4 Calculate Spatial Metrics | Intro to R-Spatial for Healthy Places" />
+  <meta property="og:title" content="5 Calculate Spatial Metrics | Intro to R-Spatial for Healthy Places" />
   <meta property="og:type" content="book" />
   
-  
-  <meta property="og:description" content="This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions &amp; Policies Lab at the University of Chicago ." />
+  <meta property="og:description" content="This was developed by the Healthy Regions - Policies Lab." />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4 Calculate Spatial Metrics | Intro to R-Spatial for Healthy Places" />
+  <meta name="twitter:title" content="5 Calculate Spatial Metrics | Intro to R-Spatial for Healthy Places" />
   
-  <meta name="twitter:description" content="This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions &amp; Policies Lab at the University of Chicago ." />
+  <meta name="twitter:description" content="This was developed by the Healthy Regions - Policies Lab." />
   
 
 
 
-<meta name="date" content="2021-08-25" />
+<meta name="date" content="2023-06-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +31,8 @@
   
 <link rel="prev" href="03-overlaypoints.html"/>
 
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -48,79 +48,25 @@
 
 
 
-
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
 <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.3/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.2/leaflet-providers-plugin.js"></script>
+
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  { background-color: #f8f8f8; }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ef2929; } /* Alert */
-code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #c4a000; } /* Attribute */
-code span.bn { color: #0000cf; } /* BaseN */
-code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #000000; } /* Constant */
-code span.co { color: #8f5902; font-style: italic; } /* Comment */
-code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code span.dt { color: #204a87; } /* DataType */
-code span.dv { color: #0000cf; } /* DecVal */
-code span.er { color: #a40000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #000000; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code span.ot { color: #8f5902; } /* Other */
-code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #000000; } /* SpecialChar */
-code span.ss { color: #4e9a06; } /* SpecialString */
-code span.st { color: #4e9a06; } /* String */
-code span.va { color: #000000; } /* Variable */
-code span.vs { color: #4e9a06; } /* VerbatimString */
-code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -136,10 +82,12 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Background</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Background</a>
+<ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#environment-setup"><i class="fa fa-check"></i>Environment Setup</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="01-intro.html"><a href="01-intro.html"><i class="fa fa-check"></i><b>1</b> Intro to Spatial Data</a><ul>
+<li class="chapter" data-level="1" data-path="01-intro.html"><a href="01-intro.html"><i class="fa fa-check"></i><b>1</b> Intro to Spatial Data</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="01-intro.html"><a href="01-intro.html#load-spatial-data"><i class="fa fa-check"></i><b>1.1</b> Load Spatial Data</a></li>
 <li class="chapter" data-level="1.2" data-path="01-intro.html"><a href="01-intro.html#non-spatial-spatial-views"><i class="fa fa-check"></i><b>1.2</b> Non-Spatial &amp; Spatial Views</a></li>
 <li class="chapter" data-level="1.3" data-path="01-intro.html"><a href="01-intro.html#spatial-data-structure"><i class="fa fa-check"></i><b>1.3</b> Spatial Data Structure</a></li>
@@ -150,7 +98,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.8" data-path="01-intro.html"><a href="01-intro.html#overlay-zip-code-boundaries"><i class="fa fa-check"></i><b>1.8</b> Overlay Zip Code Boundaries</a></li>
 <li class="chapter" data-level="" data-path="01-intro.html"><a href="01-intro.html#more-resources"><i class="fa fa-check"></i>More Resources</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="02-choropleth.html"><a href="02-choropleth.html"><i class="fa fa-check"></i><b>2</b> Map Neighborhoods</a><ul>
+<li class="chapter" data-level="2" data-path="02-choropleth.html"><a href="02-choropleth.html"><i class="fa fa-check"></i><b>2</b> Map Neighborhoods</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="02-choropleth.html"><a href="02-choropleth.html#clean-attribute-data"><i class="fa fa-check"></i><b>2.1</b> Clean Attribute Data</a></li>
 <li class="chapter" data-level="2.2" data-path="02-choropleth.html"><a href="02-choropleth.html#merge-spatial-data"><i class="fa fa-check"></i><b>2.2</b> Merge Spatial Data</a></li>
 <li class="chapter" data-level="2.3" data-path="02-choropleth.html"><a href="02-choropleth.html#quantile-maps"><i class="fa fa-check"></i><b>2.3</b> Quantile Maps</a></li>
@@ -158,27 +107,39 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.5" data-path="02-choropleth.html"><a href="02-choropleth.html#jenks-maps"><i class="fa fa-check"></i><b>2.5</b> Jenks Maps</a></li>
 <li class="chapter" data-level="2.6" data-path="02-choropleth.html"><a href="02-choropleth.html#integrate-more-data"><i class="fa fa-check"></i><b>2.6</b> Integrate More Data</a></li>
 <li class="chapter" data-level="2.7" data-path="02-choropleth.html"><a href="02-choropleth.html#thematic-map-panel"><i class="fa fa-check"></i><b>2.7</b> Thematic Map Panel</a></li>
-<li class="chapter" data-level="2.8" data-path="02-choropleth.html"><a href="02-choropleth.html#write-data"><i class="fa fa-check"></i><b>2.8</b> Write Data</a></li>
+<li class="chapter" data-level="2.8" data-path="02-choropleth.html"><a href="02-choropleth.html#data"><i class="fa fa-check"></i><b>2.8</b> Data</a></li>
 <li class="chapter" data-level="" data-path="02-choropleth.html"><a href="02-choropleth.html#more-resources-1"><i class="fa fa-check"></i>More Resources</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html"><i class="fa fa-check"></i><b>3</b> Adding Resources</a><ul>
-<li class="chapter" data-level="3.1" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#geocode"><i class="fa fa-check"></i><b>3.1</b> Geocode</a></li>
-<li class="chapter" data-level="3.2" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#convert-to-spatial-data"><i class="fa fa-check"></i><b>3.2</b> Convert to Spatial Data</a></li>
-<li class="chapter" data-level="3.3" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#basic-map-of-points"><i class="fa fa-check"></i><b>3.3</b> Basic Map of Points</a></li>
-<li class="chapter" data-level="3.4" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#overlay-points-style"><i class="fa fa-check"></i><b>3.4</b> Overlay Points &amp; Style</a></li>
-<li class="chapter" data-level="3.5" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#integrate-more-data-1"><i class="fa fa-check"></i><b>3.5</b> Integrate More Data</a></li>
-<li class="chapter" data-level="3.6" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#graduated-symbology"><i class="fa fa-check"></i><b>3.6</b> Graduated Symbology</a></li>
-<li class="chapter" data-level="3.7" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#style-final-map"><i class="fa fa-check"></i><b>3.7</b> Style Final Map</a></li>
+<li class="chapter" data-level="3" data-path="05-LISA.html"><a href="05-LISA.html"><i class="fa fa-check"></i><b>3</b> Spatial Cluster Detection</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="05-LISA.html"><a href="05-LISA.html#identify-pattern"><i class="fa fa-check"></i><b>3.1</b> Identify Pattern</a></li>
+<li class="chapter" data-level="3.2" data-path="05-LISA.html"><a href="05-LISA.html#load-rgeoda"><i class="fa fa-check"></i><b>3.2</b> Load rGeoda</a></li>
+<li class="chapter" data-level="3.3" data-path="05-LISA.html"><a href="05-LISA.html#define-w"><i class="fa fa-check"></i><b>3.3</b> Define W</a></li>
+<li class="chapter" data-level="3.4" data-path="05-LISA.html"><a href="05-LISA.html#calculate-lisa"><i class="fa fa-check"></i><b>3.4</b> Calculate LISA</a></li>
+<li class="chapter" data-level="3.5" data-path="05-LISA.html"><a href="05-LISA.html#map-the-lisa"><i class="fa fa-check"></i><b>3.5</b> Map the LISA</a></li>
+<li class="chapter" data-level="" data-path="05-LISA.html"><a href="05-LISA.html#more-resources-2"><i class="fa fa-check"></i>More Resources</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="04-newsvar.html"><a href="04-newsvar.html"><i class="fa fa-check"></i><b>4</b> Calculate Spatial Metrics</a><ul>
-<li class="chapter" data-level="4.1" data-path="04-newsvar.html"><a href="04-newsvar.html#load-spatial-data-1"><i class="fa fa-check"></i><b>4.1</b> Load Spatial Data</a></li>
-<li class="chapter" data-level="4.2" data-path="04-newsvar.html"><a href="04-newsvar.html#transform-projections"><i class="fa fa-check"></i><b>4.2</b> Transform Projections</a></li>
-<li class="chapter" data-level="4.3" data-path="04-newsvar.html"><a href="04-newsvar.html#count-resources-by-area"><i class="fa fa-check"></i><b>4.3</b> Count resources by area</a><ul>
-<li class="chapter" data-level="4.3.1" data-path="04-newsvar.html"><a href="04-newsvar.html#count-per-area"><i class="fa fa-check"></i><b>4.3.1</b> Count # per Area</a></li>
+<li class="chapter" data-level="4" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html"><i class="fa fa-check"></i><b>4</b> Adding Resources</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#geocode"><i class="fa fa-check"></i><b>4.1</b> Geocode</a></li>
+<li class="chapter" data-level="4.2" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#convert-to-spatial-data"><i class="fa fa-check"></i><b>4.2</b> Convert to Spatial Data</a></li>
+<li class="chapter" data-level="4.3" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#basic-map-of-points"><i class="fa fa-check"></i><b>4.3</b> Basic Map of Points</a></li>
+<li class="chapter" data-level="4.4" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#overlay-points-style"><i class="fa fa-check"></i><b>4.4</b> Overlay Points &amp; Style</a></li>
+<li class="chapter" data-level="4.5" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#integrate-more-data-1"><i class="fa fa-check"></i><b>4.5</b> Integrate More Data</a></li>
+<li class="chapter" data-level="4.6" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#graduated-symbology"><i class="fa fa-check"></i><b>4.6</b> Graduated Symbology</a></li>
+<li class="chapter" data-level="4.7" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#style-final-map"><i class="fa fa-check"></i><b>4.7</b> Style Final Map</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="04-newsvar.html"><a href="04-newsvar.html#buffer-data"><i class="fa fa-check"></i><b>4.4</b> Buffer Data</a></li>
-<li class="chapter" data-level="4.5" data-path="04-newsvar.html"><a href="04-newsvar.html#count-buffers-by-area"><i class="fa fa-check"></i><b>4.5</b> Count buffers by area</a></li>
-<li class="chapter" data-level="4.6" data-path="04-newsvar.html"><a href="04-newsvar.html#integrate-explore"><i class="fa fa-check"></i><b>4.6</b> Integrate &amp; Explore</a></li>
+<li class="chapter" data-level="5" data-path="04-newsvar.html"><a href="04-newsvar.html"><i class="fa fa-check"></i><b>5</b> Calculate Spatial Metrics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="04-newsvar.html"><a href="04-newsvar.html#load-spatial-data-1"><i class="fa fa-check"></i><b>5.1</b> Load Spatial Data</a></li>
+<li class="chapter" data-level="5.2" data-path="04-newsvar.html"><a href="04-newsvar.html#transform-projections"><i class="fa fa-check"></i><b>5.2</b> Transform Projections</a></li>
+<li class="chapter" data-level="5.3" data-path="04-newsvar.html"><a href="04-newsvar.html#count-resources-by-area"><i class="fa fa-check"></i><b>5.3</b> Count resources by area</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="04-newsvar.html"><a href="04-newsvar.html#count-per-area"><i class="fa fa-check"></i><b>5.3.1</b> Count # per Area</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="04-newsvar.html"><a href="04-newsvar.html#buffer-data"><i class="fa fa-check"></i><b>5.4</b> Buffer Data</a></li>
+<li class="chapter" data-level="5.5" data-path="04-newsvar.html"><a href="04-newsvar.html#count-buffers-by-area"><i class="fa fa-check"></i><b>5.5</b> Count buffers by area</a></li>
+<li class="chapter" data-level="5.6" data-path="04-newsvar.html"><a href="04-newsvar.html#integrate-explore"><i class="fa fa-check"></i><b>5.6</b> Integrate &amp; Explore</a></li>
 </ul></li>
 </ul>
 
@@ -197,8 +158,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="calculate-spatial-metrics" class="section level1">
-<h1><span class="header-section-number">4</span> Calculate Spatial Metrics</h1>
+<div id="calculate-spatial-metrics" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> Calculate Spatial Metrics<a href="04-newsvar.html#calculate-spatial-metrics" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>While we’ve generated some nice visualizations, we need insights quantified as metrics at the neighborhood level. Don’t start this step until you have a good idea of what you need. Visualizing and exploring the data in depth is best practice.</p>
 <p>For our purposes, we’re interested in developing spatial access metrics with a container method approach. At the end of this tutorial, we’ll generate the following new variables:</p>
 <ul>
@@ -206,70 +167,59 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li>Total number of Walkble MOUD Service Areas by zip code</li>
 </ul>
 <p>Plus, we will have a new spatial layer, that includes the actual service areas (ie. 1-mile buffers of MOUDs). We assume that access to MOUDs is critical and requires high regularity, and that walking is the most likely option during COVID. This guides the parameter specification of MOUD Service Areas (and is also backed up by some literature in this space, though much more is needed.)</p>
-<div id="load-spatial-data-1" class="section level2">
-<h2><span class="header-section-number">4.1</span> Load Spatial Data</h2>
+<div id="load-spatial-data-1" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Load Spatial Data<a href="04-newsvar.html#load-spatial-data-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Let’s first reload our spatial data – this will be the MOUD points, plus the master zip code spatial file.</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1"><span class="kw">library</span>(sf)</a>
-<a class="sourceLine" id="cb88-2" data-line-number="2"><span class="kw">library</span>(tmap)</a>
-<a class="sourceLine" id="cb88-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb88-4" data-line-number="4">points &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/methadoneMOUD.geojson&quot;</span>)</a></code></pre></div>
+<pre class="r"><code>#library(sf)
+#library(tmap)
+
+points &lt;- st_read(&quot;data/methadoneMOUD.geojson&quot;)</code></pre>
 <pre><code>## Reading layer `methadoneMOUD&#39; from data source 
-##   `/Users/maryniakolak/code/Intro2RSpatialMed/data/methadoneMOUD.geojson&#39; 
-##   using driver `GeoJSON&#39;
+##   `/Users/maryniakolak/Code/Intro2RSpatialMed/data/methadoneMOUD.geojson&#39; using driver `GeoJSON&#39;
 ## Simple feature collection with 25 features and 8 fields
 ## Geometry type: POINT
 ## Dimension:     XY
 ## Bounding box:  xmin: -87.7349 ymin: 41.68698 xmax: -87.57673 ymax: 41.9533
-## CRS:           4326</code></pre>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1">areas &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&quot;</span>)</a></code></pre></div>
+## Geodetic CRS:  WGS 84</code></pre>
+<pre class="r"><code>areas &lt;- st_read(&quot;data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&quot;)</code></pre>
 <pre><code>## Reading layer `geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5&#39; from data source 
-##   `/Users/maryniakolak/code/Intro2RSpatialMed/data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&#39; 
+##   `/Users/maryniakolak/Code/Intro2RSpatialMed/data/geo_export_54bc15d8-5ef5-40e4-8f72-bb0c6dbac9a5.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 61 features and 4 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -87.94011 ymin: 41.64454 xmax: -87.52414 ymax: 42.02304
-## CRS:           4326</code></pre>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1"><span class="kw">head</span>(points)</a></code></pre></div>
+## Geodetic CRS:  WGS84(DD)</code></pre>
+<pre class="r"><code>dim(points)</code></pre>
+<pre><code>## [1] 25  9</code></pre>
+<pre class="r"><code>dim(areas)</code></pre>
+<pre><code>## [1] 61  5</code></pre>
+<pre class="r"><code>head(points)</code></pre>
 <pre><code>## Simple feature collection with 6 features and 8 fields
 ## Geometry type: POINT
 ## Dimension:     XY
 ## Bounding box:  xmin: -87.72186 ymin: 41.88474 xmax: -87.63409 ymax: 41.9533
-## CRS:           4326
-##   X                                                         Name
-## 1 3 Soft Landing Interventions/DBA Symetria Recovery of Lakeview
-## 2 4                                        PDSSC - Chicago, Inc.
-## 3 5                          Center for Addictive Problems, Inc.
-## 4 6                                Family Guidance Centers, Inc.
-## 5 7                                     A Rincon Family Services
-## 6 8                                                            *
-##                Address    City State   Zip
-## 1 3934 N. Lincoln Ave. Chicago    IL 60613
-## 2  2260 N. Elston Ave. Chicago    IL 60614
-## 3     609 N. Wells St. Chicago    IL 60654
-## 4  310 W. Chicago Ave. Chicago    IL 60654
-## 5   3809 W. Grand Ave. Chicago    IL 60651
-## 6  140 N. Ashland Ave. Chicago    IL 60607
-##                                 fullAdd geo_method
-## 1 3934 N. Lincoln Ave. Chicago IL 60613     census
-## 2  2260 N. Elston Ave. Chicago IL 60614     census
-## 3     609 N. Wells St. Chicago IL 60654     census
-## 4  310 W. Chicago Ave. Chicago IL 60654     census
-## 5   3809 W. Grand Ave. Chicago IL 60651     census
-## 6  140 N. Ashland Ave. Chicago IL 60607        osm
-##                     geometry
-## 1  POINT (-87.67818 41.9533)
-## 2 POINT (-87.67407 41.92269)
-## 3 POINT (-87.63409 41.89268)
-## 4 POINT (-87.63636 41.89657)
-## 5 POINT (-87.72186 41.90435)
-## 6 POINT (-87.66725 41.88474)</code></pre>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1"><span class="kw">head</span>(areas)</a></code></pre></div>
+## Geodetic CRS:  WGS 84
+##   X                                                         Name              Address    City
+## 1 3 Soft Landing Interventions/DBA Symetria Recovery of Lakeview 3934 N. Lincoln Ave. Chicago
+## 2 4                                        PDSSC - Chicago, Inc.  2260 N. Elston Ave. Chicago
+## 3 5                          Center for Addictive Problems, Inc.     609 N. Wells St. Chicago
+## 4 6                                Family Guidance Centers, Inc.  310 W. Chicago Ave. Chicago
+## 5 7                                     A Rincon Family Services   3809 W. Grand Ave. Chicago
+## 6 8                                                            *  140 N. Ashland Ave. Chicago
+##   State   Zip                               fullAdd geo_method                   geometry
+## 1    IL 60613 3934 N. Lincoln Ave. Chicago IL 60613     census  POINT (-87.67818 41.9533)
+## 2    IL 60614  2260 N. Elston Ave. Chicago IL 60614     census POINT (-87.67407 41.92269)
+## 3    IL 60654     609 N. Wells St. Chicago IL 60654     census POINT (-87.63409 41.89268)
+## 4    IL 60654  310 W. Chicago Ave. Chicago IL 60654     census POINT (-87.63636 41.89657)
+## 5    IL 60651   3809 W. Grand Ave. Chicago IL 60651     census POINT (-87.72186 41.90435)
+## 6    IL 60607  140 N. Ashland Ave. Chicago IL 60607        osm POINT (-87.66725 41.88474)</code></pre>
+<pre class="r"><code>head(areas)</code></pre>
 <pre><code>## Simple feature collection with 6 features and 4 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -87.80649 ymin: 41.88747 xmax: -87.59852 ymax: 41.93228
-## CRS:           4326
+## Geodetic CRS:  WGS84(DD)
 ##   objectid shape_area shape_len   zip                       geometry
 ## 1       33  106052287  42720.04 60647 MULTIPOLYGON (((-87.67762 4...
 ## 2       34  127476051  48103.78 60639 MULTIPOLYGON (((-87.72683 4...
@@ -278,67 +228,60 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## 5       37   99039621  47970.14 60651 MULTIPOLYGON (((-87.70656 4...
 ## 6       38   23506056  34689.35 60611 MULTIPOLYGON (((-87.61401 4...</code></pre>
 </div>
-<div id="transform-projections" class="section level2">
-<h2><span class="header-section-number">4.2</span> Transform Projections</h2>
+<div id="transform-projections" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Transform Projections<a href="04-newsvar.html#transform-projections" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>First we need to switch to a projection that uses distance in feet or meters as a metric. We’ll use EPSG:3435 from the first tutorial. To find which EPSG was recommended, I searched “EPSG Illinois feet” and EPSG:3435 came up as a viable candidate. So, we use that for our new, projected CRS.</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1">areas &lt;-<span class="st"> </span><span class="kw">st_transform</span>(areas, <span class="dv">3435</span>)</a>
-<a class="sourceLine" id="cb96-2" data-line-number="2">points &lt;-<span class="st"> </span><span class="kw">st_transform</span>(points, <span class="dv">3435</span>)</a></code></pre></div>
+<pre class="r"><code>areas &lt;- st_transform(areas, 3435)
+points &lt;- st_transform(points, 3435)</code></pre>
 <p>We may want to once again confirm they are plotting correctly:</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb97-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">size =</span> <span class="dv">1</span>)</a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
+<pre class="r"><code>tm_shape(areas) + tm_polygons() +
+  tm_shape(points) + tm_dots(size = 1)</code></pre>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
 </div>
-<div id="count-resources-by-area" class="section level2">
-<h2><span class="header-section-number">4.3</span> Count resources by area</h2>
+<div id="count-resources-by-area" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Count resources by area<a href="04-newsvar.html#count-resources-by-area" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>One way of understanding resource inequity is by thinking about how many resources exist in a neighborhood.</p>
 <p>First, give the points the attributes of the polygons they are in. Inspect.</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1">pipr &lt;-<span class="st"> </span><span class="kw">st_join</span>(points, areas)</a>
-<a class="sourceLine" id="cb98-2" data-line-number="2"><span class="kw">head</span>(pipr)</a></code></pre></div>
+<pre class="r"><code>pipr &lt;- st_join(points, areas)
+head(pipr)</code></pre>
 <pre><code>## Simple feature collection with 6 features and 12 fields
 ## Geometry type: POINT
 ## Dimension:     XY
 ## Bounding box:  xmin: 1150707 ymin: 1901294 xmax: 1174632 ymax: 1926255
-## CRS:           EPSG:3435
-##   X                                                         Name
-## 1 3 Soft Landing Interventions/DBA Symetria Recovery of Lakeview
-## 2 4                                        PDSSC - Chicago, Inc.
-## 3 5                          Center for Addictive Problems, Inc.
-## 4 6                                Family Guidance Centers, Inc.
-## 5 7                                     A Rincon Family Services
-## 6 8                                                            *
-##                Address    City State   Zip
-## 1 3934 N. Lincoln Ave. Chicago    IL 60613
-## 2  2260 N. Elston Ave. Chicago    IL 60614
-## 3     609 N. Wells St. Chicago    IL 60654
-## 4  310 W. Chicago Ave. Chicago    IL 60654
-## 5   3809 W. Grand Ave. Chicago    IL 60651
-## 6  140 N. Ashland Ave. Chicago    IL 60607
-##                                 fullAdd geo_method objectid shape_area
-## 1 3934 N. Lincoln Ave. Chicago IL 60613     census       53   53990895
-## 2  2260 N. Elston Ave. Chicago IL 60614     census       32   94460632
-## 3     609 N. Wells St. Chicago IL 60654     census       55   15869961
-## 4  310 W. Chicago Ave. Chicago IL 60654     census       54   31598157
-## 5   3809 W. Grand Ave. Chicago IL 60651     census       37   99039621
-## 6  140 N. Ashland Ave. Chicago IL 60607        osm       16  106718949
-##   shape_len   zip                geometry
-## 1  31196.32 60613 POINT (1162460 1926255)
-## 2  50587.35 60614 POINT (1163663 1915110)
-## 3  17119.70 60654 POINT (1174632 1904257)
-## 4  24208.70 60610 POINT (1174003 1905671)
-## 5  47970.14 60651 POINT (1150707 1908328)
-## 6  42663.20 60612 POINT (1165627 1901294)</code></pre>
+## Projected CRS: NAD83 / Illinois East (ftUS)
+##   X                                                         Name              Address    City
+## 1 3 Soft Landing Interventions/DBA Symetria Recovery of Lakeview 3934 N. Lincoln Ave. Chicago
+## 2 4                                        PDSSC - Chicago, Inc.  2260 N. Elston Ave. Chicago
+## 3 5                          Center for Addictive Problems, Inc.     609 N. Wells St. Chicago
+## 4 6                                Family Guidance Centers, Inc.  310 W. Chicago Ave. Chicago
+## 5 7                                     A Rincon Family Services   3809 W. Grand Ave. Chicago
+## 6 8                                                            *  140 N. Ashland Ave. Chicago
+##   State   Zip                               fullAdd geo_method objectid shape_area shape_len   zip
+## 1    IL 60613 3934 N. Lincoln Ave. Chicago IL 60613     census       53   53990895  31196.32 60613
+## 2    IL 60614  2260 N. Elston Ave. Chicago IL 60614     census       32   94460632  50587.35 60614
+## 3    IL 60654     609 N. Wells St. Chicago IL 60654     census       55   15869961  17119.70 60654
+## 4    IL 60654  310 W. Chicago Ave. Chicago IL 60654     census       54   31598157  24208.70 60610
+## 5    IL 60651   3809 W. Grand Ave. Chicago IL 60651     census       37   99039621  47970.14 60651
+## 6    IL 60607  140 N. Ashland Ave. Chicago IL 60607        osm       16  106718949  42663.20 60612
+##                  geometry
+## 1 POINT (1162460 1926255)
+## 2 POINT (1163663 1915110)
+## 3 POINT (1174632 1904257)
+## 4 POINT (1174003 1905671)
+## 5 POINT (1150707 1908328)
+## 6 POINT (1165627 1901294)</code></pre>
 <p>You should have the same number of rows in <code>pipr</code> as you do in <code>points</code>. If not, there is something off. You may need to go back to troubleshoot. In an earlier version of this lab, I used a saved, written <code>geojson</code> file of the zip codes, and it would not render properly. Here, we load in the original shapefile at the beginning of the tutorial to avoid that error.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1"><span class="kw">dim</span>(pipr)</a></code></pre></div>
+<pre class="r"><code>dim(pipr)</code></pre>
 <pre><code>## [1] 25 13</code></pre>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" data-line-number="1"><span class="kw">dim</span>(points)</a></code></pre></div>
+<pre class="r"><code>dim(points)</code></pre>
 <pre><code>## [1] 25  9</code></pre>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1"><span class="kw">dim</span>(areas)</a></code></pre></div>
+<pre class="r"><code>dim(areas)</code></pre>
 <pre><code>## [1] 61  5</code></pre>
-<div id="count-per-area" class="section level3">
-<h3><span class="header-section-number">4.3.1</span> Count # per Area</h3>
+<div id="count-per-area" class="section level3 hasAnchor" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Count # per Area<a href="04-newsvar.html#count-per-area" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Next, count the number per area. The frequency should be logical according to the map you made earlier. Sometimes, I’ve found bugs where the numbers are multipled by some factor; this can be checked by looking at dimension disparities, as noted above.</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1">ptcount &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">table</span>(pipr<span class="op">$</span>Zip))</a>
-<a class="sourceLine" id="cb106-2" data-line-number="2"><span class="kw">head</span>(ptcount)</a></code></pre></div>
+<pre class="r"><code>ptcount &lt;- as.data.frame(table(pipr$Zip))
+head(ptcount)</code></pre>
 <pre><code>##    Var1 Freq
 ## 1 60607    2
 ## 2 60608    1
@@ -350,8 +293,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Aggregation Tip:</strong> What if you have an attribute value you’d like to aggregate? For example, average units of affordable housing facility by zip?
 Try <code>aggregate(pip$attribute, by = list(pip$geoid), mean)</code> but build on with a tidy sensibility…</p>
 <p>Now we can rename our attributes:</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" data-line-number="1"><span class="kw">names</span>(ptcount) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;zip&quot;</span>, <span class="st">&quot;MetClnc&quot;</span>)</a>
-<a class="sourceLine" id="cb108-2" data-line-number="2"><span class="kw">head</span>(ptcount)</a></code></pre></div>
+<pre class="r"><code>names(ptcount) &lt;- c(&quot;zip&quot;, &quot;MetClnc&quot;)
+head(ptcount)</code></pre>
 <pre><code>##     zip MetClnc
 ## 1 60607       2
 ## 2 60608       1
@@ -360,12 +303,12 @@ Try <code>aggregate(pip$attribute, by = list(pip$geoid), mean)</code> but build 
 ## 5 60614       1
 ## 6 60615       1</code></pre>
 <p>And finally, merge back to your master zip file:</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" data-line-number="1"><span class="kw">head</span>(areas)</a></code></pre></div>
+<pre class="r"><code>head(areas)</code></pre>
 <pre><code>## Simple feature collection with 6 features and 4 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: 1127607 ymin: 1902374 xmax: 1184320 ymax: 1918596
-## CRS:           EPSG:3435
+## Projected CRS: NAD83 / Illinois East (ftUS)
 ##   objectid shape_area shape_len   zip                       geometry
 ## 1       33  106052287  42720.04 60647 MULTIPOLYGON (((1162711 191...
 ## 2       34  127476051  48103.78 60639 MULTIPOLYGON (((1149304 191...
@@ -373,82 +316,87 @@ Try <code>aggregate(pip$attribute, by = list(pip$geoid), mean)</code> but build 
 ## 4       36   70853834  42527.99 60622 MULTIPOLYGON (((1165664 190...
 ## 5       37   99039621  47970.14 60651 MULTIPOLYGON (((1154895 190...
 ## 6       38   23506056  34689.35 60611 MULTIPOLYGON (((1180097 190...</code></pre>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" data-line-number="1">areas&lt;-<span class="st"> </span><span class="kw">merge</span>(areas, ptcount, <span class="dt">by=</span><span class="st">&quot;zip&quot;</span>, <span class="dt">all =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb112-2" data-line-number="2"><span class="kw">head</span>(areas)</a></code></pre></div>
+<pre class="r"><code>areas&lt;- merge(areas, ptcount, by=&quot;zip&quot;, all = TRUE)
+head(areas)</code></pre>
 <pre><code>## Simple feature collection with 6 features and 5 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: 1173038 ymin: 1889918 xmax: 1183259 ymax: 1902959
-## CRS:           EPSG:3435
-##     zip objectid shape_area shape_len MetClnc
-## 1 60601       27    9166246  19804.58      NA
-## 2 60602       26    4847125  14448.17      NA
-## 3 60603       19    4560229  13672.68      NA
-## 4 60604       48    4294902  12245.81      NA
-## 5 60605       20   36301276  37973.35      NA
-## 6 60606       31    6766411  12040.44      NA
-##                         geometry
-## 1 MULTIPOLYGON (((1177742 190...
-## 2 MULTIPOLYGON (((1181226 190...
-## 3 MULTIPOLYGON (((1179499 190...
-## 4 MULTIPOLYGON (((1174763 189...
-## 5 MULTIPOLYGON (((1178341 189...
-## 6 MULTIPOLYGON (((1174681 190...</code></pre>
+## Projected CRS: NAD83 / Illinois East (ftUS)
+##     zip objectid shape_area shape_len MetClnc                       geometry
+## 1 60601       27    9166246  19804.58      NA MULTIPOLYGON (((1177742 190...
+## 2 60602       26    4847125  14448.17      NA MULTIPOLYGON (((1181226 190...
+## 3 60603       19    4560229  13672.68      NA MULTIPOLYGON (((1179499 190...
+## 4 60604       48    4294902  12245.81      NA MULTIPOLYGON (((1174763 189...
+## 5 60605       20   36301276  37973.35      NA MULTIPOLYGON (((1178341 189...
+## 6 60606       31    6766411  12040.44      NA MULTIPOLYGON (((1174681 190...</code></pre>
 <p>Quickly map to inspect:</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>(<span class="dt">col =</span> <span class="st">&quot;gray80&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb114-2" data-line-number="2"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>(<span class="dt">col =</span> <span class="st">&quot;MetClnc&quot;</span>, <span class="dt">style =</span> <span class="st">&quot;pretty&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.8</span>) <span class="op">+</span><span class="st">   </span></a>
-<a class="sourceLine" id="cb114-3" data-line-number="3"><span class="st">  </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">size =</span> <span class="fl">0.5</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
+<pre class="r"><code>tm_shape(areas) + tm_polygons(col = &quot;gray80&quot;) +
+tm_shape(areas) + tm_polygons(col = &quot;MetClnc&quot;, style = &quot;pretty&quot;, alpha = 0.8) +   
+  tm_shape(points) + tm_dots(size = 0.5) </code></pre>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
 </div>
 </div>
-<div id="buffer-data" class="section level2">
-<h2><span class="header-section-number">4.4</span> Buffer Data</h2>
-<p>Next, lets create a walkable buffer of one mile, or 5280 feet, for our MOUD provider locations. Individuals residing in places outside of that walkabile area may have difficulty accessing this medication during crises, like a pandemic.</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1"><span class="co"># Create 1mile buffers for each point</span></a>
-<a class="sourceLine" id="cb115-2" data-line-number="2">ptbuffers &lt;-<span class="st"> </span><span class="kw">st_buffer</span>(points, <span class="dv">5280</span>)</a></code></pre></div>
+<div id="buffer-data" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Buffer Data<a href="04-newsvar.html#buffer-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Next, lets create a walkable buffer of one mile, or 5280 feet, for our MOUD provider locations. Individuals residing in places outside of that walkable area may have difficulty accessing this medication during crises, like a pandemic.</p>
+<pre class="r"><code># Create 1mile buffers for each point
+ptbuffers &lt;- st_buffer(points, 5280)
+head(ptbuffers)</code></pre>
+<pre><code>## Simple feature collection with 6 features and 8 fields
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 1145427 ymin: 1896014 xmax: 1179912 ymax: 1931535
+## Projected CRS: NAD83 / Illinois East (ftUS)
+##   X                                                         Name              Address    City
+## 1 3 Soft Landing Interventions/DBA Symetria Recovery of Lakeview 3934 N. Lincoln Ave. Chicago
+## 2 4                                        PDSSC - Chicago, Inc.  2260 N. Elston Ave. Chicago
+## 3 5                          Center for Addictive Problems, Inc.     609 N. Wells St. Chicago
+## 4 6                                Family Guidance Centers, Inc.  310 W. Chicago Ave. Chicago
+## 5 7                                     A Rincon Family Services   3809 W. Grand Ave. Chicago
+## 6 8                                                            *  140 N. Ashland Ave. Chicago
+##   State   Zip                               fullAdd geo_method                       geometry
+## 1    IL 60613 3934 N. Lincoln Ave. Chicago IL 60613     census POLYGON ((1167740 1926255, ...
+## 2    IL 60614  2260 N. Elston Ave. Chicago IL 60614     census POLYGON ((1168943 1915110, ...
+## 3    IL 60654     609 N. Wells St. Chicago IL 60654     census POLYGON ((1179912 1904257, ...
+## 4    IL 60654  310 W. Chicago Ave. Chicago IL 60654     census POLYGON ((1179283 1905671, ...
+## 5    IL 60651   3809 W. Grand Ave. Chicago IL 60651     census POLYGON ((1155987 1908328, ...
+## 6    IL 60607  140 N. Ashland Ave. Chicago IL 60607        osm POLYGON ((1170907 1901294, ...</code></pre>
 <p>Inspect immediately:</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_borders</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb116-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_shape</span>(ptbuffers) <span class="op">+</span><span class="st"> </span><span class="kw">tm_borders</span>(<span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb116-3" data-line-number="3"><span class="st">  </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">col =</span> <span class="st">&quot;red&quot;</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
+<pre class="r"><code>tm_shape(areas) + tm_borders() +
+  tm_shape(ptbuffers) + tm_borders(col = &quot;blue&quot;) </code></pre>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
 </div>
-<div id="count-buffers-by-area" class="section level2">
-<h2><span class="header-section-number">4.5</span> Count buffers by area</h2>
+<div id="count-buffers-by-area" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> Count buffers by area<a href="04-newsvar.html#count-buffers-by-area" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We know that MOUD locations are accessible up to one mile away. So, a total count of resources by area may be too restrictive. Let’s calculate how many <em>walkable</em> MOUD clinics are in each zip code. Or, how many buffers are in each area…</p>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1">bufferct &lt;-<span class="st"> </span><span class="kw">lengths</span>(<span class="kw">st_intersects</span>(areas, ptbuffers))</a>
-<a class="sourceLine" id="cb117-2" data-line-number="2"><span class="kw">head</span>(bufferct)</a></code></pre></div>
+<pre class="r"><code>bufferct &lt;- lengths(st_intersects(areas, ptbuffers))
+head(bufferct)</code></pre>
 <pre><code>## [1] 2 2 1 1 1 2</code></pre>
 <p>Stick buffer totals back to the zip master file:</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" data-line-number="1"><span class="co"># Stick buffer totals back to the census master file</span></a>
-<a class="sourceLine" id="cb119-2" data-line-number="2">areas &lt;-<span class="st"> </span><span class="kw">cbind</span>(areas,bufferct)</a>
-<a class="sourceLine" id="cb119-3" data-line-number="3"><span class="kw">head</span>(areas)</a></code></pre></div>
+<pre class="r"><code># Stick buffer totals back to the census master file
+areas &lt;- cbind(areas,bufferct)
+head(areas)</code></pre>
 <pre><code>## Simple feature collection with 6 features and 6 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: 1173038 ymin: 1889918 xmax: 1183259 ymax: 1902959
-## CRS:           EPSG:3435
-##     zip objectid shape_area shape_len MetClnc bufferct
-## 1 60601       27    9166246  19804.58      NA        2
-## 2 60602       26    4847125  14448.17      NA        2
-## 3 60603       19    4560229  13672.68      NA        1
-## 4 60604       48    4294902  12245.81      NA        1
-## 5 60605       20   36301276  37973.35      NA        1
-## 6 60606       31    6766411  12040.44      NA        2
-##                         geometry
-## 1 MULTIPOLYGON (((1177742 190...
-## 2 MULTIPOLYGON (((1181226 190...
-## 3 MULTIPOLYGON (((1179499 190...
-## 4 MULTIPOLYGON (((1174763 189...
-## 5 MULTIPOLYGON (((1178341 189...
-## 6 MULTIPOLYGON (((1174681 190...</code></pre>
+## Projected CRS: NAD83 / Illinois East (ftUS)
+##     zip objectid shape_area shape_len MetClnc bufferct                       geometry
+## 1 60601       27    9166246  19804.58      NA        2 MULTIPOLYGON (((1177742 190...
+## 2 60602       26    4847125  14448.17      NA        2 MULTIPOLYGON (((1181226 190...
+## 3 60603       19    4560229  13672.68      NA        1 MULTIPOLYGON (((1179499 190...
+## 4 60604       48    4294902  12245.81      NA        1 MULTIPOLYGON (((1174763 189...
+## 5 60605       20   36301276  37973.35      NA        1 MULTIPOLYGON (((1178341 189...
+## 6 60606       31    6766411  12040.44      NA        2 MULTIPOLYGON (((1174681 190...</code></pre>
 <p>Map density of buffers per census area:</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" data-line-number="1"><span class="kw">tm_shape</span>(areas) <span class="op">+</span><span class="st"> </span><span class="kw">tm_polygons</span>(<span class="dt">col =</span> <span class="st">&quot;bufferct&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;BuGn&quot;</span>, <span class="dt">n=</span><span class="dv">5</span>, <span class="dt">style =</span> <span class="st">&quot;jenks&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb121-2" data-line-number="2"><span class="st">    </span><span class="kw">tm_shape</span>(ptbuffers) <span class="op">+</span><span class="st"> </span><span class="kw">tm_fill</span>(<span class="dt">col =</span> <span class="st">&quot;gray90&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb121-3" data-line-number="3"><span class="st">    </span><span class="kw">tm_shape</span>(points) <span class="op">+</span><span class="st"> </span><span class="kw">tm_dots</span>(<span class="dt">col =</span> <span class="st">&quot;gray10&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.8</span>, <span class="dt">size =</span> <span class="fl">0.3</span>) </a></code></pre></div>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
+<pre class="r"><code>tm_shape(areas) + tm_polygons(col = &quot;bufferct&quot;, palette = &quot;BuGn&quot;, n=5, style = &quot;jenks&quot;) + 
+    tm_shape(ptbuffers) + tm_fill(col = &quot;gray90&quot;, alpha=0.6) +
+    tm_shape(points) + tm_dots(col = &quot;gray10&quot;, size = 0.3) </code></pre>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
 </div>
-<div id="integrate-explore" class="section level2">
-<h2><span class="header-section-number">4.6</span> Integrate &amp; Explore</h2>
+<div id="integrate-explore" class="section level2 hasAnchor" number="5.6">
+<h2><span class="header-section-number">5.6</span> Integrate &amp; Explore<a href="04-newsvar.html#integrate-explore" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Let’s review: our master area file now has total number resources by zip and total number of walkable service areas by zip.</p>
 <p>Using your new spatial file, see if you can answer some of these quetions using various queries:</p>
 <ul>
@@ -470,7 +418,6 @@ Try <code>aggregate(pip$attribute, by = list(pip$geoid), mean)</code> but build 
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -489,6 +436,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -509,6 +457,10 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "section"
 }

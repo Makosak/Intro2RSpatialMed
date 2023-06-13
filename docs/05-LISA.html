@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Spatial Cluster Detection | Intro to R-Spatial for Healthy Places</title>
+  <meta name="description" content="This was developed by the Healthy Regions - Policies Lab." />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Spatial Cluster Detection | Intro to R-Spatial for Healthy Places" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This was developed by the Healthy Regions - Policies Lab." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Spatial Cluster Detection | Intro to R-Spatial for Healthy Places" />
+  
+  <meta name="twitter:description" content="This was developed by the Healthy Regions - Policies Lab." />
+  
+
+
+
+<meta name="date" content="2023-06-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="02-choropleth.html"/>
+<link rel="next" href="03-overlaypoints.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.2/leaflet-providers-plugin.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Background</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#environment-setup"><i class="fa fa-check"></i>Environment Setup</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="01-intro.html"><a href="01-intro.html"><i class="fa fa-check"></i><b>1</b> Intro to Spatial Data</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="01-intro.html"><a href="01-intro.html#load-spatial-data"><i class="fa fa-check"></i><b>1.1</b> Load Spatial Data</a></li>
+<li class="chapter" data-level="1.2" data-path="01-intro.html"><a href="01-intro.html#non-spatial-spatial-views"><i class="fa fa-check"></i><b>1.2</b> Non-Spatial &amp; Spatial Views</a></li>
+<li class="chapter" data-level="1.3" data-path="01-intro.html"><a href="01-intro.html#spatial-data-structure"><i class="fa fa-check"></i><b>1.3</b> Spatial Data Structure</a></li>
+<li class="chapter" data-level="1.4" data-path="01-intro.html"><a href="01-intro.html#exploring-coordinate-reference-systems"><i class="fa fa-check"></i><b>1.4</b> Exploring Coordinate Reference Systems</a></li>
+<li class="chapter" data-level="1.5" data-path="01-intro.html"><a href="01-intro.html#refine-basic-map"><i class="fa fa-check"></i><b>1.5</b> Refine Basic Map</a></li>
+<li class="chapter" data-level="1.6" data-path="01-intro.html"><a href="01-intro.html#arrange-multiple-maps"><i class="fa fa-check"></i><b>1.6</b> Arrange multiple maps</a></li>
+<li class="chapter" data-level="1.7" data-path="01-intro.html"><a href="01-intro.html#interactive-mode"><i class="fa fa-check"></i><b>1.7</b> Interactive Mode</a></li>
+<li class="chapter" data-level="1.8" data-path="01-intro.html"><a href="01-intro.html#overlay-zip-code-boundaries"><i class="fa fa-check"></i><b>1.8</b> Overlay Zip Code Boundaries</a></li>
+<li class="chapter" data-level="" data-path="01-intro.html"><a href="01-intro.html#more-resources"><i class="fa fa-check"></i>More Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="02-choropleth.html"><a href="02-choropleth.html"><i class="fa fa-check"></i><b>2</b> Map Neighborhoods</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="02-choropleth.html"><a href="02-choropleth.html#clean-attribute-data"><i class="fa fa-check"></i><b>2.1</b> Clean Attribute Data</a></li>
+<li class="chapter" data-level="2.2" data-path="02-choropleth.html"><a href="02-choropleth.html#merge-spatial-data"><i class="fa fa-check"></i><b>2.2</b> Merge Spatial Data</a></li>
+<li class="chapter" data-level="2.3" data-path="02-choropleth.html"><a href="02-choropleth.html#quantile-maps"><i class="fa fa-check"></i><b>2.3</b> Quantile Maps</a></li>
+<li class="chapter" data-level="2.4" data-path="02-choropleth.html"><a href="02-choropleth.html#standard-deviation-maps"><i class="fa fa-check"></i><b>2.4</b> Standard Deviation Maps</a></li>
+<li class="chapter" data-level="2.5" data-path="02-choropleth.html"><a href="02-choropleth.html#jenks-maps"><i class="fa fa-check"></i><b>2.5</b> Jenks Maps</a></li>
+<li class="chapter" data-level="2.6" data-path="02-choropleth.html"><a href="02-choropleth.html#integrate-more-data"><i class="fa fa-check"></i><b>2.6</b> Integrate More Data</a></li>
+<li class="chapter" data-level="2.7" data-path="02-choropleth.html"><a href="02-choropleth.html#thematic-map-panel"><i class="fa fa-check"></i><b>2.7</b> Thematic Map Panel</a></li>
+<li class="chapter" data-level="2.8" data-path="02-choropleth.html"><a href="02-choropleth.html#data"><i class="fa fa-check"></i><b>2.8</b> Data</a></li>
+<li class="chapter" data-level="" data-path="02-choropleth.html"><a href="02-choropleth.html#more-resources-1"><i class="fa fa-check"></i>More Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="05-LISA.html"><a href="05-LISA.html"><i class="fa fa-check"></i><b>3</b> Spatial Cluster Detection</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="05-LISA.html"><a href="05-LISA.html#identify-pattern"><i class="fa fa-check"></i><b>3.1</b> Identify Pattern</a></li>
+<li class="chapter" data-level="3.2" data-path="05-LISA.html"><a href="05-LISA.html#load-rgeoda"><i class="fa fa-check"></i><b>3.2</b> Load rGeoda</a></li>
+<li class="chapter" data-level="3.3" data-path="05-LISA.html"><a href="05-LISA.html#define-w"><i class="fa fa-check"></i><b>3.3</b> Define W</a></li>
+<li class="chapter" data-level="3.4" data-path="05-LISA.html"><a href="05-LISA.html#calculate-lisa"><i class="fa fa-check"></i><b>3.4</b> Calculate LISA</a></li>
+<li class="chapter" data-level="3.5" data-path="05-LISA.html"><a href="05-LISA.html#map-the-lisa"><i class="fa fa-check"></i><b>3.5</b> Map the LISA</a></li>
+<li class="chapter" data-level="" data-path="05-LISA.html"><a href="05-LISA.html#more-resources-2"><i class="fa fa-check"></i>More Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html"><i class="fa fa-check"></i><b>4</b> Adding Resources</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#geocode"><i class="fa fa-check"></i><b>4.1</b> Geocode</a></li>
+<li class="chapter" data-level="4.2" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#convert-to-spatial-data"><i class="fa fa-check"></i><b>4.2</b> Convert to Spatial Data</a></li>
+<li class="chapter" data-level="4.3" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#basic-map-of-points"><i class="fa fa-check"></i><b>4.3</b> Basic Map of Points</a></li>
+<li class="chapter" data-level="4.4" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#overlay-points-style"><i class="fa fa-check"></i><b>4.4</b> Overlay Points &amp; Style</a></li>
+<li class="chapter" data-level="4.5" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#integrate-more-data-1"><i class="fa fa-check"></i><b>4.5</b> Integrate More Data</a></li>
+<li class="chapter" data-level="4.6" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#graduated-symbology"><i class="fa fa-check"></i><b>4.6</b> Graduated Symbology</a></li>
+<li class="chapter" data-level="4.7" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html#style-final-map"><i class="fa fa-check"></i><b>4.7</b> Style Final Map</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="04-newsvar.html"><a href="04-newsvar.html"><i class="fa fa-check"></i><b>5</b> Calculate Spatial Metrics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="04-newsvar.html"><a href="04-newsvar.html#load-spatial-data-1"><i class="fa fa-check"></i><b>5.1</b> Load Spatial Data</a></li>
+<li class="chapter" data-level="5.2" data-path="04-newsvar.html"><a href="04-newsvar.html#transform-projections"><i class="fa fa-check"></i><b>5.2</b> Transform Projections</a></li>
+<li class="chapter" data-level="5.3" data-path="04-newsvar.html"><a href="04-newsvar.html#count-resources-by-area"><i class="fa fa-check"></i><b>5.3</b> Count resources by area</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="04-newsvar.html"><a href="04-newsvar.html#count-per-area"><i class="fa fa-check"></i><b>5.3.1</b> Count # per Area</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="04-newsvar.html"><a href="04-newsvar.html#buffer-data"><i class="fa fa-check"></i><b>5.4</b> Buffer Data</a></li>
+<li class="chapter" data-level="5.5" data-path="04-newsvar.html"><a href="04-newsvar.html#count-buffers-by-area"><i class="fa fa-check"></i><b>5.5</b> Count buffers by area</a></li>
+<li class="chapter" data-level="5.6" data-path="04-newsvar.html"><a href="04-newsvar.html#integrate-explore"><i class="fa fa-check"></i><b>5.6</b> Integrate &amp; Explore</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Intro to R-Spatial for Healthy Places</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="spatial-cluster-detection" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> Spatial Cluster Detection<a href="05-LISA.html#spatial-cluster-detection" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Exploratory Spatial Data Analysis requires us to review the variable of interest multiple ways, with different methods, to detect patterns and uncover interesting trends. However, our minds are wired to see patterns, whether or not they are (statistically) there.</p>
+<p>In this chapter, we’ll test the COVID regional pattern we identified previously for statistically significant spatial clustering (or outlier) behavior. Our null hypothesis is spatial randomness; if the LISA (local indicator of spatial autocorrelation) for an area is high and statistically significant, we’ve identified a “hot spot” spatial cluster. (In other words, that area and it’s neighbors have higher rates of COVID cases, when compared to a spatially random map.) If the area has a low and statistically significant finding, it’s also a spatial cluster, but a cold spot. We can also detect spatial outliers, as discussed in the workshop. How we define neighbors will influence our findings.</p>
+<div id="identify-pattern" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Identify Pattern<a href="05-LISA.html#identify-pattern" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Let’s look at the most stable choropleth map from the last exercise. If you took a break, you’ll need to reload your two main libraries, <em>sf</em> and <em>tmap</em> for spatial data wrangling and detection. Try to practice spatial I/O by loading in your merged Zip-Code level dataset.</p>
+<pre class="r"><code>library(sf)
+library(tmap)
+Chi_Zipsf &lt;- st_read(&quot;ChiZipMaster.shp&quot;)</code></pre>
+<pre><code>## Reading layer `ChiZipMaster&#39; from data source 
+##   `/Users/maryniakolak/Code/Intro2RSpatialMed/ChiZipMaster.shp&#39; using driver `ESRI Shapefile&#39;
+## Simple feature collection with 60 features and 31 fields
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -87.87596 ymin: 41.64454 xmax: -87.52414 ymax: 42.02304
+## Geodetic CRS:  WGS84(DD)</code></pre>
+<p>After inspecting your dataset again, map your variable of interest, <em>Cumulative Covid Case Rate</em>, developed previously.</p>
+<pre class="r"><code># head(Chi_Zipsf) 
+
+tm_shape(Chi_Zipsf) +
+  tm_polygons(&quot;C_R___C&quot;, 
+              style=&quot;jenks&quot;, pal=&quot;BuPu&quot;,
+              legend.hist=T, n=4,
+              title = &quot;COVID Case Rate&quot;, ) + 
+  tm_scale_bar(position = &quot;left&quot;) + 
+  tm_layout(legend.outside = TRUE, legend.outside.position = &quot;right&quot;)</code></pre>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p>We found that multuple areas on the West Side of Chicago persistently emerged as having higher case rates for this week of interest in our dataset. Is this a statistically significant finding, though?</p>
+</div>
+<div id="load-rgeoda" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Load rGeoda<a href="05-LISA.html#load-rgeoda" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><a href="https://geodacenter.github.io/rgeoda/" class="uri">https://geodacenter.github.io/rgeoda/</a></p>
+<pre class="r"><code># install.packages(&quot;devtool)
+
+# devtools::install_github(&quot;geodacenter/rgeoda&quot;)
+
+library(rgeoda)</code></pre>
+</div>
+<div id="define-w" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Define W<a href="05-LISA.html#define-w" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre class="r"><code>w.rook &lt;- rook_weights(Chi_Zipsf)
+w.queen &lt;- queen_weights(Chi_Zipsf)
+w.queen2 &lt;- queen_weights(Chi_Zipsf, order = 2, include_lower_order = TRUE)</code></pre>
+</div>
+<div id="calculate-lisa" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Calculate LISA<a href="05-LISA.html#calculate-lisa" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre class="r"><code>lisa.rook &lt;- local_moran(w.rook, Chi_Zipsf[&#39;C_R___C&#39;])
+
+lisa.queen2 &lt;- local_moran(w.queen2, Chi_Zipsf[&#39;C_R___C&#39;])</code></pre>
+</div>
+<div id="map-the-lisa" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> Map the LISA<a href="05-LISA.html#map-the-lisa" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre class="r"><code>lisa_colors.rook &lt;- lisa_colors(lisa.rook)
+lisa_labels.rook &lt;- lisa_labels(lisa.rook)
+lisa_clusters.rook &lt;- lisa_clusters(lisa.rook)
+
+plot(st_geometry(Chi_Zipsf), 
+     col=sapply(lisa_clusters.rook, function(x){return(lisa_colors.rook[[x+1]])}), 
+     border = &quot;#333333&quot;, lwd=0.2)
+title(main = &quot;Local Moran of Covid Case Rt&quot;)
+legend(&#39;bottomleft&#39;, legend = lisa_labels.rook, fill = lisa_colors.rook, border = &quot;#eeeeee&quot;)</code></pre>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<pre class="r"><code>lisa_colors.queen &lt;- lisa_colors(lisa.queen2)
+lisa_labels.queen &lt;- lisa_labels(lisa.queen2)
+lisa_clusters.queen &lt;- lisa_clusters(lisa.queen2)
+
+plot(st_geometry(Chi_Zipsf), 
+     col=sapply(lisa_clusters.queen, function(x){return(lisa_colors.queen[[x+1]])}), 
+     border = &quot;#333333&quot;, lwd=0.2)
+title(main = &quot;Local Moran Map of Covid Case Rt&quot;)
+legend(&#39;bottomleft&#39;, legend = lisa_labels.queen, fill = lisa_colors.queen)</code></pre>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+</div>
+<div id="more-resources-2" class="section level2 unnumbered hasAnchor">
+<h2>More Resources<a href="05-LISA.html#more-resources-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><a href="https://geodacenter.github.io/rgeoda/" class="uri">https://geodacenter.github.io/rgeoda/</a>
+<a href="https://geodacenter.github.io/rgeoda/articles/rgeoda_tutorial.html" class="uri">https://geodacenter.github.io/rgeoda/articles/rgeoda_tutorial.html</a>
+<a href="https://geodacenter.github.io/workbook/5a_global_auto/lab5a.html#morans-i" class="uri">https://geodacenter.github.io/workbook/5a_global_auto/lab5a.html#morans-i</a>
+<a href="https://geodacenter.github.io/workbook/6a_local_auto/lab6a.html" class="uri">https://geodacenter.github.io/workbook/6a_local_auto/lab6a.html</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="02-choropleth.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="03-overlaypoints.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

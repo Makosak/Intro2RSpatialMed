@@ -16,6 +16,12 @@ jenks-maps
 integrate-more-data
 thematic-map-panel
 data
+spatial-cluster-detection
+identify-pattern
+load-rgeoda
+define-w
+calculate-lisa
+map-the-lisa
 adding-resources
 geocode
 convert-to-spatial-data

@@ -8,7 +8,7 @@ bibliography: [book.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: rstudio/bookdown-demo
-description: "This was developed for a workshop at the 2021 R-Medicine Conference by the Health Regions & Policies Lab at the University of Chicago ."
+description: "This was developed by the Healthy Regions - Policies Lab."
 ---
 
 ## Background {-}
