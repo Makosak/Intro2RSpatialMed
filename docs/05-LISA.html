@@ -22,7 +22,7 @@
 
 
 
-<meta name="date" content="2023-06-12" />
+<meta name="date" content="2023-06-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -63,6 +63,69 @@
 <script src="libs/leaflet-providers-plugin-2.1.2/leaflet-providers-plugin.js"></script>
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 <style type="text/css">
   
@@ -117,6 +180,8 @@
 <li class="chapter" data-level="3.3" data-path="05-LISA.html"><a href="05-LISA.html#define-w"><i class="fa fa-check"></i><b>3.3</b> Define W</a></li>
 <li class="chapter" data-level="3.4" data-path="05-LISA.html"><a href="05-LISA.html#calculate-lisa"><i class="fa fa-check"></i><b>3.4</b> Calculate LISA</a></li>
 <li class="chapter" data-level="3.5" data-path="05-LISA.html"><a href="05-LISA.html#map-the-lisa"><i class="fa fa-check"></i><b>3.5</b> Map the LISA</a></li>
+<li class="chapter" data-level="3.6" data-path="05-LISA.html"><a href="05-LISA.html#certainty-check"><i class="fa fa-check"></i><b>3.6</b> Certainty Check</a></li>
+<li class="chapter" data-level="3.7" data-path="05-LISA.html"><a href="05-LISA.html#putting-it-together"><i class="fa fa-check"></i><b>3.7</b> Putting it together</a></li>
 <li class="chapter" data-level="" data-path="05-LISA.html"><a href="05-LISA.html#more-resources-2"><i class="fa fa-check"></i>More Resources</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="03-overlaypoints.html"><a href="03-overlaypoints.html"><i class="fa fa-check"></i><b>4</b> Adding Resources</a>
@@ -165,72 +230,110 @@
 <div id="identify-pattern" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Identify Pattern<a href="05-LISA.html#identify-pattern" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Let’s look at the most stable choropleth map from the last exercise. If you took a break, you’ll need to reload your two main libraries, <em>sf</em> and <em>tmap</em> for spatial data wrangling and detection. Try to practice spatial I/O by loading in your merged Zip-Code level dataset.</p>
-<pre class="r"><code>library(sf)
-library(tmap)
-Chi_Zipsf &lt;- st_read(&quot;ChiZipMaster.shp&quot;)</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="05-LISA.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb61-2"><a href="05-LISA.html#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb61-3"><a href="05-LISA.html#cb61-3" aria-hidden="true" tabindex="-1"></a>Chi_Zipsf <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/ChiZipMaster.geojson&quot;</span>)</span></code></pre></div>
 <pre><code>## Reading layer `ChiZipMaster&#39; from data source 
-##   `/Users/maryniakolak/Code/Intro2RSpatialMed/ChiZipMaster.shp&#39; using driver `ESRI Shapefile&#39;
-## Simple feature collection with 60 features and 31 fields
-## Geometry type: POLYGON
+##   `/Users/maryniakolak/Code/Intro2RSpatialMed/data/ChiZipMaster.geojson&#39; using driver `GeoJSON&#39;
+## Simple feature collection with 1080 features and 31 fields
+## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -87.87596 ymin: 41.64454 xmax: -87.52414 ymax: 42.02304
-## Geodetic CRS:  WGS84(DD)</code></pre>
+## Geodetic CRS:  WGS 84</code></pre>
 <p>After inspecting your dataset again, map your variable of interest, <em>Cumulative Covid Case Rate</em>, developed previously.</p>
-<pre class="r"><code># head(Chi_Zipsf) 
-
-tm_shape(Chi_Zipsf) +
-  tm_polygons(&quot;C_R___C&quot;, 
-              style=&quot;jenks&quot;, pal=&quot;BuPu&quot;,
-              legend.hist=T, n=4,
-              title = &quot;COVID Case Rate&quot;, ) + 
-  tm_scale_bar(position = &quot;left&quot;) + 
-  tm_layout(legend.outside = TRUE, legend.outside.position = &quot;right&quot;)</code></pre>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="05-LISA.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># head(Chi_Zipsf) </span></span>
+<span id="cb63-2"><a href="05-LISA.html#cb63-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-3"><a href="05-LISA.html#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(Chi_Zipsf) <span class="sc">+</span></span>
+<span id="cb63-4"><a href="05-LISA.html#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">&quot;Case.Rate...Cumulative&quot;</span>, </span>
+<span id="cb63-5"><a href="05-LISA.html#cb63-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="at">pal=</span><span class="st">&quot;BuPu&quot;</span>,</span>
+<span id="cb63-6"><a href="05-LISA.html#cb63-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">legend.hist=</span>T, <span class="at">n=</span><span class="dv">4</span>,</span>
+<span id="cb63-7"><a href="05-LISA.html#cb63-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">title =</span> <span class="st">&quot;COVID Case Rate&quot;</span>, ) <span class="sc">+</span> </span>
+<span id="cb63-8"><a href="05-LISA.html#cb63-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="st">&quot;left&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb63-9"><a href="05-LISA.html#cb63-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 <p>We found that multuple areas on the West Side of Chicago persistently emerged as having higher case rates for this week of interest in our dataset. Is this a statistically significant finding, though?</p>
 </div>
 <div id="load-rgeoda" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Load rGeoda<a href="05-LISA.html#load-rgeoda" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><a href="https://geodacenter.github.io/rgeoda/" class="uri">https://geodacenter.github.io/rgeoda/</a></p>
-<pre class="r"><code># install.packages(&quot;devtool)
-
-# devtools::install_github(&quot;geodacenter/rgeoda&quot;)
-
-library(rgeoda)</code></pre>
+<p>Next, we’ll load a brand new library,<code>rgeoda</code>. This library wraps core functions of <em>GeoDa</em>, an open source spatial statitical software developed by Luc Anselin’s team. Lead developer Xun Li brought over key functions to packages for various platforms, including <code>R</code>.</p>
+<p>Install the package, if you haven’t done so already, and load. For more details and troubleshooting tips, check out the documentation at <a href="https://geodacenter.github.io/rgeoda/" class="uri">https://geodacenter.github.io/rgeoda/</a>.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="05-LISA.html#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;rgeoda)</span></span>
+<span id="cb64-2"><a href="05-LISA.html#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rgeoda)</span></code></pre></div>
 </div>
 <div id="define-w" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Define W<a href="05-LISA.html#define-w" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<pre class="r"><code>w.rook &lt;- rook_weights(Chi_Zipsf)
-w.queen &lt;- queen_weights(Chi_Zipsf)
-w.queen2 &lt;- queen_weights(Chi_Zipsf, order = 2, include_lower_order = TRUE)</code></pre>
+<p>Next, we’ll generate multiple spatial weightws for comparison and hypothesis generation. A more local spatial neighbor weight, like rook, will assume less interaction/influence across space. When we create a queen contiguity weight with 2 orders, meaning influence may be up to 2 neighbors away, we specify that lower orders are also included.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="05-LISA.html#cb65-1" aria-hidden="true" tabindex="-1"></a>w.rook <span class="ot">&lt;-</span> <span class="fu">rook_weights</span>(Chi_Zipsf)</span>
+<span id="cb65-2"><a href="05-LISA.html#cb65-2" aria-hidden="true" tabindex="-1"></a>w.queen <span class="ot">&lt;-</span> <span class="fu">queen_weights</span>(Chi_Zipsf)</span>
+<span id="cb65-3"><a href="05-LISA.html#cb65-3" aria-hidden="true" tabindex="-1"></a>w.queen2 <span class="ot">&lt;-</span> <span class="fu">queen_weights</span>(Chi_Zipsf, <span class="at">order =</span> <span class="dv">2</span>, <span class="at">include_lower_order =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 <div id="calculate-lisa" class="section level2 hasAnchor" number="3.4">
 <h2><span class="header-section-number">3.4</span> Calculate LISA<a href="05-LISA.html#calculate-lisa" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<pre class="r"><code>lisa.rook &lt;- local_moran(w.rook, Chi_Zipsf[&#39;C_R___C&#39;])
-
-lisa.queen2 &lt;- local_moran(w.queen2, Chi_Zipsf[&#39;C_R___C&#39;])</code></pre>
+<p>Next, we calculate our Local Moran’s I (LISA). The default assumes 999 permutations; we can try 499 permutations for one case to compare results</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="05-LISA.html#cb66-1" aria-hidden="true" tabindex="-1"></a>lisa.rook <span class="ot">&lt;-</span> <span class="fu">local_moran</span>(w.rook, Chi_Zipsf[<span class="st">&#39;Case.Rate...Cumulative&#39;</span>], <span class="at">permutations =</span> <span class="dv">999</span>)</span>
+<span id="cb66-2"><a href="05-LISA.html#cb66-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-3"><a href="05-LISA.html#cb66-3" aria-hidden="true" tabindex="-1"></a>lisa.queen2 <span class="ot">&lt;-</span> <span class="fu">local_moran</span>(w.queen2, Chi_Zipsf[<span class="st">&#39;Case.Rate...Cumulative&#39;</span>], <span class="at">permutations =</span> <span class="dv">999</span>)</span>
+<span id="cb66-4"><a href="05-LISA.html#cb66-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-5"><a href="05-LISA.html#cb66-5" aria-hidden="true" tabindex="-1"></a>lisa.queen2<span class="fl">.449</span> <span class="ot">&lt;-</span> <span class="fu">local_moran</span>(w.queen2, Chi_Zipsf[<span class="st">&#39;Case.Rate...Cumulative&#39;</span>], <span class="at">permutations =</span> <span class="dv">449</span>)</span></code></pre></div>
 </div>
 <div id="map-the-lisa" class="section level2 hasAnchor" number="3.5">
 <h2><span class="header-section-number">3.5</span> Map the LISA<a href="05-LISA.html#map-the-lisa" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<pre class="r"><code>lisa_colors.rook &lt;- lisa_colors(lisa.rook)
-lisa_labels.rook &lt;- lisa_labels(lisa.rook)
-lisa_clusters.rook &lt;- lisa_clusters(lisa.rook)
-
-plot(st_geometry(Chi_Zipsf), 
-     col=sapply(lisa_clusters.rook, function(x){return(lisa_colors.rook[[x+1]])}), 
-     border = &quot;#333333&quot;, lwd=0.2)
-title(main = &quot;Local Moran of Covid Case Rt&quot;)
-legend(&#39;bottomleft&#39;, legend = lisa_labels.rook, fill = lisa_colors.rook, border = &quot;#eeeeee&quot;)</code></pre>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
-<pre class="r"><code>lisa_colors.queen &lt;- lisa_colors(lisa.queen2)
-lisa_labels.queen &lt;- lisa_labels(lisa.queen2)
-lisa_clusters.queen &lt;- lisa_clusters(lisa.queen2)
-
-plot(st_geometry(Chi_Zipsf), 
-     col=sapply(lisa_clusters.queen, function(x){return(lisa_colors.queen[[x+1]])}), 
-     border = &quot;#333333&quot;, lwd=0.2)
-title(main = &quot;Local Moran Map of Covid Case Rt&quot;)
-legend(&#39;bottomleft&#39;, legend = lisa_labels.queen, fill = lisa_colors.queen)</code></pre>
-<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<p>Here, we extract sample code directly from the library tutorial to visualize LISAs. Explore the output on your own to determine how you might 1) attach LISA values or clusters to the master file, and 2) visualize using a different library</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="05-LISA.html#cb67-1" aria-hidden="true" tabindex="-1"></a>lisa_colors.rook <span class="ot">&lt;-</span> <span class="fu">lisa_colors</span>(lisa.rook)</span>
+<span id="cb67-2"><a href="05-LISA.html#cb67-2" aria-hidden="true" tabindex="-1"></a>lisa_labels.rook <span class="ot">&lt;-</span> <span class="fu">lisa_labels</span>(lisa.rook)</span>
+<span id="cb67-3"><a href="05-LISA.html#cb67-3" aria-hidden="true" tabindex="-1"></a>lisa_clusters.rook <span class="ot">&lt;-</span> <span class="fu">lisa_clusters</span>(lisa.rook)</span>
+<span id="cb67-4"><a href="05-LISA.html#cb67-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-5"><a href="05-LISA.html#cb67-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(Chi_Zipsf), </span>
+<span id="cb67-6"><a href="05-LISA.html#cb67-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="fu">sapply</span>(lisa_clusters.rook, <span class="cf">function</span>(x){<span class="fu">return</span>(lisa_colors.rook[[x<span class="sc">+</span><span class="dv">1</span>]])}), </span>
+<span id="cb67-7"><a href="05-LISA.html#cb67-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">border =</span> <span class="st">&quot;#333333&quot;</span>, <span class="at">lwd=</span><span class="fl">0.2</span>)</span>
+<span id="cb67-8"><a href="05-LISA.html#cb67-8" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> <span class="st">&quot;Covid Case Rt LISA (Rook)&quot;</span>)</span>
+<span id="cb67-9"><a href="05-LISA.html#cb67-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&#39;bottomleft&#39;</span>, <span class="at">legend =</span> lisa_labels.rook, <span class="at">fill =</span> lisa_colors.rook, <span class="at">border =</span> <span class="st">&quot;#eeeeee&quot;</span>)</span></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p>Next, we visualize with a 2nd order queen contiguity spatial weight.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="05-LISA.html#cb68-1" aria-hidden="true" tabindex="-1"></a>lisa_colors.queen <span class="ot">&lt;-</span> <span class="fu">lisa_colors</span>(lisa.queen2)</span>
+<span id="cb68-2"><a href="05-LISA.html#cb68-2" aria-hidden="true" tabindex="-1"></a>lisa_labels.queen <span class="ot">&lt;-</span> <span class="fu">lisa_labels</span>(lisa.queen2)</span>
+<span id="cb68-3"><a href="05-LISA.html#cb68-3" aria-hidden="true" tabindex="-1"></a>lisa_clusters.queen <span class="ot">&lt;-</span> <span class="fu">lisa_clusters</span>(lisa.queen2)</span>
+<span id="cb68-4"><a href="05-LISA.html#cb68-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-5"><a href="05-LISA.html#cb68-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(Chi_Zipsf), </span>
+<span id="cb68-6"><a href="05-LISA.html#cb68-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="fu">sapply</span>(lisa_clusters.queen, <span class="cf">function</span>(x){<span class="fu">return</span>(lisa_colors.queen[[x<span class="sc">+</span><span class="dv">1</span>]])}), </span>
+<span id="cb68-7"><a href="05-LISA.html#cb68-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">border =</span> <span class="st">&quot;#333333&quot;</span>, <span class="at">lwd=</span><span class="fl">0.2</span>)</span>
+<span id="cb68-8"><a href="05-LISA.html#cb68-8" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> <span class="st">&quot;Covid Case Rt LISA (Queen)&quot;</span>)</span>
+<span id="cb68-9"><a href="05-LISA.html#cb68-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&#39;bottomleft&#39;</span>, <span class="at">legend =</span> lisa_labels.queen, <span class="at">fill =</span> lisa_colors.queen)</span></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p>Finally, we visualize with a 2nd order queen contiguity spatial weight using fewer permutations.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="05-LISA.html#cb69-1" aria-hidden="true" tabindex="-1"></a>lisa_colors.queen<span class="fl">.499</span> <span class="ot">&lt;-</span> <span class="fu">lisa_colors</span>(lisa.queen2<span class="fl">.449</span>)</span>
+<span id="cb69-2"><a href="05-LISA.html#cb69-2" aria-hidden="true" tabindex="-1"></a>lisa_labels.queen<span class="fl">.499</span> <span class="ot">&lt;-</span> <span class="fu">lisa_labels</span>(lisa.queen2<span class="fl">.449</span>)</span>
+<span id="cb69-3"><a href="05-LISA.html#cb69-3" aria-hidden="true" tabindex="-1"></a>lisa_clusters.queen<span class="fl">.499</span> <span class="ot">&lt;-</span> <span class="fu">lisa_clusters</span>(lisa.queen2<span class="fl">.449</span>)</span>
+<span id="cb69-4"><a href="05-LISA.html#cb69-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-5"><a href="05-LISA.html#cb69-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(Chi_Zipsf), </span>
+<span id="cb69-6"><a href="05-LISA.html#cb69-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="fu">sapply</span>(lisa_clusters.queen<span class="fl">.499</span>, <span class="cf">function</span>(x){<span class="fu">return</span>(lisa_colors.queen<span class="fl">.499</span>[[x<span class="sc">+</span><span class="dv">1</span>]])}), </span>
+<span id="cb69-7"><a href="05-LISA.html#cb69-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">border =</span> <span class="st">&quot;#333333&quot;</span>, <span class="at">lwd=</span><span class="fl">0.2</span>)</span>
+<span id="cb69-8"><a href="05-LISA.html#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> <span class="st">&quot;Covid Case Rt LISA (Queen, 499)&quot;</span>)</span>
+<span id="cb69-9"><a href="05-LISA.html#cb69-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&#39;bottomleft&#39;</span>, <span class="at">legend =</span> lisa_labels.queen<span class="fl">.499</span>, <span class="at">fill =</span> lisa_colors.queen<span class="fl">.499</span>)</span></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<p>In this case, using fewer permutations did not change the output, suggesting a stable &amp; robust result. It is best practice to use more permutations when conducting a LISA analysis, though exploration is welcome and encourages.</p>
+</div>
+<div id="certainty-check" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> Certainty Check<a href="05-LISA.html#certainty-check" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>How certain are we that areas identified are persistently clusters or outliers? We can view the significance level of each area to check our certainty – or, uncertainty.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="05-LISA.html#cb70-1" aria-hidden="true" tabindex="-1"></a>lisa_p <span class="ot">&lt;-</span> <span class="fu">lisa_pvalues</span>(lisa.queen2)</span>
+<span id="cb70-2"><a href="05-LISA.html#cb70-2" aria-hidden="true" tabindex="-1"></a>p_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Not significant&quot;</span>, <span class="st">&quot;p &lt;= 0.05&quot;</span>, <span class="st">&quot;p &lt;= 0.01&quot;</span>, <span class="st">&quot;p &lt;= 0.001&quot;</span>)</span>
+<span id="cb70-3"><a href="05-LISA.html#cb70-3" aria-hidden="true" tabindex="-1"></a>p_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;#eeeeee&quot;</span>, <span class="st">&quot;#84f576&quot;</span>, <span class="st">&quot;#53c53c&quot;</span>, <span class="st">&quot;#348124&quot;</span>)</span>
+<span id="cb70-4"><a href="05-LISA.html#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(Chi_Zipsf), </span>
+<span id="cb70-5"><a href="05-LISA.html#cb70-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="fu">sapply</span>(lisa_p, <span class="cf">function</span>(x){</span>
+<span id="cb70-6"><a href="05-LISA.html#cb70-6" aria-hidden="true" tabindex="-1"></a>       <span class="cf">if</span> (x <span class="sc">&lt;=</span> <span class="fl">0.001</span>) <span class="fu">return</span>(p_colors[<span class="dv">4</span>])</span>
+<span id="cb70-7"><a href="05-LISA.html#cb70-7" aria-hidden="true" tabindex="-1"></a>       <span class="cf">else</span> <span class="cf">if</span> (x <span class="sc">&lt;=</span> <span class="fl">0.01</span>) <span class="fu">return</span>(p_colors[<span class="dv">3</span>])</span>
+<span id="cb70-8"><a href="05-LISA.html#cb70-8" aria-hidden="true" tabindex="-1"></a>       <span class="cf">else</span> <span class="cf">if</span> (x <span class="sc">&lt;=</span> <span class="fl">0.05</span>) <span class="fu">return</span> (p_colors[<span class="dv">2</span>])</span>
+<span id="cb70-9"><a href="05-LISA.html#cb70-9" aria-hidden="true" tabindex="-1"></a>       <span class="cf">else</span> <span class="fu">return</span>(p_colors[<span class="dv">1</span>])</span>
+<span id="cb70-10"><a href="05-LISA.html#cb70-10" aria-hidden="true" tabindex="-1"></a>       }), </span>
+<span id="cb70-11"><a href="05-LISA.html#cb70-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">border =</span> <span class="st">&quot;#333333&quot;</span>, <span class="at">lwd=</span><span class="fl">0.2</span>)</span>
+<span id="cb70-12"><a href="05-LISA.html#cb70-12" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> <span class="st">&quot;Covid Case Rt LISA (Queen, P-Vlaue)&quot;</span>)</span>
+<span id="cb70-13"><a href="05-LISA.html#cb70-13" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&#39;bottomleft&#39;</span>, <span class="at">legend =</span> p_labels, <span class="at">fill =</span> p_colors, <span class="at">border =</span> <span class="st">&quot;#eeeeee&quot;</span>)</span></code></pre></div>
+<p><img src="Spatial-R-for-Healthy-Places_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+</div>
+<div id="putting-it-together" class="section level2 hasAnchor" number="3.7">
+<h2><span class="header-section-number">3.7</span> Putting it together<a href="05-LISA.html#putting-it-together" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>There was a slight change in the “hot spot” cluster when using a rook or 2nd order queen contiguity weight. Explore resource below to look for analytically-driven tips on how to determine an “optimal” setting. More importantly, understanding the phenomenon at hand is crucial for identifying a spatial weight. What are the underlying behaviors, phenomena, and spatial structures you are trying to examine? How would a spatial weight change for measuring exposure of an infectious disease, versus capturing spatially heterogeneous phenomena like redlining that also leave a spatial footprint? Would you use the same spatial weight, or different?</p>
 </div>
 <div id="more-resources-2" class="section level2 unnumbered hasAnchor">
 <h2>More Resources<a href="05-LISA.html#more-resources-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>

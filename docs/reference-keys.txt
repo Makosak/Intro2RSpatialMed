@@ -22,6 +22,8 @@ load-rgeoda
 define-w
 calculate-lisa
 map-the-lisa
+certainty-check
+putting-it-together
 adding-resources
 geocode
 convert-to-spatial-data
