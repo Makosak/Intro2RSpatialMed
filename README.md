@@ -7,7 +7,7 @@ A workshop to learn an introduction to GIS & Spatial Analysis for health.
 
 SER 2023 Workshop Details
 
-- [Sign In *Forthcoming](https://docs.google.com/forms/d/1eUL4kHaujNVgLnlmSA9zRkSVLp-s1OPoAIls0_gDDEc/edit)
+- [Sign In](https://docs.google.com/forms/d/1eUL4kHaujNVgLnlmSA9zRkSVLp-s1OPoAIls0_gDDEc/edit)
 - [Slide Deck](https://docs.google.com/presentation/d/1Og-RmBloA2_thTKQIP9dAfVMBf_tS39U1V6ZlbVLWrY/edit#slide=id.p)
 
 SER 2022 Workshop Details
